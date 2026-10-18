@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+release
+.DS_Store
+.claude/
+
+# Images brutes générées par IA (≈120 Mo) : non versionnées, seules les versions détourées de src/assets/art le sont.
+art/raw/

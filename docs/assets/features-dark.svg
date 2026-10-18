@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 318" width="1200" height="318" role="img" aria-label="Bâtissez, combattez, capturez, dominez les types">
+<defs></defs>
+<style>
+text{font-family:'Cinzel','Palatino Linotype','Book Antiqua',Georgia,serif}
+.s{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.c{text-anchor:middle}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 6s ease-in-out infinite}@keyframes draw{0%{stroke-dashoffset:1}35%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:-1}}
+.up{animation:up 3.2s ease-in-out infinite}@keyframes up{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.a{animation:a 2.6s ease-in-out infinite}@keyframes a{0%,100%{transform:translateX(-14px)}50%{transform:translateX(4px)}}
+.b{animation:b 2.6s ease-in-out infinite}@keyframes b{0%,100%{transform:translateX(14px)}50%{transform:translateX(-4px)}}
+.fl{animation:fl 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes fl{0%,40%,100%{opacity:0;transform:scale(.3)}55%{opacity:1;transform:scale(1.2)}}
+.wob{animation:wob 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}@keyframes wob{0%,60%,100%{transform:rotate(0)}66%{transform:rotate(-7deg)}74%{transform:rotate(6deg)}82%{transform:rotate(-4deg)}90%{transform:rotate(2deg)}}
+.spin{animation:spin 14s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes spin{to{transform:rotate(360deg)}}
+.tw{animation:tw 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes tw{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}animate,animateMotion,animateTransform{display:none}}
+</style>
+<g><rect x="12" y="10" width="276" height="298" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.22)"/>
+<path d="M207.2 134.5L150.0 151.0L92.8 134.5L92.8 101.5L150.0 85.0L207.2 101.5Z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity=".55"/><path d="M207.2 142.5L150.0 159.0L92.8 142.5L92.8 109.5L150.0 93.0L207.2 109.5Z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity=".3"/>
+      <g class="up"><path pathLength="1" class="draw" d="M120 108v-42l12-8 12 8v42" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><path pathLength="1" class="draw" d="M116 66l16-24 16 24" fill="none" stroke="#e2a93e" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></g>
+      <path pathLength="1" class="draw" d="M164 118v-18l10-7 10 7v18z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" style="animation-delay:.5s"/><path pathLength="1" class="draw" d="M174 130v-12l8-6 8 6v12z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" style="animation-delay:.9s"/>
+<text class="c" x="150" y="196" font-size="22" font-weight="700" fill="#e2a93e">Bâtissez</text>
+<text class="s c" x="150" y="226" font-size="14" fill="#9fb0a8">Une île hexagonale, 16 bâtiments et des</text><text class="s c" x="150" y="248" font-size="14" fill="#9fb0a8">bonus d'adjacence : Port + Hôtel des</text><text class="s c" x="150" y="270" font-size="14" fill="#9fb0a8">ventes = +5 or.</text></g>
+<g><rect x="312" y="10" width="276" height="298" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.22)"/>
+<path d="M452.6 128.0L418.0 138.0L383.4 128.0L383.4 108.0L418.0 98.0L452.6 108.0Z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity=".5"/><path d="M516.6 128.0L482.0 138.0L447.4 128.0L447.4 108.0L482.0 98.0L516.6 108.0Z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity=".5"/><path d="M484.6 106.0L450.0 116.0L415.4 106.0L415.4 86.0L450.0 76.0L484.6 86.0Z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity=".35"/>
+      <g class="a"><circle cx="410" cy="100" r="13" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><path d="M402 96l5 5 8-9" fill="none" stroke="#e2a93e" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></g>
+      <g class="b"><circle cx="490" cy="100" r="13" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><path d="M484 96l12 8m0-8l-12 8" fill="none" stroke="#e0524a" stroke-width="1.8" stroke-linecap="round"/></g>
+      <path class="fl" d="M450 67L453.08 74.92L461 78L453.08 81.08L450 89L446.92 81.08L439 78L446.92 74.92Z" fill="#ffd98a"/>
+<text class="c" x="450" y="196" font-size="22" font-weight="700" fill="#e2a93e">Combattez</text>
+<text class="s c" x="450" y="226" font-size="14" fill="#9fb0a8">Auto-battler façon TFT : boutique,</text><text class="s c" x="450" y="248" font-size="14" fill="#9fb0a8">relances, placement sur les hexagones,</text><text class="s c" x="450" y="270" font-size="14" fill="#9fb0a8">évolutions ★ 1 à 3.</text></g>
+<g><rect x="612" y="10" width="276" height="298" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.22)"/>
+<ellipse cx="750" cy="140" rx="46" ry="11" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity=".35"/>
+      <g class="wob"><path d="M750 44c-28 0-44 36-44 64 0 26 20 38 44 38s44-12 44-38c0-28-16-64-44-64z" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path pathLength="1" class="draw" d="M724 84l12 10-9 12 14 9-5 13" fill="none" stroke="#e2a93e" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><path pathLength="1" class="draw" d="M770 70l-9 11 10 6" fill="none" stroke="#e2a93e" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" style="animation-delay:.6s"/></g>
+      <path class="tw" d="M808 50L810.24 55.76L816 58L810.24 60.24L808 66L805.76 60.24L800 58L805.76 55.76Z" fill="#ffd98a"/><path class="tw" style="animation-delay:.8s" d="M688 72L689.68 76.32L694 78L689.68 79.68L688 84L686.32 79.68L682 78L686.32 76.32Z" fill="#ffd98a"/>
+<text class="c" x="750" y="196" font-size="22" font-weight="700" fill="#e2a93e">Capturez</text>
+<text class="s c" x="750" y="226" font-size="14" fill="#9fb0a8">Repaires, œufs mystérieux et créatures</text><text class="s c" x="750" y="248" font-size="14" fill="#9fb0a8">chromatiques ✦ : chaque partie</text><text class="s c" x="750" y="270" font-size="14" fill="#9fb0a8">réserve sa surprise.</text></g>
+<g><rect x="912" y="10" width="276" height="298" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.22)"/>
+<circle class="spin" cx="1050" cy="112" r="58" fill="none" stroke="#7affc0" stroke-width="1.6" stroke-dasharray="5 7"/><circle cx="1050.0" cy="54.0" r="11" fill="#ff7a3d" fill-opacity=".9" stroke="#ece7d8" stroke-width="1.2"/><circle cx="1100.2" cy="83.0" r="11" fill="#4fc760" fill-opacity=".9" stroke="#ece7d8" stroke-width="1.2"/><circle cx="1100.2" cy="141.0" r="11" fill="#3fa9f5" fill-opacity=".9" stroke="#ece7d8" stroke-width="1.2"/><circle cx="1050.0" cy="170.0" r="11" fill="#f0cc2e" fill-opacity=".9" stroke="#ece7d8" stroke-width="1.2"/><circle cx="999.8" cy="141.0" r="11" fill="#c49a6c" fill-opacity=".9" stroke="#ece7d8" stroke-width="1.2"/><circle cx="999.8" cy="83.0" r="11" fill="#a070ff" fill-opacity=".9" stroke="#ece7d8" stroke-width="1.2"/><path d="M1034 112h32m-10-10l10 10-10 10" fill="none" stroke="#ece7d8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+<text class="c" x="1050" y="196" font-size="22" font-weight="700" fill="#e2a93e">Dominez les types</text>
+<text class="s c" x="1050" y="226" font-size="14" fill="#9fb0a8">6 éléments, un cycle d'ascendants :</text><text class="s c" x="1050" y="248" font-size="14" fill="#9fb0a8">un type dominant inflige ×1,5.</text><text class="s c" x="1050" y="270" font-size="14" fill="#9fb0a8">Choisissez bien vos duels.</text></g>
+</svg>

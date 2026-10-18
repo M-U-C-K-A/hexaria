@@ -1,0 +1,687 @@
+{
+ "creatures/flammeche_1": {
+  "w": 233,
+  "h": 260,
+  "ax": 0.526,
+  "pad": 3.8,
+  "rel": 0.465
+ },
+ "creatures/flammeche_2": {
+  "w": 419,
+  "h": 446,
+  "ax": 0.707,
+  "pad": 3.8,
+  "rel": 0.797
+ },
+ "creatures/flammeche_3": {
+  "w": 727,
+  "h": 560,
+  "ax": 0.732,
+  "pad": 3.8,
+  "rel": 1
+ },
+ "creatures/carapix_1": {
+  "w": 313,
+  "h": 223,
+  "ax": 0.505,
+  "pad": 3.7,
+  "rel": 0.397
+ },
+ "creatures/carapix_2": {
+  "w": 515,
+  "h": 383,
+  "ax": 0.539,
+  "pad": 3.7,
+  "rel": 0.684
+ },
+ "creatures/carapix_3": {
+  "w": 723,
+  "h": 560,
+  "ax": 0.577,
+  "pad": 3.7,
+  "rel": 1
+ },
+ "creatures/galet_1": {
+  "w": 223,
+  "h": 219,
+  "ax": 0.495,
+  "pad": 3.6,
+  "rel": 0.392
+ },
+ "creatures/galet_2": {
+  "w": 454,
+  "h": 430,
+  "ax": 0.548,
+  "pad": 3.6,
+  "rel": 0.768
+ },
+ "creatures/galet_3": {
+  "w": 510,
+  "h": 560,
+  "ax": 0.526,
+  "pad": 3.6,
+  "rel": 1
+ },
+ "creatures/bourgeon_1": {
+  "w": 185,
+  "h": 330,
+  "ax": 0.575,
+  "pad": 2.6,
+  "rel": 0.59
+ },
+ "creatures/bourgeon_2": {
+  "w": 246,
+  "h": 412,
+  "ax": 0.644,
+  "pad": 2.6,
+  "rel": 0.736
+ },
+ "creatures/bourgeon_3": {
+  "w": 404,
+  "h": 560,
+  "ax": 0.555,
+  "pad": 2.6,
+  "rel": 1
+ },
+ "creatures/goutelle_1": {
+  "w": 208,
+  "h": 221,
+  "ax": 0.559,
+  "pad": 4,
+  "rel": 0.395
+ },
+ "creatures/goutelle_2": {
+  "w": 518,
+  "h": 418,
+  "ax": 0.653,
+  "pad": 4,
+  "rel": 0.746
+ },
+ "creatures/goutelle_3": {
+  "w": 800,
+  "h": 560,
+  "ax": 0.529,
+  "pad": 4,
+  "rel": 1
+ },
+ "title/bg": {
+  "w": 1672,
+  "h": 941,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1,
+  "lazy": true
+ },
+ "arena/marsh": {
+  "w": 1672,
+  "h": 941,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1,
+  "lazy": true
+ },
+ "terrain/ocean": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "arena/cave": {
+  "w": 1536,
+  "h": 1024,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1,
+  "lazy": true
+ },
+ "terrain/shallow": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "arena/sea": {
+  "w": 1536,
+  "h": 1024,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1,
+  "lazy": true
+ },
+ "arena/lair": {
+  "w": 1448,
+  "h": 1086,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1,
+  "lazy": true
+ },
+ "events/mushrooms": {
+  "w": 1400,
+  "h": 939,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1,
+  "lazy": true
+ },
+ "terrain/mountain": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "terrain/hills": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "terrain/plains": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "terrain/forest": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "props/mountain_1": {
+  "w": 434,
+  "h": 420,
+  "ax": 0.496,
+  "pad": 4.1,
+  "rel": 1
+ },
+ "props/mountain_2": {
+  "w": 434,
+  "h": 420,
+  "ax": 0.497,
+  "pad": 4.1,
+  "rel": 1
+ },
+ "props/mountain_3": {
+  "w": 440,
+  "h": 420,
+  "ax": 0.503,
+  "pad": 4.2,
+  "rel": 1
+ },
+ "props/mountain_4": {
+  "w": 440,
+  "h": 420,
+  "ax": 0.503,
+  "pad": 4.2,
+  "rel": 1
+ },
+ "props/tree_1": {
+  "w": 228,
+  "h": 420,
+  "ax": 0.517,
+  "pad": 2.7,
+  "rel": 1
+ },
+ "props/bush_1": {
+  "w": 421,
+  "h": 420,
+  "ax": 0.507,
+  "pad": 3.7,
+  "rel": 1
+ },
+ "props/bush_2": {
+  "w": 346,
+  "h": 420,
+  "ax": 0.335,
+  "pad": 2.5,
+  "rel": 1
+ },
+ "props/hill_1": {
+  "w": 666,
+  "h": 420,
+  "ax": 0.499,
+  "pad": 4.7,
+  "rel": 1
+ },
+ "props/hill_2": {
+  "w": 636,
+  "h": 420,
+  "ax": 0.505,
+  "pad": 4.5,
+  "rel": 1
+ },
+ "props/hill_3": {
+  "w": 655,
+  "h": 420,
+  "ax": 0.502,
+  "pad": 4.6,
+  "rel": 1
+ },
+ "buildings/townhall": {
+  "w": 568,
+  "h": 720,
+  "ax": 0.492,
+  "pad": 2.9,
+  "rel": 1
+ },
+ "terrain/grove": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "buildings/colosseum": {
+  "w": 748,
+  "h": 720,
+  "ax": 0.492,
+  "pad": 2.9,
+  "rel": 1
+ },
+ "buildings/shrine": {
+  "w": 597,
+  "h": 720,
+  "ax": 0.502,
+  "pad": 3,
+  "rel": 1
+ },
+ "props/ruins_1": {
+  "w": 366,
+  "h": 420,
+  "ax": 0.515,
+  "pad": 3.7,
+  "rel": 1
+ },
+ "props/ruins_2": {
+  "w": 375,
+  "h": 420,
+  "ax": 0.525,
+  "pad": 3.6,
+  "rel": 1
+ },
+ "props/lair_1": {
+  "w": 446,
+  "h": 420,
+  "ax": 0.506,
+  "pad": 4.1,
+  "rel": 1
+ },
+ "props/stones_1": {
+  "w": 487,
+  "h": 420,
+  "ax": 0.518,
+  "pad": 4.7,
+  "rel": 1
+ },
+ "terrain/beach": {
+  "w": 768,
+  "h": 768,
+  "ax": 0.5,
+  "pad": 0,
+  "rel": 1
+ },
+ "props/tree_2": {
+  "w": 204,
+  "h": 420,
+  "ax": 0.493,
+  "pad": 2.8,
+  "rel": 1
+ },
+ "props/tree_3": {
+  "w": 140,
+  "h": 420,
+  "ax": 0.491,
+  "pad": 2.9,
+  "rel": 1
+ },
+ "props/tree_4": {
+  "w": 298,
+  "h": 420,
+  "ax": 0.542,
+  "pad": 3.9,
+  "rel": 1
+ },
+ "props/tree_5": {
+  "w": 261,
+  "h": 420,
+  "ax": 0.47,
+  "pad": 3.9,
+  "rel": 1
+ },
+ "props/tree_6": {
+  "w": 392,
+  "h": 420,
+  "ax": 0.545,
+  "pad": 4.4,
+  "rel": 1
+ },
+ "props/bush_3": {
+  "w": 459,
+  "h": 420,
+  "ax": 0.463,
+  "pad": 5.6,
+  "rel": 1
+ },
+ "props/flowers_1": {
+  "w": 431,
+  "h": 420,
+  "ax": 0.501,
+  "pad": 4.9,
+  "rel": 1
+ },
+ "props/flowers_2": {
+  "w": 464,
+  "h": 420,
+  "ax": 0.489,
+  "pad": 5.8,
+  "rel": 1
+ },
+ "monsters/champi": {
+  "w": 533,
+  "h": 640,
+  "ax": 0.26,
+  "pad": 2.8,
+  "rel": 1
+ },
+ "monsters/loup": {
+  "w": 1022,
+  "h": 640,
+  "ax": 0.702,
+  "pad": 2.8,
+  "rel": 1
+ },
+ "creatures/etincelle_1": {
+  "w": 240,
+  "h": 288,
+  "ax": 0.663,
+  "pad": 3.1,
+  "rel": 0.515
+ },
+ "creatures/etincelle_2": {
+  "w": 398,
+  "h": 414,
+  "ax": 0.649,
+  "pad": 3.1,
+  "rel": 0.74
+ },
+ "creatures/etincelle_3": {
+  "w": 523,
+  "h": 560,
+  "ax": 0.645,
+  "pad": 3.1,
+  "rel": 1
+ },
+ "creatures/ombrelin_1": {
+  "w": 149,
+  "h": 215,
+  "ax": 0.27,
+  "pad": 2.5,
+  "rel": 0.383
+ },
+ "creatures/ombrelin_2": {
+  "w": 301,
+  "h": 433,
+  "ax": 0.345,
+  "pad": 2.5,
+  "rel": 0.774
+ },
+ "creatures/ombrelin_3": {
+  "w": 560,
+  "h": 560,
+  "ax": 0.38,
+  "pad": 2.5,
+  "rel": 1
+ },
+ "creatures/mycelor_1": {
+  "w": 147,
+  "h": 172,
+  "ax": 0.559,
+  "pad": 2.5,
+  "rel": 0.307
+ },
+ "creatures/mycelor_2": {
+  "w": 304,
+  "h": 413,
+  "ax": 0.418,
+  "pad": 2.5,
+  "rel": 0.738
+ },
+ "creatures/mycelor_3": {
+  "w": 470,
+  "h": 560,
+  "ax": 0.576,
+  "pad": 2.5,
+  "rel": 1
+ },
+ "creatures/salamandre_1": {
+  "w": 337,
+  "h": 247,
+  "ax": 0.625,
+  "pad": 3.1,
+  "rel": 0.441
+ },
+ "creatures/salamandre_2": {
+  "w": 517,
+  "h": 344,
+  "ax": 0.692,
+  "pad": 3.1,
+  "rel": 0.614
+ },
+ "creatures/salamandre_3": {
+  "w": 557,
+  "h": 560,
+  "ax": 0.684,
+  "pad": 3.1,
+  "rel": 1
+ },
+ "creatures/cristallon_1": {
+  "w": 239,
+  "h": 284,
+  "ax": 0.367,
+  "pad": 2.5,
+  "rel": 0.508
+ },
+ "creatures/cristallon_2": {
+  "w": 366,
+  "h": 420,
+  "ax": 0.319,
+  "pad": 2.5,
+  "rel": 0.75
+ },
+ "creatures/cristallon_3": {
+  "w": 385,
+  "h": 560,
+  "ax": 0.342,
+  "pad": 2.5,
+  "rel": 1
+ },
+ "creatures/griffon_1": {
+  "w": 593,
+  "h": 412,
+  "ax": 0.56,
+  "pad": 2.7,
+  "rel": 0.735
+ },
+ "creatures/griffon_2": {
+  "w": 586,
+  "h": 560,
+  "ax": 0.622,
+  "pad": 2.7,
+  "rel": 1
+ },
+ "creatures/faucheur_1": {
+  "w": 232,
+  "h": 251,
+  "ax": 0.335,
+  "pad": 2.5,
+  "rel": 0.448
+ },
+ "creatures/faucheur_2": {
+  "w": 370,
+  "h": 427,
+  "ax": 0.385,
+  "pad": 2.5,
+  "rel": 0.763
+ },
+ "creatures/faucheur_3": {
+  "w": 472,
+  "h": 560,
+  "ax": 0.65,
+  "pad": 2.5,
+  "rel": 1
+ },
+ "creatures/phenix_1": {
+  "w": 226,
+  "h": 298,
+  "ax": 0.504,
+  "pad": 2.8,
+  "rel": 0.532
+ },
+ "creatures/phenix_2": {
+  "w": 387,
+  "h": 443,
+  "ax": 0.742,
+  "pad": 2.8,
+  "rel": 0.791
+ },
+ "creatures/phenix_3": {
+  "w": 524,
+  "h": 560,
+  "ax": 0.549,
+  "pad": 2.8,
+  "rel": 1
+ },
+ "creatures/hydrelle_1": {
+  "w": 212,
+  "h": 205,
+  "ax": 0.585,
+  "pad": 5.5,
+  "rel": 0.366
+ },
+ "creatures/hydrelle_2": {
+  "w": 411,
+  "h": 465,
+  "ax": 0.604,
+  "pad": 5.5,
+  "rel": 0.83
+ },
+ "creatures/hydrelle_3": {
+  "w": 555,
+  "h": 560,
+  "ax": 0.603,
+  "pad": 5.5,
+  "rel": 1
+ },
+ "creatures/dryade_1": {
+  "w": 203,
+  "h": 352,
+  "ax": 0.523,
+  "pad": 2.4,
+  "rel": 0.628
+ },
+ "creatures/dryade_2": {
+  "w": 278,
+  "h": 488,
+  "ax": 0.458,
+  "pad": 2.4,
+  "rel": 0.872
+ },
+ "creatures/dryade_3": {
+  "w": 434,
+  "h": 560,
+  "ax": 0.517,
+  "pad": 2.4,
+  "rel": 1
+ },
+ "buildings/port": {
+  "w": 1106,
+  "h": 720,
+  "ax": 0.38,
+  "pad": 3.6,
+  "rel": 1
+ },
+ "buildings/mine": {
+  "w": 772,
+  "h": 720,
+  "ax": 0.506,
+  "pad": 3,
+  "rel": 1
+ },
+ "buildings/quarry": {
+  "w": 786,
+  "h": 720,
+  "ax": 0.501,
+  "pad": 2.8,
+  "rel": 1
+ },
+ "buildings/lumber": {
+  "w": 939,
+  "h": 720,
+  "ax": 0.483,
+  "pad": 3,
+  "rel": 1
+ },
+ "buildings/farm": {
+  "w": 889,
+  "h": 720,
+  "ax": 0.499,
+  "pad": 3.3,
+  "rel": 1
+ },
+ "buildings/house": {
+  "w": 598,
+  "h": 720,
+  "ax": 0.505,
+  "pad": 3,
+  "rel": 1
+ },
+ "buildings/market": {
+  "w": 793,
+  "h": 720,
+  "ax": 0.504,
+  "pad": 3,
+  "rel": 1
+ },
+ "buildings/auction": {
+  "w": 631,
+  "h": 720,
+  "ax": 0.502,
+  "pad": 3,
+  "rel": 1
+ },
+ "buildings/tavern": {
+  "w": 692,
+  "h": 720,
+  "ax": 0.526,
+  "pad": 3.1,
+  "rel": 1
+ },
+ "buildings/barracks": {
+  "w": 838,
+  "h": 720,
+  "ax": 0.496,
+  "pad": 2.9,
+  "rel": 1
+ },
+ "buildings/forge": {
+  "w": 701,
+  "h": 720,
+  "ax": 0.502,
+  "pad": 3.1,
+  "rel": 1
+ },
+ "buildings/academy": {
+  "w": 403,
+  "h": 720,
+  "ax": 0.503,
+  "pad": 2,
+  "rel": 1
+ }
+}

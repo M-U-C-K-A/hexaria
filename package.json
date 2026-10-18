@@ -1,0 +1,44 @@
+{
+  "name": "hexaria",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Hexaria — Royaumes & Arènes : roguelike solo pour macOS (royaume hexagonal, créatures à types, auto-battler).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M-U-C-K-A/hexaria.git"
+  },
+  "homepage": "https://github.com/M-U-C-K-A/hexaria#readme",
+  "keywords": [
+    "game",
+    "roguelike",
+    "auto-battler",
+    "hex",
+    "typescript",
+    "canvas",
+    "macos",
+    "vite"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "check": "tsc --noEmit",
+    "preview": "vite preview",
+    "mac": "bash scripts/build-mac.sh",
+    "balance": "tsx scripts/balance.ts",
+    "art": "tsx scripts/art/build-prompts.ts && node scripts/art/process.mjs && tsx scripts/art/build-prompts.ts",
+    "art:page": "tsx scripts/art/build-prompts.ts",
+    "shots": "node scripts/shots.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "@fontsource/alegreya-sans": "^5.3.0",
+    "@fontsource/cinzel": "^5.3.0"
+  }
+}

@@ -1,0 +1,1164 @@
+[
+ {
+  "src": "line_feu.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "flammeche_1",
+   "flammeche_2",
+   "flammeche_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_flammeche_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "flammeche_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_flammeche_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "flammeche_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_flammeche_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "flammeche_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_plante.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "bourgeon_1",
+   "bourgeon_2",
+   "bourgeon_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_bourgeon_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "bourgeon_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_bourgeon_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "bourgeon_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_bourgeon_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "bourgeon_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_eau.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "goutelle_1",
+   "goutelle_2",
+   "goutelle_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_goutelle_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "goutelle_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_goutelle_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "goutelle_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_goutelle_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "goutelle_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_roche.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "galet_1",
+   "galet_2",
+   "galet_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_galet_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "galet_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_galet_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "galet_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_galet_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "galet_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_foudre.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "etincelle_1",
+   "etincelle_2",
+   "etincelle_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_etincelle_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "etincelle_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_etincelle_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "etincelle_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_etincelle_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "etincelle_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_ombre.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "ombrelin_1",
+   "ombrelin_2",
+   "ombrelin_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_ombrelin_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "ombrelin_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_ombrelin_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "ombrelin_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_ombrelin_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "ombrelin_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_champi.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "mycelor_1",
+   "mycelor_2",
+   "mycelor_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_mycelor_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "mycelor_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_mycelor_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "mycelor_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_mycelor_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "mycelor_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_carapix.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "carapix_1",
+   "carapix_2",
+   "carapix_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_carapix_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "carapix_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_carapix_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "carapix_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_carapix_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "carapix_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_salamandre.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "salamandre_1",
+   "salamandre_2",
+   "salamandre_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_salamandre_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "salamandre_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_salamandre_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "salamandre_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_salamandre_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "salamandre_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_cristal.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "cristallon_1",
+   "cristallon_2",
+   "cristallon_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_cristallon_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "cristallon_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_cristallon_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "cristallon_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_cristallon_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "cristallon_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_griffon.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "griffon_1",
+   "griffon_2",
+   "griffon_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_griffon_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "griffon_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_griffon_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "griffon_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_griffon_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "griffon_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_faucheur.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "faucheur_1",
+   "faucheur_2",
+   "faucheur_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_faucheur_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "faucheur_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_faucheur_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "faucheur_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_faucheur_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "faucheur_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_phenix.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "phenix_1",
+   "phenix_2",
+   "phenix_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_phenix_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "phenix_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_phenix_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "phenix_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_phenix_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "phenix_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_hydre.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "hydrelle_1",
+   "hydrelle_2",
+   "hydrelle_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_hydrelle_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "hydrelle_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_hydrelle_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "hydrelle_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_hydrelle_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "hydrelle_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_dryade.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "dryade_1",
+   "dryade_2",
+   "dryade_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_dryade_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "dryade_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_dryade_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "dryade_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_dryade_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "dryade_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "monster_loup.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "loup"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_champi.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "champi"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_golem.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "golem"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_araignee.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "araignee"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_hydre.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "hydre"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_crabe.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "crabe"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_dragonnet.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "dragonnet"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_dragon.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "dragon"
+  ],
+  "maxH": 900
+ },
+ {
+  "src": "building_townhall.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "townhall"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_colosseum.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "colosseum"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_house.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "house"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_farm.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "farm"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_lumber.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "lumber"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_quarry.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "quarry"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_mine.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "mine"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_port.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "port"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_market.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "market"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_auction.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "auction"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_tavern.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "tavern"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_barracks.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "barracks"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_forge.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "forge"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_shrine.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "shrine"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_academy.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "academy"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_menagerie.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "menagerie"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "props_trees.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "tree_1",
+   "tree_2",
+   "tree_3",
+   "tree_4",
+   "tree_5",
+   "tree_6"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "props_mushrooms.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "mushroom_1",
+   "mushroom_2",
+   "mushroom_3",
+   "mushroom_4",
+   "mushroom_5",
+   "mushroom_6"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "props_crystals.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "crystal_1",
+   "crystal_2",
+   "crystal_3",
+   "rock_1",
+   "rock_2",
+   "ore_1"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "props_mountains.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "mountain_1",
+   "mountain_2",
+   "mountain_3",
+   "mountain_4"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "props_hills.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "hill_1",
+   "hill_2",
+   "hill_3"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "props_flora.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "bush_1",
+   "bush_2",
+   "bush_3",
+   "flowers_1",
+   "flowers_2"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "props_ruins.png",
+  "kind": "objects",
+  "dir": "props",
+  "names": [
+   "ruins_1",
+   "ruins_2",
+   "lair_1",
+   "stones_1"
+  ],
+  "maxH": 420,
+  "gap": 40
+ },
+ {
+  "src": "terrain_plains.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "plains"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_forest.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "forest"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_grove.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "grove"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_hills.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "hills"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_mountain.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "mountain"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_beach.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "beach"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_shallow.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "shallow"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "terrain_ocean.png",
+  "kind": "texture",
+  "dir": "terrain",
+  "names": [
+   "ocean"
+  ],
+  "maxW": 768
+ },
+ {
+  "src": "arena_marsh.png",
+  "kind": "background",
+  "dir": "arena",
+  "names": [
+   "marsh"
+  ],
+  "maxW": 2048
+ },
+ {
+  "src": "arena_cave.png",
+  "kind": "background",
+  "dir": "arena",
+  "names": [
+   "cave"
+  ],
+  "maxW": 2048
+ },
+ {
+  "src": "arena_sea.png",
+  "kind": "background",
+  "dir": "arena",
+  "names": [
+   "sea"
+  ],
+  "maxW": 2048
+ },
+ {
+  "src": "arena_lair.png",
+  "kind": "background",
+  "dir": "arena",
+  "names": [
+   "lair"
+  ],
+  "maxW": 2048
+ },
+ {
+  "src": "event_mushrooms.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "mushrooms"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_caravan.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "caravan"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_shipwreck.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "shipwreck"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_egg.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "egg"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_hatch.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "hatch"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_stars.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "stars"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_altar.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "altar"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_village.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "village"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_camp.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "camp"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_ruins.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "ruins"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_lair.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "lair"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_victory.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "victory"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "event_defeat.png",
+  "kind": "background",
+  "dir": "events",
+  "names": [
+   "defeat"
+  ],
+  "maxW": 1400
+ },
+ {
+  "src": "title_bg.png",
+  "kind": "background",
+  "dir": "title",
+  "names": [
+   "bg"
+  ],
+  "maxW": 2048
+ }
+]

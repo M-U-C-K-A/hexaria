@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hexaria — prompts d'images</title>
+<style>:root {
+  --bg: #07100e;
+  --panel: #0f1d1a;
+  --panel2: #142622;
+  --line: rgba(184, 149, 90, 0.45);
+  --soft: rgba(184, 149, 90, 0.2);
+  --gold: #e0b55e;
+  --gold-hi: #ffd98a;
+  --text: #e8e3d4;
+  --muted: #98a59d;
+  --green: #7affc0;
+  --red: #ff7b7b;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 50% -10%, #17332d 0%, var(--bg) 55%) fixed;
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.5;
+}
+
+header.top {
+  padding: 34px 28px 10px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: var(--serif);
+  color: var(--gold-hi);
+  letter-spacing: 0.06em;
+  font-size: 34px;
+  margin: 0 0 6px;
+}
+
+.sub {
+  color: var(--muted);
+  margin: 0 0 18px;
+  max-width: 900px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  margin: 14px 0 6px;
+}
+
+.step {
+  background: var(--panel);
+  border: 1px solid var(--soft);
+  padding: 12px 14px;
+  position: relative;
+}
+
+.step b {
+  color: var(--gold-hi);
+  font-family: var(--serif);
+}
+
+.step .n {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--gold);
+  color: #1a1206;
+  font-weight: 800;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+.tips {
+  margin: 14px 0 0;
+  background: var(--panel);
+  border: 1px solid var(--soft);
+  padding: 4px 14px;
+}
+
+.tips summary {
+  cursor: pointer;
+  padding: 8px 0;
+  color: var(--gold-hi);
+  font-family: var(--serif);
+}
+
+.tips ul {
+  margin: 0 0 10px;
+  padding-left: 20px;
+  color: #cfcabb;
+}
+
+.style-box {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line);
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  color: #cfd8d2;
+}
+
+#devbar {
+  display: none;
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(122, 255, 192, 0.5);
+  background: rgba(122, 255, 192, 0.07);
+  color: var(--green);
+}
+
+#devbar.on {
+  display: block;
+}
+
+#devbar.drag {
+  background: rgba(122, 255, 192, 0.2);
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(7, 16, 14, 0.94);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--soft);
+  padding: 10px 28px;
+}
+
+.toolbar .inner {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chip-btn,
+button.btn,
+.copy {
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--panel2);
+  border: 1px solid var(--soft);
+  padding: 5px 11px;
+  cursor: pointer;
+}
+
+.chip-btn:hover,
+button.btn:hover,
+.copy:hover {
+  border-color: var(--gold);
+}
+
+.chip-btn.on {
+  color: #1a1206;
+  background: var(--gold);
+  border-color: var(--gold-hi);
+}
+
+input[type='search'] {
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: #0a1613;
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  min-width: 220px;
+}
+
+.progress {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.bar {
+  display: inline-block;
+  width: 140px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #c8913a, var(--gold-hi));
+}
+
+main {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 14px 28px 80px;
+}
+
+section.cat h2 {
+  font-family: var(--serif);
+  color: var(--gold-hi);
+  margin: 26px 0 10px;
+  font-size: 22px;
+  border-bottom: 1px solid var(--soft);
+  padding-bottom: 6px;
+}
+
+section.cat h2 small {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.card.drag {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(122, 255, 192, 0.35);
+}
+
+.thumbs {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 110px;
+  padding: 10px;
+  background: radial-gradient(circle at 50% 80%, #1d3b34, #0b1512);
+  border-bottom: 1px solid var(--soft);
+}
+
+.thumbs img {
+  max-height: 150px;
+  max-width: 32%;
+  object-fit: contain;
+}
+
+.thumbs.single img {
+  max-width: 70%;
+}
+
+.thumbs.wide img {
+  max-height: 150px;
+  max-width: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.thumbs .ph {
+  color: var(--muted);
+  font-size: 13px;
+  border: 1px dashed var(--soft);
+  padding: 16px 22px;
+  align-self: center;
+}
+
+.cbody {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cbody h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--gold-hi);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.state {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 9px;
+}
+
+.state.ok {
+  color: #08261a;
+  background: var(--green);
+}
+
+.state.part {
+  color: #2a1c00;
+  background: var(--gold);
+}
+
+.state.todo {
+  color: #ffd0d0;
+  background: #5a2424;
+}
+
+.note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-size: 12px;
+  padding: 1px 8px;
+  border: 1px solid var(--soft);
+  color: #cfd8d2;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.chip.file {
+  cursor: pointer;
+  font-family: ui-monospace, Menlo, monospace;
+  color: var(--gold-hi);
+}
+
+pre.prompt {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  background: #081210;
+  border: 1px solid var(--soft);
+  padding: 10px 12px;
+  color: #dfe6e0;
+  max-height: 210px;
+  overflow: auto;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.copy.primary {
+  color: #1a1206;
+  background: linear-gradient(180deg, #ffdd8a, #c8913a);
+  border-color: var(--gold-hi);
+  font-weight: 700;
+}
+
+.drop {
+  display: none;
+  font-size: 12px;
+  color: var(--green);
+  border: 1px dashed rgba(122, 255, 192, 0.55);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+body.dev .drop {
+  display: inline-block;
+}
+
+.drop.drag {
+  background: rgba(122, 255, 192, 0.18);
+}
+
+details.variants {
+  border-top: 1px solid var(--soft);
+  padding-top: 6px;
+}
+
+details.variants summary {
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+.variant {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.variant .vt {
+  font-size: 13px;
+  color: var(--gold-hi);
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0c1a16;
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 8px 18px;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.toast.on {
+  opacity: 1;
+}
+
+.toast.bad {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+footer {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 28px 60px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+code {
+  font-family: ui-monospace, Menlo, monospace;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1px 6px;
+  color: var(--gold-hi);
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>HEXARIA — Atelier d'images</h1>
+  <p class="sub">Tous les prompts pour générer, avec votre propre IA d'images, les personnages, monstres, bâtiments, éléments de décor, textures, fonds d'arène et illustrations du jeu.
+  Chaque fiche donne le <b>prompt prêt à coller</b>, le <b>format</b>, la <b>taille conseillée</b> et le <b>nom de fichier exact</b> attendu par le jeu. 25 image(s) sur 72 sont déjà intégrées.</p>
+
+  <div class="steps">
+    <div class="step"><span class="n">1</span><b>Copier</b> un prompt avec le bouton doré, puis le coller dans votre IA (Midjourney, GPT Image, Flux, Gemini…).</div>
+    <div class="step"><span class="n">2</span><b>Garder le même style</b> : générez une première image qui vous plaît et fournissez-la comme <i>image de référence de style</i> pour toutes les suivantes.</div>
+    <div class="step"><span class="n">3</span><b>Enregistrer</b> l'image sous le <b>nom de fichier indiqué</b> dans le dossier <code>art/raw/</code> (ou la déposer sur la fiche si <code>npm run dev</code> tourne).</div>
+    <div class="step"><span class="n">4</span><b>Intégrer</b> : lancez <code>npm run art</code>. Le fond blanc est retiré, les planches sont découpées et converties ; rechargez le jeu, c'est utilisé automatiquement.</div>
+  </div>
+
+  <details class="tips">
+    <summary>Conseils pour de meilleurs résultats</summary>
+    <ul>
+      <li><b>Fond blanc pur</b> pour les personnages, monstres, bâtiments et décors (pas d'ombre au sol, pas de dégradé) : c'est ce qui permet le détourage automatique. Les textures, fonds d'arène, événements et écran titre sont au contraire des images pleines.</li>
+      <li><b>Vue isométrique de trois quarts, personnages tournés vers la droite</b> : le jeu retourne l'image quand il faut les faire regarder à gauche.</li>
+      <li>Les <b>planches</b> (3 formes d'évolution, ou plusieurs objets de décor) doivent avoir de <b>larges espaces blancs</b> entre les éléments, sinon la découpe automatique les fusionnera. Si votre IA n'y arrive pas, utilisez les variantes « une forme à la fois » des créatures, ou découpez les planches de décor vous-même.</li>
+      <li>Pour les créatures, gardez les <b>mêmes couleurs et la même identité</b> entre les trois formes ; la forme 3 doit être nettement plus grande.</li>
+      <li>Les images restent <b>originales</b> : ne demandez pas de personnages de licences existantes.</li>
+      <li>Une image ratée ? Régénérez uniquement celle-là et écrasez le fichier, puis relancez <code>npm run art</code> ; rien d'autre n'est touché.</li>
+    </ul>
+  </details>
+
+  <div class="style-box"><b>Bloc de style commun</b> (déjà inclus dans chaque prompt) : Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.<br><b>Fond :</b> Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.</div>
+  <div id="devbar"><b>Mode développement détecté.</b> Déposez vos images (une ou plusieurs, nommées comme indiqué) ici ou sur une fiche : elles sont enregistrées, détourées et intégrées au jeu automatiquement.</div>
+</header>
+
+<div class="toolbar"><div class="inner">
+  <div id="cats" style="display:contents"></div>
+  <input id="q" type="search" placeholder="Rechercher (nom, fichier, mot du prompt)…">
+  <button id="missing" class="chip-btn">Seulement les manquantes</button>
+  <button id="copyall" class="chip-btn">Copier tous les prompts affichés</button>
+  <span class="progress"><span id="pcount"></span><span class="bar"><i id="pbar"></i></span></span>
+</div></div>
+
+<main id="main"></main>
+<footer>
+  Page générée par <code>npx tsx scripts/art/build-prompts.ts</code> à partir de <code>scripts/art/promptData.ts</code> — modifiez ce fichier pour changer un prompt ou ajouter une image, puis relancez <code>npm run art</code>.
+</footer>
+
+<script>window.__DATA__ = {"items":[{"id":"line_feu","cat":"creature","title":"Flammèche → Pyrolis → Infernyx","note":"Renardeau de feu qui devient renard-dragon ailé.","file":"line_feu.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original fire creature, drawn left to right with wide empty space between the three forms. Stage 1 'Flammèche': a small round orange fire-cub with a tiny flame on its tail, big cute eyes. Stage 2 'Pyrolis': a taller fox-like creature with pointed ears and a long flaming tail. Stage 3 'Infernyx': a large majestic horned fox-dragon with a blazing mane and ember wings. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Flammèche","file":"creature_flammeche_1.png","prompt":"Game character sprite: 'Flammèche', stage 1 of 3 of an original fire creature line: a small round orange fire-cub with a tiny flame on its tail, big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Pyrolis","file":"creature_flammeche_2.png","prompt":"Game character sprite: 'Pyrolis', stage 2 of 3 of an original fire creature line: a taller fox-like creature with pointed ears and a long flaming tail. It is the evolution of 'Flammèche' (a small round orange fire-cub with a tiny flame on its tail, big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Infernyx","file":"creature_flammeche_3.png","prompt":"Game character sprite: 'Infernyx', stage 3 of 3 of an original fire creature line: a large majestic horned fox-dragon with a blazing mane and ember wings. It is the evolution of 'Pyrolis' (a taller fox-like creature with pointed ears and a long flaming tail); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/flammeche_1.webp","creatures/flammeche_2.webp","creatures/flammeche_3.webp"],"chips":["Fire"],"have":3},{"id":"line_plante","cat":"creature","title":"Bourgeon → Sylvanor → Ancestrel","note":"Faon à pousse qui devient cerf-arbre ancestral.","file":"line_plante.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original plant creature, drawn left to right with wide empty space between the three forms. Stage 1 'Bourgeon': a small moss-green sprout fawn with a leaf sprout on its head, big cute eyes. Stage 2 'Sylvanor': a taller forest stag with small leafy antlers, vines along its flanks and little flowers. Stage 3 'Ancestrel': a huge ancient tree-stag with a massive crown of mossy antlers bearing glowing amber blossoms, bark armor and root-like hooves. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Bourgeon","file":"creature_bourgeon_1.png","prompt":"Game character sprite: 'Bourgeon', stage 1 of 3 of an original plant creature line: a small moss-green sprout fawn with a leaf sprout on its head, big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Sylvanor","file":"creature_bourgeon_2.png","prompt":"Game character sprite: 'Sylvanor', stage 2 of 3 of an original plant creature line: a taller forest stag with small leafy antlers, vines along its flanks and little flowers. It is the evolution of 'Bourgeon' (a small moss-green sprout fawn with a leaf sprout on its head, big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Ancestrel","file":"creature_bourgeon_3.png","prompt":"Game character sprite: 'Ancestrel', stage 3 of 3 of an original plant creature line: a huge ancient tree-stag with a massive crown of mossy antlers bearing glowing amber blossoms, bark armor and root-like hooves. It is the evolution of 'Sylvanor' (a taller forest stag with small leafy antlers, vines along its flanks and little flowers); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/bourgeon_1.webp","creatures/bourgeon_2.webp","creatures/bourgeon_3.webp"],"chips":["Plant"],"have":3},{"id":"line_eau","cat":"creature","title":"Goutelle → Marélis → Léviathys","note":"Esprit des eaux qui devient léviathan à halo. (Le premier prompt avait été bloqué à tort par un filtre : celui-ci est reformulé.)","file":"line_eau.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original water creature, drawn left to right with wide empty space between the three forms. Stage 1 'Goutelle': a small round blue water-spirit creature with tiny fins and a glowing pearl on a short stalk, big cute eyes. Stage 2 'Marélis': a sleek sea-serpent with flowing translucent fins and a pearl on its forehead. Stage 3 'Léviathys': a majestic armored leviathan with a long body, huge crest fins, glowing cyan markings and a floating halo ring of water above its head. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Goutelle","file":"creature_goutelle_1.png","prompt":"Game character sprite: 'Goutelle', stage 1 of 3 of an original water creature line: a small round blue water-spirit creature with tiny fins and a glowing pearl on a short stalk, big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Marélis","file":"creature_goutelle_2.png","prompt":"Game character sprite: 'Marélis', stage 2 of 3 of an original water creature line: a sleek sea-serpent with flowing translucent fins and a pearl on its forehead. It is the evolution of 'Goutelle' (a small round blue water-spirit creature with tiny fins and a glowing pearl on a short stalk, big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Léviathys","file":"creature_goutelle_3.png","prompt":"Game character sprite: 'Léviathys', stage 3 of 3 of an original water creature line: a majestic armored leviathan with a long body, huge crest fins, glowing cyan markings and a floating halo ring of water above its head. It is the evolution of 'Marélis' (a sleek sea-serpent with flowing translucent fins and a pearl on its forehead); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/goutelle_1.webp","creatures/goutelle_2.webp","creatures/goutelle_3.webp"],"chips":["Water"],"have":3},{"id":"line_roche","cat":"creature","title":"Galet → Rochard → Titanor","note":"Golem-caillou qui devient titan de pierre et d'ambre.","file":"line_roche.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original rock creature, drawn left to right with wide empty space between the three forms. Stage 1 'Galet': a small grey-brown pebble golem with a round body, a tuft of moss on its head, stubby arms, big cute eyes. Stage 2 'Rochard': a boulder golem with broad shoulders and glowing amber crystal veins. Stage 3 'Titanor': a towering titan of stacked stone and large amber crystals, glowing eyes, mossy shoulders. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Galet","file":"creature_galet_1.png","prompt":"Game character sprite: 'Galet', stage 1 of 3 of an original rock creature line: a small grey-brown pebble golem with a round body, a tuft of moss on its head, stubby arms, big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Rochard","file":"creature_galet_2.png","prompt":"Game character sprite: 'Rochard', stage 2 of 3 of an original rock creature line: a boulder golem with broad shoulders and glowing amber crystal veins. It is the evolution of 'Galet' (a small grey-brown pebble golem with a round body, a tuft of moss on its head, stubby arms, big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Titanor","file":"creature_galet_3.png","prompt":"Game character sprite: 'Titanor', stage 3 of 3 of an original rock creature line: a towering titan of stacked stone and large amber crystals, glowing eyes, mossy shoulders. It is the evolution of 'Rochard' (a boulder golem with broad shoulders and glowing amber crystal veins); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/galet_1.webp","creatures/galet_2.webp","creatures/galet_3.webp"],"chips":["Rock"],"have":3},{"id":"line_foudre","cat":"creature","title":"Étincelle → Voltigeur → Fulgurion","note":"Chacal-électrique qui devient lion-tonnerre.","file":"line_foudre.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original electric creature, drawn left to right with wide empty space between the three forms. Stage 1 'Étincelle': a small yellow jackal-cub with big ears and a lightning-bolt shaped tail, big cute eyes. Stage 2 'Voltigeur': a sleek electric hound with a white mane crackling with small lightning arcs. Stage 3 'Fulgurion': a great thunder-lion with a storm-cloud mane, blazing lightning crackling around its body, sharp claws. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Étincelle","file":"creature_etincelle_1.png","prompt":"Game character sprite: 'Étincelle', stage 1 of 3 of an original electric creature line: a small yellow jackal-cub with big ears and a lightning-bolt shaped tail, big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Voltigeur","file":"creature_etincelle_2.png","prompt":"Game character sprite: 'Voltigeur', stage 2 of 3 of an original electric creature line: a sleek electric hound with a white mane crackling with small lightning arcs. It is the evolution of 'Étincelle' (a small yellow jackal-cub with big ears and a lightning-bolt shaped tail, big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Fulgurion","file":"creature_etincelle_3.png","prompt":"Game character sprite: 'Fulgurion', stage 3 of 3 of an original electric creature line: a great thunder-lion with a storm-cloud mane, blazing lightning crackling around its body, sharp claws. It is the evolution of 'Voltigeur' (a sleek electric hound with a white mane crackling with small lightning arcs); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/etincelle_1.webp","creatures/etincelle_2.webp","creatures/etincelle_3.webp"],"chips":["Electric"],"have":0},{"id":"line_ombre","cat":"creature","title":"Ombrelin → Spectreval → Nécrombre","note":"Petit spectre à capuche qui devient spectre ailé.","file":"line_ombre.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original shadow creature, drawn left to right with wide empty space between the three forms. Stage 1 'Ombrelin': a small hooded purple ghost wisp with glowing white eyes and a wispy tail instead of legs. Stage 2 'Spectreval': a taller spectral phantom with a flowing tattered cloak, small horns and glowing violet eyes. Stage 3 'Nécrombre': a great wraith with huge bat-like spectral wings, a cloak made of starry void, glowing eyes and floating shadow flames. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Ombrelin","file":"creature_ombrelin_1.png","prompt":"Game character sprite: 'Ombrelin', stage 1 of 3 of an original shadow creature line: a small hooded purple ghost wisp with glowing white eyes and a wispy tail instead of legs. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Spectreval","file":"creature_ombrelin_2.png","prompt":"Game character sprite: 'Spectreval', stage 2 of 3 of an original shadow creature line: a taller spectral phantom with a flowing tattered cloak, small horns and glowing violet eyes. It is the evolution of 'Ombrelin' (a small hooded purple ghost wisp with glowing white eyes and a wispy tail instead of legs); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Nécrombre","file":"creature_ombrelin_3.png","prompt":"Game character sprite: 'Nécrombre', stage 3 of 3 of an original shadow creature line: a great wraith with huge bat-like spectral wings, a cloak made of starry void, glowing eyes and floating shadow flames. It is the evolution of 'Spectreval' (a taller spectral phantom with a flowing tattered cloak, small horns and glowing violet eyes); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/ombrelin_1.webp","creatures/ombrelin_2.webp","creatures/ombrelin_3.webp"],"chips":["Shadow"],"have":0},{"id":"line_champi","cat":"creature","title":"Mycelor → Sporifère → Myconide-roi","note":"Champignon lumineux qui devient roi-champignon couronné.","file":"line_champi.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original mushroom creature, drawn left to right with wide empty space between the three forms. Stage 1 'Mycelor': a small teal glowing mushroom creature with a spotted cap, a white stem, tiny feet and big cute eyes. Stage 2 'Sporifère': a taller mushroom creature with leaf-like arms, several glowing spotted caps and floating spores. Stage 3 'Myconide-roi': a mushroom king with a huge glowing cap like a crown, hanging bioluminescent spores, a mossy beard and glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Mycelor","file":"creature_mycelor_1.png","prompt":"Game character sprite: 'Mycelor', stage 1 of 3 of an original mushroom creature line: a small teal glowing mushroom creature with a spotted cap, a white stem, tiny feet and big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Sporifère","file":"creature_mycelor_2.png","prompt":"Game character sprite: 'Sporifère', stage 2 of 3 of an original mushroom creature line: a taller mushroom creature with leaf-like arms, several glowing spotted caps and floating spores. It is the evolution of 'Mycelor' (a small teal glowing mushroom creature with a spotted cap, a white stem, tiny feet and big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Myconide-roi","file":"creature_mycelor_3.png","prompt":"Game character sprite: 'Myconide-roi', stage 3 of 3 of an original mushroom creature line: a mushroom king with a huge glowing cap like a crown, hanging bioluminescent spores, a mossy beard and glowing eyes. It is the evolution of 'Sporifère' (a taller mushroom creature with leaf-like arms, several glowing spotted caps and floating spores); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/mycelor_1.webp","creatures/mycelor_2.webp","creatures/mycelor_3.webp"],"chips":["Mushroom"],"have":0},{"id":"line_carapix","cat":"creature","title":"Carapix → Carapace → Bastiodon","note":"Crabe-tortue bleu qui devient forteresse à cristaux.","file":"line_carapix.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original water crab-turtle creature, drawn left to right with wide empty space between the three forms. Stage 1 'Carapix': a small blue crab-turtle with a round shell, tiny claws and big cute eyes. Stage 2 'Carapace': an armored crab-turtle with a spiked shell and larger claws. Stage 3 'Bastiodon': a fortress-shell titan crab-turtle with glowing cyan crystal spires on its shell, heavy armored claws. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Carapix","file":"creature_carapix_1.png","prompt":"Game character sprite: 'Carapix', stage 1 of 3 of an original water crab-turtle creature line: a small blue crab-turtle with a round shell, tiny claws and big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Carapace","file":"creature_carapix_2.png","prompt":"Game character sprite: 'Carapace', stage 2 of 3 of an original water crab-turtle creature line: an armored crab-turtle with a spiked shell and larger claws. It is the evolution of 'Carapix' (a small blue crab-turtle with a round shell, tiny claws and big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Bastiodon","file":"creature_carapix_3.png","prompt":"Game character sprite: 'Bastiodon', stage 3 of 3 of an original water crab-turtle creature line: a fortress-shell titan crab-turtle with glowing cyan crystal spires on its shell, heavy armored claws. It is the evolution of 'Carapace' (an armored crab-turtle with a spiked shell and larger claws); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/carapix_1.webp","creatures/carapix_2.webp","creatures/carapix_3.webp"],"chips":["Water crab-turtle"],"have":3},{"id":"line_salamandre","cat":"creature","title":"Salamandre → Pyroscail → Drakéon","note":"Salamandre de feu qui devient drake ailé.","file":"line_salamandre.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original fire salamander creature, drawn left to right with wide empty space between the three forms. Stage 1 'Salamandre': a small orange fire salamander with a flame at the tip of its tail, big cute eyes, on four short legs. Stage 2 'Pyroscail': a longer salamander with small horns and spikes along its back and flames on its shoulders. Stage 3 'Drakéon': a winged fire drake with a flaming mane, big horns, ember wings and glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Salamandre","file":"creature_salamandre_1.png","prompt":"Game character sprite: 'Salamandre', stage 1 of 3 of an original fire salamander creature line: a small orange fire salamander with a flame at the tip of its tail, big cute eyes, on four short legs. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Pyroscail","file":"creature_salamandre_2.png","prompt":"Game character sprite: 'Pyroscail', stage 2 of 3 of an original fire salamander creature line: a longer salamander with small horns and spikes along its back and flames on its shoulders. It is the evolution of 'Salamandre' (a small orange fire salamander with a flame at the tip of its tail, big cute eyes, on four short legs); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Drakéon","file":"creature_salamandre_3.png","prompt":"Game character sprite: 'Drakéon', stage 3 of 3 of an original fire salamander creature line: a winged fire drake with a flaming mane, big horns, ember wings and glowing eyes. It is the evolution of 'Pyroscail' (a longer salamander with small horns and spikes along its back and flames on its shoulders); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/salamandre_1.webp","creatures/salamandre_2.webp","creatures/salamandre_3.webp"],"chips":["Fire salamander"],"have":0},{"id":"line_cristal","cat":"creature","title":"Cristallon → Golem de quartz → Colosse prismatique","note":"Golem de cristal violet qui devient colosse prismatique.","file":"line_cristal.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original crystal golem creature, drawn left to right with wide empty space between the three forms. Stage 1 'Cristallon': a small purple crystal golem with quartz spikes on its back, stubby limbs and big cute glowing eyes. Stage 2 'Golem de quartz': a bigger quartz golem with glowing golden cracks and sharp crystal shoulders. Stage 3 'Colosse prismatique': a prismatic colossus with a halo of floating crystals, rainbow light refracting through its body, towering and imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Cristallon","file":"creature_cristallon_1.png","prompt":"Game character sprite: 'Cristallon', stage 1 of 3 of an original crystal golem creature line: a small purple crystal golem with quartz spikes on its back, stubby limbs and big cute glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Golem de quartz","file":"creature_cristallon_2.png","prompt":"Game character sprite: 'Golem de quartz', stage 2 of 3 of an original crystal golem creature line: a bigger quartz golem with glowing golden cracks and sharp crystal shoulders. It is the evolution of 'Cristallon' (a small purple crystal golem with quartz spikes on its back, stubby limbs and big cute glowing eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Colosse prismatique","file":"creature_cristallon_3.png","prompt":"Game character sprite: 'Colosse prismatique', stage 3 of 3 of an original crystal golem creature line: a prismatic colossus with a halo of floating crystals, rainbow light refracting through its body, towering and imposing. It is the evolution of 'Golem de quartz' (a bigger quartz golem with glowing golden cracks and sharp crystal shoulders); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/cristallon_1.webp","creatures/cristallon_2.webp","creatures/cristallon_3.webp"],"chips":["Crystal golem"],"have":0},{"id":"line_griffon","cat":"creature","title":"Griffonerre → Tonnegriffe → Roi-tempête","note":"Oisillon-griffon qui devient roi de la tempête.","file":"line_griffon.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original electric griffin creature, drawn left to right with wide empty space between the three forms. Stage 1 'Griffonerre': a young yellow griffin chick with small wings, a lightning bolt marking on its chest and big cute eyes. Stage 2 'Tonnegriffe': a griffin with curved horns, bigger wings and crackling electricity along its feathers. Stage 3 'Roi-tempête': a storm-king griffin with huge outspread wings, a crown-like halo of lightning, sharp talons and glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Griffonerre","file":"creature_griffon_1.png","prompt":"Game character sprite: 'Griffonerre', stage 1 of 3 of an original electric griffin creature line: a young yellow griffin chick with small wings, a lightning bolt marking on its chest and big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Tonnegriffe","file":"creature_griffon_2.png","prompt":"Game character sprite: 'Tonnegriffe', stage 2 of 3 of an original electric griffin creature line: a griffin with curved horns, bigger wings and crackling electricity along its feathers. It is the evolution of 'Griffonerre' (a young yellow griffin chick with small wings, a lightning bolt marking on its chest and big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Roi-tempête","file":"creature_griffon_3.png","prompt":"Game character sprite: 'Roi-tempête', stage 3 of 3 of an original electric griffin creature line: a storm-king griffin with huge outspread wings, a crown-like halo of lightning, sharp talons and glowing eyes. It is the evolution of 'Tonnegriffe' (a griffin with curved horns, bigger wings and crackling electricity along its feathers); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/griffon_1.webp","creatures/griffon_2.webp","creatures/griffon_3.webp"],"chips":["Electric griffin"],"have":0},{"id":"line_faucheur","cat":"creature","title":"Faucheur → Sombrelame → Moissonneur","note":"Petit faucheur d'ombre qui devient moissonneur ailé.","file":"line_faucheur.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original shadow reaper creature, drawn left to right with wide empty space between the three forms. Stage 1 'Faucheur': a small hooded shadow imp with glowing eyes carrying a tiny scythe, big cute eyes. Stage 2 'Sombrelame': a taller reaper with a tattered cloak and a bigger curved scythe. Stage 3 'Moissonneur': a grim harvester with bat-like wings, a huge glowing scythe, a halo of dark violet light and glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Faucheur","file":"creature_faucheur_1.png","prompt":"Game character sprite: 'Faucheur', stage 1 of 3 of an original shadow reaper creature line: a small hooded shadow imp with glowing eyes carrying a tiny scythe, big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Sombrelame","file":"creature_faucheur_2.png","prompt":"Game character sprite: 'Sombrelame', stage 2 of 3 of an original shadow reaper creature line: a taller reaper with a tattered cloak and a bigger curved scythe. It is the evolution of 'Faucheur' (a small hooded shadow imp with glowing eyes carrying a tiny scythe, big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Moissonneur","file":"creature_faucheur_3.png","prompt":"Game character sprite: 'Moissonneur', stage 3 of 3 of an original shadow reaper creature line: a grim harvester with bat-like wings, a huge glowing scythe, a halo of dark violet light and glowing eyes. It is the evolution of 'Sombrelame' (a taller reaper with a tattered cloak and a bigger curved scythe); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/faucheur_1.webp","creatures/faucheur_2.webp","creatures/faucheur_3.webp"],"chips":["Shadow reaper"],"have":0},{"id":"line_phenix","cat":"creature","title":"Phénix → Phénix ardent → Phénix solaire","note":"Poussin de braise qui devient phénix solaire.","file":"line_phenix.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original fire bird creature, drawn left to right with wide empty space between the three forms. Stage 1 'Phénix': a small round fire chick with ember feathers, a tiny flame crest and big cute eyes. Stage 2 'Phénix ardent': a graceful fire bird with long flaming tail feathers and blazing wings. Stage 3 'Phénix solaire': a majestic solar phoenix with enormous outspread wings of golden fire, a burning sun-halo behind its head and glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Phénix","file":"creature_phenix_1.png","prompt":"Game character sprite: 'Phénix', stage 1 of 3 of an original fire bird creature line: a small round fire chick with ember feathers, a tiny flame crest and big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Phénix ardent","file":"creature_phenix_2.png","prompt":"Game character sprite: 'Phénix ardent', stage 2 of 3 of an original fire bird creature line: a graceful fire bird with long flaming tail feathers and blazing wings. It is the evolution of 'Phénix' (a small round fire chick with ember feathers, a tiny flame crest and big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Phénix solaire","file":"creature_phenix_3.png","prompt":"Game character sprite: 'Phénix solaire', stage 3 of 3 of an original fire bird creature line: a majestic solar phoenix with enormous outspread wings of golden fire, a burning sun-halo behind its head and glowing eyes. It is the evolution of 'Phénix ardent' (a graceful fire bird with long flaming tail feathers and blazing wings); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/phenix_1.webp","creatures/phenix_2.webp","creatures/phenix_3.webp"],"chips":["Fire bird"],"have":0},{"id":"line_hydre","cat":"creature","title":"Hydrelle → Hydre → Hydre des abysses","note":"Serpent des mers à 1, 2 puis 3 têtes.","file":"line_hydre.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original water hydra creature, drawn left to right with wide empty space between the three forms. Stage 1 'Hydrelle': a small blue sea-serpent with ONE head, little fins and big cute eyes. Stage 2 'Hydre': a bigger serpent with TWO heads and flowing fins. Stage 3 'Hydre des abysses': a huge abyssal hydra with THREE heads, glowing teal eyes, crystal spikes along its back and armored scales. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Hydrelle","file":"creature_hydrelle_1.png","prompt":"Game character sprite: 'Hydrelle', stage 1 of 3 of an original water hydra creature line: a small blue sea-serpent with ONE head, little fins and big cute eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Hydre","file":"creature_hydrelle_2.png","prompt":"Game character sprite: 'Hydre', stage 2 of 3 of an original water hydra creature line: a bigger serpent with TWO heads and flowing fins. It is the evolution of 'Hydrelle' (a small blue sea-serpent with ONE head, little fins and big cute eyes); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Hydre des abysses","file":"creature_hydrelle_3.png","prompt":"Game character sprite: 'Hydre des abysses', stage 3 of 3 of an original water hydra creature line: a huge abyssal hydra with THREE heads, glowing teal eyes, crystal spikes along its back and armored scales. It is the evolution of 'Hydre' (a bigger serpent with TWO heads and flowing fins); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/hydrelle_1.webp","creatures/hydrelle_2.webp","creatures/hydrelle_3.webp"],"chips":["Water hydra"],"have":0},{"id":"line_dryade","cat":"creature","title":"Dryade → Dryade sylvestre → Reine des bois","note":"Petite dryade qui devient reine des bois.","file":"line_dryade.png","ratio":"3:1","size":"2880 × 960 (largeur ≥ 2000 px)","bg":"white","prompt":"Game asset sheet: the three-stage evolution line of an original plant dryad creature, drawn left to right with wide empty space between the three forms. Stage 1 'Dryade': a small green forest sprite girl with leaf hair and big cute eyes, bare feet. Stage 2 'Dryade sylvestre': a taller dryad in a bark dress with flowers in her hair and vines wrapped around her arms. Stage 3 'Reine des bois': a queen of the woods with a crown of living branches and glowing blossoms, wings made of leaves, a staff, glowing eyes. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature designs for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, all standing at the same ground level (do NOT draw any line under them), with wide empty space between the forms. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","variants":[{"label":"Forme 1 — Dryade","file":"creature_dryade_1.png","prompt":"Game character sprite: 'Dryade', stage 1 of 3 of an original plant dryad creature line: a small green forest sprite girl with leaf hair and big cute eyes, bare feet. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 2 — Dryade sylvestre","file":"creature_dryade_2.png","prompt":"Game character sprite: 'Dryade sylvestre', stage 2 of 3 of an original plant dryad creature line: a taller dryad in a bark dress with flowers in her hair and vines wrapped around her arms. It is the evolution of 'Dryade' (a small green forest sprite girl with leaf hair and big cute eyes, bare feet); keep the same colors and design language, but taller and more elegant. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."},{"label":"Forme 3 — Reine des bois","file":"creature_dryade_3.png","prompt":"Game character sprite: 'Reine des bois', stage 3 of 3 of an original plant dryad creature line: a queen of the woods with a crown of living branches and glowing blossoms, wings made of leaves, a staff, glowing eyes. It is the evolution of 'Dryade sylvestre' (a taller dryad in a bark dress with flowers in her hair and vines wrapped around her arms); keep the same colors and design language, but much larger and more imposing. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Original creature design for a Pokémon-like monster collecting game. Three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI."}],"previews":["creatures/dryade_1.webp","creatures/dryade_2.webp","creatures/dryade_3.webp"],"chips":["Plant dryad"],"have":0},{"id":"monster_loup","cat":"monster","title":"Loup d'ombre","note":"Arène 1 · type Ombre","file":"monster_loup.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a sinister wolf made of shadow, spiked mane, glowing red eyes, snarling, prowling pose. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/loup.webp"],"have":0},{"id":"monster_champi","cat":"monster","title":"Champignon vénéneux","note":"Arène 1 · type Plante","file":"monster_champi.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a poisonous purple mushroom monster with an angry face, toxic pink spores and a mean squat stance. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/champi.webp"],"have":0},{"id":"monster_golem","cat":"monster","title":"Golem de cristal","note":"Arène 2 · type Roche","file":"monster_golem.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a huge crystal golem of dark violet stone with golden crystal growths on its shoulders and back, glowing eyes, heavy fists. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/golem.webp"],"have":0},{"id":"monster_araignee","cat":"monster","title":"Araignée-éclair","note":"Arène 2 · type Foudre","file":"monster_araignee.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a giant electric spider with yellow lightning markings on its abdomen, glowing yellow eyes, long sharp legs. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/araignee.webp"],"have":0},{"id":"monster_hydre","cat":"monster","title":"Hydre des marées","note":"Arène 3 · type Eau","file":"monster_hydre.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a tidal hydra with three heads, dark midnight-blue scales, glowing turquoise eyes, fin crests, coiled body. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/hydre.webp"],"have":0},{"id":"monster_crabe","cat":"monster","title":"Crabe-titan","note":"Arène 3 · type Eau","file":"monster_crabe.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a massive armored crab with a red-brown spiked shell, huge claws, barnacles and glowing orange eyes. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/crabe.webp"],"have":0},{"id":"monster_dragonnet","cat":"monster","title":"Dragonnet des cendres","note":"Arène 4 · type Feu","file":"monster_dragonnet.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a small ember dragon with dark red scales, glowing ember wings, curved horns and smoke from its nostrils. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/dragonnet.webp"],"have":0},{"id":"monster_dragon","cat":"monster","title":"Vermithrax, Dragon des marais","note":"Boss final · type Ombre — format 16:9 conseillé","file":"monster_dragon.png","ratio":"16:9","size":"2048 × 1152","bg":"white","prompt":"Game enemy sprite for a dark-fantasy auto-battler: a gigantic swamp dragon boss with mossy green-black scales, glowing acid-green eyes, huge tattered wings, long curved horns, a spiked tail and dripping slime, imposing and terrifying. Menacing silhouette, three-quarter isometric angle, facing right, full body with feet visible, centered with generous empty margin. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["monsters/dragon.webp"],"have":0},{"id":"building_townhall","cat":"building","title":"Hôtel de ville","note":"Se pose sur une case hexagonale.","file":"building_townhall.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a grand town hall of a dark-fantasy kingdom, a stone and timber hall with a tall slender clock tower topped by a teal-tiled spire, glowing amber lanterns and warm lit windows, a golden banner and small stone steps, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/townhall.webp"],"have":1},{"id":"building_colosseum","cat":"building","title":"Colisée","note":"Se pose sur une case hexagonale.","file":"building_colosseum.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a round stone arena colosseum with tiers of arches, red banners on poles, and glowing green sand visible inside, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/colosseum.webp"],"have":1},{"id":"building_house","cat":"building","title":"Maison","note":"Se pose sur une case hexagonale.","file":"building_house.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a cozy cottage with a red clay roof, warm lit windows, a chimney with a thin curl of smoke and a flower box, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/house.webp"],"have":0},{"id":"building_farm","cat":"building","title":"Ferme","note":"Se pose sur une case hexagonale.","file":"building_farm.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a small farm: a square field of golden wheat in rows, a little red barn, a haystack and a scarecrow, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/farm.webp"],"have":0},{"id":"building_lumber","cat":"building","title":"Scierie","note":"Se pose sur une case hexagonale.","file":"building_lumber.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a lumber mill: a timber shed with a big saw, stacks of cut logs, a log pile and an axe in a stump, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/lumber.webp"],"have":0},{"id":"building_quarry","cat":"building","title":"Carrière","note":"Se pose sur une case hexagonale.","file":"building_quarry.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a stone quarry: a pit cut into grey rock, a wooden crane with a pulley, neatly cut stone blocks and a wheelbarrow, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/quarry.webp"],"have":0},{"id":"building_mine","cat":"building","title":"Mine","note":"Se pose sur une case hexagonale.","file":"building_mine.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a mine entrance in a rocky hillside, timber supports, a mine cart full of glowing amber ore, a hanging lantern and rails, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/mine.webp"],"have":0},{"id":"building_port","cat":"building","title":"Port","note":"Le ponton doit s'avancer vers la DROITE (le jeu retourne l'image selon le côté de l'eau).","file":"building_port.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a harbor: a wooden pier extending to the right side, a small warehouse, crates and barrels, a lantern, and a small sailing ship moored at the end of the pier, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/port.webp"],"have":0},{"id":"building_market","cat":"building","title":"Marché","note":"Se pose sur une case hexagonale.","file":"building_market.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a market with three colorful striped-awning stalls, crates of fruit and fabrics, hanging lanterns and a small signpost, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/market.webp"],"have":0},{"id":"building_auction","cat":"building","title":"Hôtel des ventes","note":"Se pose sur une case hexagonale.","file":"building_auction.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a grand auction house with a golden dome, marble columns, a gavel sign, treasure chests at the entrance and rich banners, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/auction.webp"],"have":0},{"id":"building_tavern","cat":"building","title":"Taverne","note":"Se pose sur une case hexagonale.","file":"building_tavern.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a tavern with a hanging mug sign, warm glowing windows, barrels by the door, a timber frame and a steep tiled roof, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/tavern.webp"],"have":0},{"id":"building_barracks","cat":"building","title":"Caserne","note":"Se pose sur une case hexagonale.","file":"building_barracks.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a military barracks with a stone watchtower, red banners, a weapon rack and a straw training dummy, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/barracks.webp"],"have":0},{"id":"building_forge","cat":"building","title":"Forge","note":"Se pose sur une case hexagonale.","file":"building_forge.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a blacksmith forge with a glowing orange furnace, a tall chimney throwing sparks, an anvil, a hammer and a water barrel, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/forge.webp"],"have":0},{"id":"building_shrine","cat":"building","title":"Sanctuaire","note":"Se pose sur une case hexagonale.","file":"building_shrine.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: an ancient mossy stone shrine: a tall glowing green crystal obelisk surrounded by a circle of standing stones, a pillar of light rising from it, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/shrine.webp"],"have":1},{"id":"building_academy","cat":"building","title":"Académie","note":"Se pose sur une case hexagonale.","file":"building_academy.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a wizard academy: a tall round tower with arched windows, a glowing blue orb on its spire, stacks of books and a banner, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/academy.webp"],"have":0},{"id":"building_menagerie","cat":"building","title":"Ménagerie","note":"Se pose sur une case hexagonale.","file":"building_menagerie.png","ratio":"1:1","size":"2048 × 2048","bg":"white","prompt":"Isometric game building asset: a wooden creature pen: a fenced enclosure with hay, feeding troughs, a small tent and hanging lanterns, sitting on a small flat stone base about the size of one hexagonal tile. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Seen from a high three-quarter isometric angle (about 35° elevation, like the buildings in Hades and Bastion), centered, the whole building fits in the frame with generous empty margin. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["buildings/menagerie.webp"],"have":0},{"id":"props_trees","cat":"prop","title":"Arbres","note":"6 arbres pour les forêts (3 conifères, 3 feuillus). Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_trees.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 6 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: six different trees: three tall dark pine trees with teal-green needles and glowing moss, and three round broadleaf trees with purple-teal foliage and twisted trunks. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/tree_1.webp","props/tree_2.webp","props/tree_3.webp","props/tree_4.webp","props/tree_5.webp","props/tree_6.webp"],"chips":["6 objets"],"have":1},{"id":"props_mushrooms","cat":"prop","title":"Champignons géants","note":"6 champignons lumineux pour les bosquets. Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_mushrooms.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 6 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: six giant bioluminescent mushrooms of different heights and shapes (teal, green and violet glowing caps with spots), the last one being a small cluster of three. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/mushroom_1.webp","props/mushroom_2.webp","props/mushroom_3.webp","props/mushroom_4.webp","props/mushroom_5.webp","props/mushroom_6.webp"],"chips":["6 objets"],"have":0},{"id":"props_crystals","cat":"prop","title":"Cristaux et roches","note":"3 amas de cristaux d'ambre, 2 rochers, 1 filon d'or. Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_crystals.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 6 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: six objects: three clusters of glowing amber crystals of different sizes, two mossy grey boulders, and one dark rock with veins of shining gold ore. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/crystal_1.webp","props/crystal_2.webp","props/crystal_3.webp","props/rock_1.webp","props/rock_2.webp","props/ore_1.webp"],"chips":["6 objets"],"have":0},{"id":"props_mountains","cat":"prop","title":"Montagnes","note":"4 pics rocheux (l'un avec un sommet enneigé). Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_mountains.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 4 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: four different rocky mountain peaks in blue-grey stone with sharp ridges, two of them with snowy tops, tiny glints of gold ore. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/mountain_1.webp","props/mountain_2.webp","props/mountain_3.webp","props/mountain_4.webp"],"chips":["4 objets"],"have":4},{"id":"props_hills","cat":"prop","title":"Collines","note":"3 collines herbeuses. Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_hills.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 3 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: three rolling grassy hills with tufts of grass, small flowers and a few embedded stones, seen as low rounded mounds. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/hill_1.webp","props/hill_2.webp","props/hill_3.webp"],"chips":["3 objets"],"have":3},{"id":"props_flora","cat":"prop","title":"Buissons et fleurs","note":"3 buissons, 2 parterres de fleurs pour les prairies. Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_flora.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 5 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: five small vegetation props: three leafy bushes of different shapes, and two patches of small blue and yellow wildflowers. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/bush_1.webp","props/bush_2.webp","props/bush_3.webp","props/flowers_1.webp","props/flowers_2.webp"],"chips":["5 objets"],"have":2},{"id":"props_ruins","cat":"prop","title":"Ruines, repaire, menhirs","note":"2 ruines (colonnes, arche), 1 entrée de repaire, 1 cercle de menhirs. Découpage automatique : les objets doivent être bien séparés par du blanc.","file":"props_ruins.png","ratio":"16:9","size":"2880 × 1620","bg":"white","prompt":"Game asset sheet of 4 separate environment props for an isometric hex-tile strategy game, arranged in a loose row with wide empty white space between every object so they can be cut out: four objects: two ancient ruins (a few broken marble columns overgrown with moss; a half-collapsed arch), one dark cave mouth in a mossy rock with a faint red glow inside, and a small circle of standing stones. All seen from the same high three-quarter isometric angle, each standing on its own tiny patch of ground, similar scale. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Plain pure white background (#FFFFFF), no ground, no ground line, no floor line, no horizon line, no cast shadow, no text, no labels, no watermark, no UI.","previews":["props/ruins_1.webp","props/ruins_2.webp","props/lair_1.webp","props/stones_1.webp"],"chips":["4 objets"],"have":4},{"id":"terrain_plains","cat":"terrain","title":"Prairie","note":"Herbe vive, fleurs minuscules.","file":"terrain_plains.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: lush deep-green meadow grass with tiny blue and yellow flowers and darker brush strokes. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/plains.webp"],"have":1},{"id":"terrain_forest","cat":"terrain","title":"Forêt","note":"Sous-bois sombre.","file":"terrain_forest.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: dark forest floor with fallen pine needles, moss patches and tiny roots, deep green and brown. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/forest.webp"],"have":1},{"id":"terrain_grove","cat":"terrain","title":"Bosquet lumineux","note":"Mousse luminescente.","file":"terrain_grove.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: glowing teal bioluminescent moss with scattered luminous spores and tiny mushrooms. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/grove.webp"],"have":1},{"id":"terrain_hills","cat":"terrain","title":"Collines","note":"Herbe sèche et cailloux.","file":"terrain_hills.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: grassy earth with dry olive-green grass, pebbles and small patches of bare soil. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/hills.webp"],"have":1},{"id":"terrain_mountain","cat":"terrain","title":"Montagne","note":"Roche bleu-gris.","file":"terrain_mountain.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: cracked blue-grey mountain rock with lighter ridges, faint frost and a few tiny gold glints. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/mountain.webp"],"have":1},{"id":"terrain_beach","cat":"terrain","title":"Grève","note":"Sable pâle et galets.","file":"terrain_beach.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: pale sand with scattered pebbles, shell fragments and soft ripple marks. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/beach.webp"],"have":1},{"id":"terrain_shallow","cat":"terrain","title":"Eaux peu profondes","note":"Eau turquoise, caustiques.","file":"terrain_shallow.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: turquoise shallow water with luminous caustic light patterns and a sandy bottom showing through. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/shallow.webp"],"have":1},{"id":"terrain_ocean","cat":"terrain","title":"Océan","note":"Eau profonde sombre.","file":"terrain_ocean.png","ratio":"1:1","size":"1024 × 1024","bg":"full","prompt":"Seamless-style top-down hand-painted ground texture for a video game: deep dark teal ocean water with subtle wave highlights and faint foam streaks. Flat top-down view filling the whole square image edge to edge, no horizon, no perspective, no objects larger than a pebble, no characters, no text. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["terrain/ocean.webp"],"have":1},{"id":"arena_marsh","cat":"arena","title":"Marais violet (arène 1)","note":"Crépuscule, arbres violets, lanternes orange.","file":"arena_marsh.png","ratio":"16:9","size":"2560 × 1440","bg":"full","prompt":"Environment concept painting for an auto-battler arena: an ancient ruined stone courtyard at twilight: crumbling stone walls with arches in the back, giant twisted trees with glowing purple-magenta foliage framing the left and right, warm orange lanterns on posts, glowing teal mushrooms and amber crystals around the edges, hanging red banners, drifting fog and soft god rays. High three-quarter isometric camera (about 45° from above). In the CENTER, a large completely EMPTY flat circular stone-paved arena floor occupying roughly the middle 60% of the image width (no characters, no objects, no UI on the floor). The surrounding decor frames the edges and the top. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Full-bleed image, no text, no UI, no watermark.","previews":["arena/marsh.webp"],"have":1},{"id":"arena_cave","cat":"arena","title":"Grotte de cristal (arène 2)","note":"Voûte rocheuse, cristaux ambre et violets.","file":"arena_cave.png","ratio":"16:9","size":"2560 × 1440","bg":"full","prompt":"Environment concept painting for an auto-battler arena: a vast underground crystal cavern: a rocky vaulted ceiling with stalactites, large glowing amber and violet crystal formations around the edges, faint violet mist, small glowing mushrooms and warm lanterns. High three-quarter isometric camera (about 45° from above). In the CENTER, a large completely EMPTY flat circular stone-paved arena floor occupying roughly the middle 60% of the image width (no characters, no objects, no UI on the floor). The surrounding decor frames the edges and the top. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Full-bleed image, no text, no UI, no watermark.","previews":["arena/cave.webp"],"have":1},{"id":"arena_sea","cat":"arena","title":"Falaise marine (arène 3)","note":"Nuit, mer et lune, torches turquoise.","file":"arena_sea.png","ratio":"16:9","size":"2560 × 1440","bg":"full","prompt":"Environment concept painting for an auto-battler arena: a stone arena on a seaside cliff at night: a moonlit ocean with gentle waves in the back, broken marble pillars, pine trees on the sides, glowing cyan crystals and turquoise torches, sea mist. High three-quarter isometric camera (about 45° from above). In the CENTER, a large completely EMPTY flat circular stone-paved arena floor occupying roughly the middle 60% of the image width (no characters, no objects, no UI on the floor). The surrounding decor frames the edges and the top. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Full-bleed image, no text, no UI, no watermark.","previews":["arena/sea.webp"],"have":1},{"id":"arena_lair","cat":"arena","title":"Antre du dragon (arène 4)","note":"Marais sombre, lave et squelette.","file":"arena_lair.png","ratio":"16:9","size":"2560 × 1440","bg":"full","prompt":"Environment concept painting for an auto-battler arena: a dragon's swamp lair: dead black trees, a green-black foggy swamp in the back with a red-orange glow on the horizon, a gigantic skeleton rib cage on one side, cracks of glowing lava, bones and eerie lime-green mist. High three-quarter isometric camera (about 45° from above). In the CENTER, a large completely EMPTY flat circular stone-paved arena floor occupying roughly the middle 60% of the image width (no characters, no objects, no UI on the floor). The surrounding decor frames the edges and the top. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. Full-bleed image, no text, no UI, no watermark.","previews":["arena/lair.webp"],"have":1},{"id":"event_mushrooms","cat":"event","title":"Le Cercle des fées","note":"Événement « Cercle des fées » et « Source de jouvence ».","file":"event_mushrooms.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a clearing in a dark forest with a ring of giant glowing teal mushrooms each as tall as a bear, green spores drifting like a glowing tide; in the center a narrow glowing crack in the ground floating above a hoard of amber gems, with a tall glowing crystal spike on the left. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/mushrooms.webp"],"have":1},{"id":"event_caravan","cat":"event","title":"Caravane du Couchant","note":"Marchands.","file":"event_caravan.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a merchant caravan camped at dusk next to a stone road: wagons with striped awnings, amber lanterns, crates and fabrics, a campfire and mysterious artifacts on display. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/caravan.webp"],"have":0},{"id":"event_shipwreck","cat":"event","title":"Épave sur la grève","note":"Naufrage.","file":"event_shipwreck.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a broken merchant ship washed up on a moonlit beach, torn sails, crates spilling from the hull, foamy waves and glowing jellyfish lights in the water. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/shipwreck.webp"],"have":0},{"id":"event_egg","cat":"event","title":"L'Œuf mystérieux","note":"Un nid et un œuf.","file":"event_egg.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a woven nest of branches in a mossy hollow holding a large warm egg veined with shifting glowing patterns, with tiny cracks, fireflies and soft light. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/egg.webp"],"have":0},{"id":"event_hatch","cat":"event","title":"Éclosion","note":"Fond de l'éclosion : nid VIDE avec coquille brisée (la créature est dessinée par-dessus par le jeu).","file":"event_hatch.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: the same mossy nest after hatching: a broken eggshell in pieces, the center of the nest EMPTY and bathed in a warm golden-green light, floating sparkles and fireflies (leave the center free: a creature will be drawn there by the game). Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/hatch.webp"],"have":0},{"id":"event_stars","cat":"event","title":"Pluie d'étoiles","note":"Météores.","file":"event_stars.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a night sky torn by golden shooting stars, with amber meteor fragments glowing in a dark field below, a feeling of wonder. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/stars.webp"],"have":0},{"id":"event_altar","cat":"event","title":"Autel d'ombre","note":"Pierre noire, runes violettes.","file":"event_altar.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a black stone altar carved with glowing violet runes in a dark chamber, a violet flame above it, twisted roots and an ominous whispering atmosphere. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/altar.webp"],"have":0},{"id":"event_village","cat":"event","title":"Fête des moissons","note":"Village en fête.","file":"event_village.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a cozy hex-kingdom village during a harvest festival at dusk: lanterns strung between timber houses, long tables of food, villagers in silhouette dancing, warm light. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/village.webp"],"have":0},{"id":"event_camp","cat":"event","title":"Forgeron itinérant / Dresseur","note":"Campement.","file":"event_camp.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a travelling dwarf blacksmith's camp beside a road: a portable anvil, a glowing forge, a campfire, hammers, a squat bearded smith in silhouette and a weapon rack. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/camp.webp"],"have":0},{"id":"event_ruins","cat":"event","title":"Ruines englouties","note":"Bibliothèque, tombeau, campement abandonné.","file":"event_ruins.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: sunken ancient library ruins: broken columns, a mossy arch, floating glowing books in beams of moonlight, vines and mist. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/ruins.webp"],"have":0},{"id":"event_lair","cat":"event","title":"Repaire de créature","note":"Entrée de grotte VIDE (la créature est dessinée par-dessus par le jeu).","file":"event_lair.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a shadowy cave mouth in a forest with a faint red-orange glow inside, pine trees on both sides, the dark cave entrance in the center left EMPTY so a creature can be drawn in front of it by the game. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/lair.webp"],"have":0},{"id":"event_victory","cat":"event","title":"Victoire","note":"Foule en liesse.","file":"event_victory.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a packed arena crowd cheering with red banners and torches, golden light streaming onto the empty sand in the center where a cluster of amber crystals glows. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/victory.webp"],"have":0},{"id":"event_defeat","cat":"event","title":"Défaite","note":"Bannières tombées sous la pluie.","file":"event_defeat.png","ratio":"3:2","size":"1800 × 1200","bg":"full","prompt":"Painterly illustration for a story event card in a dark-fantasy strategy game: a fallen banner and broken weapons on arena sand in the rain, torn red banners, a dim ember glow and a melancholy mood. Wide 3:2 composition, atmospheric, strong focal point, soft vignette, no text, no UI, no watermark. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents.","previews":["events/defeat.webp"],"have":0},{"id":"title_bg","cat":"title","title":"Illustration de l'écran titre","note":"Remplace l'île de démonstration derrière le logo (laisser le centre un peu dégagé).","file":"title_bg.png","ratio":"16:9","size":"2560 × 1440","bg":"full","prompt":"Key art for the title screen of a dark-fantasy hex-kingdom strategy game: a floating hexagonal island kingdom at dusk, tiny timber houses and a tall clock tower, a glowing bioluminescent mushroom forest, amber crystal outcrops, a distant round colosseum, small silhouettes of fantastical creatures flying in the sky, fog and god rays. Wide cinematic 16:9 composition with a calmer, darker area in the center where a logo will be placed. Hand-painted 2D video-game illustration in the style of Hades and Bastion (Supergiant Games): bold dark ink outlines, painterly cel shading with visible brush texture, rich saturated jewel colors, warm amber rim light against cool teal shadows. Original design, dark-fantasy mood with glowing bioluminescent accents. No text, no logo, no UI, no watermark.","previews":["title/bg.webp"],"have":1}],"catLabels":{"creature":"Créatures (lignées à 3 formes)","monster":"Monstres d'arène","building":"Bâtiments","prop":"Décor (planches d'objets)","terrain":"Textures de terrain","arena":"Fonds d'arène","event":"Illustrations d'événements","title":"Écran titre"}};</script>
+<script>// Page de prompts : copie, filtres, progression, et dépôt d'images quand le serveur de dev tourne (npm run dev).
+(function () {
+  var D = window.__DATA__;
+  var ART = '../src/assets/art/';
+  var state = { cat: 'all', q: '', missing: false, dev: false };
+  var okCount = {};
+
+  function h(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === 'class') e.className = attrs[k];
+      else if (k === 'text') e.textContent = attrs[k];
+      else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), attrs[k]);
+      else e.setAttribute(k, attrs[k]);
+    }
+    (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return e;
+  }
+
+  var toastEl = h('div', { class: 'toast' });
+  document.body.appendChild(toastEl);
+  var toastT = 0;
+  function toast(msg, bad) {
+    toastEl.textContent = msg;
+    toastEl.className = 'toast on' + (bad ? ' bad' : '');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.className = 'toast'; }, 2200);
+  }
+
+  function copy(text, msg) {
+    var done = function () { toast(msg || 'Copié dans le presse-papiers'); };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else fallback();
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { toast('Copie impossible : sélectionnez le texte à la main', true); }
+      ta.remove();
+    }
+  }
+
+  // ——— dépôt d'images (serveur de dev uniquement) ———
+  function upload(file, name, card) {
+    toast('Envoi de ' + name + '…');
+    return fetch('/__art/upload?file=' + encodeURIComponent(name), { method: 'POST', body: file })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.error || 'échec');
+        toast(name + ' traité ✓');
+        if (card) refreshThumbs(card);
+      })
+      .catch(function (e) { toast('Erreur : ' + e.message, true); });
+  }
+
+  function makeDrop(name, card) {
+    var d = h('label', { class: 'drop', text: '⬆ Déposer l\'image (' + name + ')' });
+    var input = h('input', { type: 'file', accept: 'image/*', style: 'display:none' });
+    input.addEventListener('change', function () { if (input.files[0]) upload(input.files[0], name, card); });
+    d.appendChild(input);
+    d.addEventListener('dragover', function (e) { e.preventDefault(); d.classList.add('drag'); });
+    d.addEventListener('dragleave', function () { d.classList.remove('drag'); });
+    d.addEventListener('drop', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      d.classList.remove('drag');
+      if (e.dataTransfer.files[0]) upload(e.dataTransfer.files[0], name, card);
+    });
+    return d;
+  }
+
+  // ——— aperçus ———
+  function thumbs(it) {
+    var wide = it.cat === 'arena' || it.cat === 'event' || it.cat === 'title' || it.cat === 'terrain';
+    var box = h('div', { class: 'thumbs' + (it.previews.length === 1 ? ' single' : '') + (wide ? ' wide' : '') });
+    var loaded = 0;
+    var ph = h('div', { class: 'ph', text: 'Aucune image traitée pour l\'instant' });
+    it.previews.forEach(function (p) {
+      var img = h('img', { alt: '' });
+      img.style.display = 'none';
+      img.addEventListener('load', function () {
+        img.style.display = '';
+        loaded++;
+        ph.style.display = 'none';
+        box.__loaded = loaded;
+        setState(box.closest('.card'), loaded, it.previews.length);
+      });
+      img.src = ART + p + '?t=' + (box.__bust || 0);
+      box.appendChild(img);
+    });
+    box.appendChild(ph);
+    return box;
+  }
+
+  function setState(card, n, total) {
+    if (!card) return;
+    var s = card.querySelector('.state');
+    s.className = 'state ' + (n === 0 ? 'todo' : n === total ? 'ok' : 'part');
+    s.textContent = n === 0 ? 'à générer' : n === total ? 'prêt ✓' : n + '/' + total;
+    okCount[card.dataset.id] = n === total ? 1 : 0;
+    updateProgress();
+  }
+
+  function refreshThumbs(card) {
+    var it = D.items.filter(function (i) { return i.id === card.dataset.id; })[0];
+    var old = card.querySelector('.thumbs');
+    var neu = thumbs(it);
+    neu.__bust = Date.now();
+    old.replaceWith(neu);
+    neu.querySelectorAll('img').forEach(function (img) { img.src = img.src.split('?')[0] + '?t=' + neu.__bust; });
+  }
+
+  function chip(text, cls, onclick) {
+    return h('span', { class: 'chip ' + (cls || ''), text: text, onclick: onclick || null });
+  }
+
+  function card(it) {
+    var c = h('article', { class: 'card', 'data-id': it.id });
+    c.appendChild(thumbs(it));
+    var b = h('div', { class: 'cbody' });
+    b.appendChild(h('h3', null, [it.title, h('span', { class: 'state ' + (it.have === 0 ? 'todo' : it.have === it.previews.length ? 'ok' : 'part'), text: it.have === 0 ? 'à générer' : it.have === it.previews.length ? 'prêt ✓' : it.have + '/' + it.previews.length })]));
+    b.appendChild(h('p', { class: 'note', text: it.note }));
+    var chips = h('div', { class: 'chips' }, [
+      chip('Format ' + it.ratio),
+      chip(it.size),
+      chip(it.bg === 'white' ? 'Fond blanc uni' : 'Image pleine (pas de détourage)'),
+      chip('📄 ' + it.file, 'file', function () { copy(it.file, 'Nom de fichier copié'); }),
+    ].concat((it.chips || []).map(function (t) { return chip(t); })));
+    b.appendChild(chips);
+    b.appendChild(h('pre', { class: 'prompt', text: it.prompt }));
+    b.appendChild(h('div', { class: 'actions' }, [
+      h('button', { class: 'copy primary', text: 'Copier le prompt', onclick: function () { copy(it.prompt); } }),
+      h('button', { class: 'copy', text: 'Copier le nom du fichier', onclick: function () { copy(it.file, 'Nom de fichier copié'); } }),
+      makeDrop(it.file, c),
+    ]));
+    if (it.variants && it.variants.length) {
+      var det = h('details', { class: 'variants' }, [h('summary', { text: 'Ou une forme à la fois (si votre IA ne sait pas faire de planche de 3)' })]);
+      it.variants.forEach(function (v) {
+        det.appendChild(h('div', { class: 'variant' }, [
+          h('div', { class: 'vt', text: v.label }),
+          h('pre', { class: 'prompt', text: v.prompt }),
+          h('div', { class: 'actions' }, [
+            h('button', { class: 'copy primary', text: 'Copier le prompt', onclick: function () { copy(v.prompt); } }),
+            chip('📄 ' + v.file, 'file', function () { copy(v.file, 'Nom de fichier copié'); }),
+            makeDrop(v.file, c),
+          ]),
+        ]));
+      });
+      b.appendChild(det);
+    }
+    c.appendChild(b);
+    // dépôt sur toute la carte
+    c.addEventListener('dragover', function (e) { if (state.dev) { e.preventDefault(); c.classList.add('drag'); } });
+    c.addEventListener('dragleave', function () { c.classList.remove('drag'); });
+    c.addEventListener('drop', function (e) {
+      c.classList.remove('drag');
+      if (!state.dev || !e.dataTransfer.files[0]) return;
+      e.preventDefault();
+      upload(e.dataTransfer.files[0], it.file, c);
+    });
+    return c;
+  }
+
+  // ——— rendu ———
+  var main = document.getElementById('main');
+  function visible(it) {
+    if (state.cat !== 'all' && it.cat !== state.cat) return false;
+    if (state.missing && okCount[it.id]) return false;
+    if (state.q) {
+      var hay = (it.title + ' ' + it.note + ' ' + it.file + ' ' + it.prompt + ' ' + (it.chips || []).join(' ')).toLowerCase();
+      if (hay.indexOf(state.q.toLowerCase()) < 0) return false;
+    }
+    return true;
+  }
+
+  function render() {
+    main.innerHTML = '';
+    var any = false;
+    Object.keys(D.catLabels).forEach(function (cat) {
+      var list = D.items.filter(function (i) { return i.cat === cat && visible(i); });
+      if (!list.length) return;
+      any = true;
+      var sec = h('section', { class: 'cat' }, [h('h2', null, [D.catLabels[cat], h('small', { text: list.length + ' image(s)' })])]);
+      var grid = h('div', { class: 'grid' });
+      list.forEach(function (it) { grid.appendChild(card(it)); });
+      sec.appendChild(grid);
+      main.appendChild(sec);
+    });
+    if (!any) main.appendChild(h('p', { class: 'note', text: 'Aucun résultat.' }));
+  }
+
+  function updateProgress() {
+    var total = D.items.length;
+    var ok = D.items.filter(function (i) { return okCount[i.id]; }).length;
+    document.getElementById('pcount').textContent = ok + ' / ' + total + ' prêtes';
+    document.getElementById('pbar').style.width = (100 * ok) / total + '%';
+  }
+
+  function toolbar() {
+    var cats = document.getElementById('cats');
+    var mk = function (cat, label) {
+      var n = cat === 'all' ? D.items.length : D.items.filter(function (i) { return i.cat === cat; }).length;
+      var b = h('button', { class: 'chip-btn' + (state.cat === cat ? ' on' : ''), text: label + ' (' + n + ')', onclick: function () {
+        state.cat = cat;
+        cats.querySelectorAll('.chip-btn').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        render();
+      } });
+      return b;
+    };
+    cats.appendChild(mk('all', 'Tout'));
+    Object.keys(D.catLabels).forEach(function (c) { cats.appendChild(mk(c, D.catLabels[c].split(' (')[0])); });
+    document.getElementById('q').addEventListener('input', function (e) { state.q = e.target.value; render(); });
+    document.getElementById('missing').addEventListener('click', function (e) {
+      state.missing = !state.missing;
+      e.target.classList.toggle('on', state.missing);
+      render();
+    });
+    document.getElementById('copyall').addEventListener('click', function () {
+      var text = D.items.filter(visible).map(function (it) { return '### ' + it.title + '  →  ' + it.file + '  (' + it.ratio + ')\n' + it.prompt; }).join('\n\n');
+      copy(text, 'Tous les prompts affichés ont été copiés');
+    });
+  }
+
+  // ——— détection du serveur de dev + dépôt global par nom de fichier ———
+  function detectDev() {
+    if (location.protocol.indexOf('http') !== 0) return;
+    fetch('/__art/ping').then(function (r) { return r.json(); }).then(function (r) {
+      if (!r.ok) return;
+      state.dev = true;
+      document.body.classList.add('dev');
+      var bar = document.getElementById('devbar');
+      bar.classList.add('on');
+      bar.addEventListener('dragover', function (e) { e.preventDefault(); bar.classList.add('drag'); });
+      bar.addEventListener('dragleave', function () { bar.classList.remove('drag'); });
+      bar.addEventListener('drop', function (e) {
+        e.preventDefault();
+        bar.classList.remove('drag');
+        var known = {};
+        D.items.forEach(function (it) {
+          known[it.file.toLowerCase()] = it;
+          (it.variants || []).forEach(function (v) { known[v.file.toLowerCase()] = it; });
+        });
+        Array.prototype.forEach.call(e.dataTransfer.files, function (f) {
+          var base = f.name.toLowerCase().replace(/\.(png|jpe?g|webp)$/, '') + '.png';
+          var it = known[base];
+          if (!it) { toast('Nom inconnu : ' + f.name, true); return; }
+          var cardEl = document.querySelector('[data-id="' + it.id + '"]');
+          upload(f, base, cardEl);
+        });
+      });
+    }).catch(function () {});
+  }
+
+  D.items.forEach(function (it) { okCount[it.id] = it.have === it.previews.length ? 1 : 0; });
+  toolbar();
+  render();
+  updateProgress();
+  detectDev();
+})();
+</script>
+</body>
+</html>
