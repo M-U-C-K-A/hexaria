@@ -1,181 +1,580 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hero-dark.svg">
-  <img alt="Hexaria — Kingdoms & Arenas" src="docs/assets/hero-light.svg" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hero-dark-en.svg">
+  <img alt="Hexaria — Kingdoms & Arenas: a single-player roguelike for macOS" src="docs/assets/hero-light-en.svg" width="100%">
 </picture>
 
 [![Version](https://img.shields.io/github/v/release/M-U-C-K-A/hexaria?style=flat-square&color=d39a2c&label=version)](https://github.com/M-U-C-K-A/hexaria/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/M-U-C-K-A/hexaria/total?style=flat-square&color=0b8a73&label=downloads)](https://github.com/M-U-C-K-A/hexaria/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/M-U-C-K-A/hexaria/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/M-U-C-K-A/hexaria/actions)
 ![Platform](https://img.shields.io/badge/macOS-12%2B%20·%20Apple%20silicon%20%26%20Intel-1b2823?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Canvas%202D-3178c6?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-0b8a73?style=flat-square)](LICENSE)
 
-**[Download](https://github.com/M-U-C-K-A/hexaria/releases/latest)** · **[Run it](#-run-the-game)** · [Français](README.md)
+<a href="https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-macos-dark-en.svg"><img alt="Download for macOS" src="docs/assets/btn-macos-light-en.svg" height="58"></picture></a>
+<a href="https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-web-dark-en.svg"><img alt="Web version" src="docs/assets/btn-web-light-en.svg" height="58"></picture></a>
+<a href="https://github.com/M-U-C-K-A/hexaria/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-releases-dark-en.svg"><img alt="All releases" src="docs/assets/btn-releases-light-en.svg" height="58"></picture></a>
+
+**[In action](#️-in-action)** · **[First run](#️-your-first-run)** · **[Kingdom](#-building-a-kingdom)** · **[Arena](#️-the-arena)** · **[Creatures](#-creatures-types-and-evolutions)** · **[Releases](#-releases)** · **[Install](#-install)** · [Français](README.md)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/divider-dark.svg">
-  <img alt="" src="docs/assets/divider-light.svg" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/stats-dark-en.svg">
+  <img alt="15 creature lines, 45 forms, 8 monsters, 16 buildings, 16 relics, 15 events, 6 elements" src="docs/assets/stats-light-en.svg" width="100%">
 </picture>
 
 </div>
 
-**Hexaria** is a solo roguelike for macOS that sits between three worlds:
+> **Hexaria** is a single-player roguelike for macOS that sits between **Civilization**, **Pokémon** and **TFT**.
+> You build a hexagonal island, capture and evolve elemental creatures, then send them into auto-battler arenas.
+> One run: 22 steps, 3 arenas and a dragon.
+>
+> *The game itself is in French; this page explains everything you need to play it.*
 
-- **Civilization**: a hexagonal island to build, buildings placed according to terrain, adjacency bonuses, builder and worker villagers;
-- **Pokémon**: elemental creature types, evolutions, captures, even eggs and shiny variants;
-- **TFT / Dota Auto Chess**: auto-battler arenas with a shop, rerolls, hex placement and automatic fights.
-
-Everything is drawn in isometric 2D with a dark, glowing mood (references: Bastion, Hades). Characters, monsters, buildings and
-scenery are **painted sprites** animated by the engine; the original procedural renderer is the safety net for anything that
-does not have an illustration yet. The in-game text is in French.
+## ▶️ In action
 
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/features-dark.svg">
-  <img alt="Build, fight, capture, master the types" src="docs/assets/features-light.svg" width="100%">
-</picture>
+<img src="docs/media/combat.webp" alt="Clip: buying a Flammèche makes three copies merge twice in a row into Infernyx ★★★, then the automatic battle ends in victory" width="100%">
+
+<sub><b>Arena 1, The Fangs of the Edge.</b> Buying a third Flammèche triggers a chain evolution (★ → ★★ → ★★★),
+then the team deploys itself and the battle plays out: heals, "super effective", synergies, victory.</sub>
+
+<img src="docs/media/world.webp" alt="Clip: the camera flies over the kingdom, from the town hall to the colosseum, through smoke and fireflies" width="100%">
+
+<sub><b>The kingdom, turn 9.</b> A flyover of the town: town hall, crystal obelisk, colosseum, market, forge, and the
+fireflies of the glowing groves. Up to ×4.2 zoom in game.</sub>
 
 </div>
 
-## 📸 Screenshots
+<details>
+<summary><b>Contents</b></summary>
+
+- [In action](#️-in-action)
+- [Hexaria at a glance](#-hexaria-at-a-glance)
+- [Your first run](#️-your-first-run)
+- [The game loop](#-the-game-loop)
+- [Building a kingdom](#-building-a-kingdom)
+- [The arena](#️-the-arena)
+- [Creatures, types and evolutions](#-creatures-types-and-evolutions)
+- [The little surprise: eggs and shinies](#-the-little-surprise-eggs-and-shinies)
+- [Codex and options](#-codex-and-options)
+- [Gallery](#-gallery)
+- [Releases](#-releases)
+- [Install](#-install)
+- [Illustrate the game with your own AI](#-illustrate-the-game-with-your-own-ai)
+- [Architecture](#-architecture)
+- [The Hairline figures](#️-the-hairline-figures)
+- [Controls](#-controls)
+- [FAQ](#-faq)
+
+</details>
+
+## ✨ Hexaria at a glance
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/features-dark-en.svg">
+  <img alt="Build, fight, capture, master the types" src="docs/assets/features-light-en.svg" width="100%">
+</picture>
+
+| Borrowed from… | In Hexaria |
+| --- | --- |
+| **Civilization** | A hexagonal island generated for each run, terrain-dependent buildings, **adjacency bonuses**, villagers split between builders and workers. |
+| **Pokémon** | 15 creature lines with **elemental types**, 3 forms each, captures in lairs, **eggs** and **shiny** variants. |
+| **TFT / Dota Auto Chess** | **Auto-battler arenas**: 5-card shop, rerolls, hex placement, merging 3 copies, automatic battles. |
+| **Roguelikes** | A 22-step track, 3-choice **events**, **relics**, 3 hearts, and a different run for every seed. |
+
+Everything is drawn in isometric 2D with a dark, glowing mood (references: Bastion, Hades). Characters, monsters,
+buildings and scenery are **painted sprites** animated by the engine; the original procedural renderer is the safety net
+for anything without an illustration yet.
+
+## 🕹️ Your first run
+
+A step-by-step guide to the first ten minutes.
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/world.jpg" alt="The kingdom"><br><sub><b>The kingdom</b>: buildings placed by terrain, progress track on top.</sub></td>
-    <td width="50%"><img src="docs/screenshots/worldzoom.jpg" alt="Zoomed city"><br><sub><b>×3 zoom</b>: painted buildings, smoke, lanterns, crystal veins.</sub></td>
+    <td width="44%"><img src="docs/screenshots/title.jpg" alt="Title screen"></td>
+    <td><b>1. New game</b> (<i>Nouvelle partie</i>). The title screen also opens the <b>Bestiary</b>, <b>Types</b> and
+    <b>Options</b>. The run is saved at every step: <i>Continuer</i> resumes it.</td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/arena.jpg" alt="Arena preparation"><br><sub><b>Arena, preparation</b>: 5-card shop, bench and placement.</sub></td>
-    <td><img src="docs/screenshots/fight.jpg" alt="Automatic fight"><br><sub><b>Automatic fight</b>: active synergies on the left, damage meter on the right.</sub></td>
+    <td><img src="docs/screenshots/world.jpg" alt="The kingdom early in the run"></td>
+    <td><b>2. Read the track at the top.</b> Each diamond is a step: management turn, event <code>?</code>, arena
+    <code>⚔</code>, boss <code>☠</code>. You start with <b>15 gold, 20 wood, 8 stone, 10 food</b>, 3 villagers and
+    3 hearts ♥.</td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/boss.jpg" alt="Boss fight"><br><sub><b>Vermithrax</b>, the marsh dragon.</sub></td>
-    <td><img src="docs/screenshots/event.jpg" alt="Event"><br><sub><b>Events</b>: illustration on the left, three choices on the right.</sub></td>
+    <td><img src="docs/screenshots/worldzoom.jpg" alt="Close-up of the town"></td>
+    <td><b>3. Build around the town hall.</b> Pick a building in the bottom bar (keys <code>1</code>–<code>9</code>) and
+    hover a tile: the tooltip shows what it would produce <b>right there</b>. A farm, a sawmill by the forest, then a
+    house to grow the population. <code>Space</code> ends the turn.</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/event.jpg" alt="An event"></td>
+    <td><b>4. Events.</b> A text, an illustration, three choices: a gamble, a trade, a relic, a capture… Some cost a
+    heart. Each button spells out its effect.</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/arena.jpg" alt="Arena preparation"></td>
+    <td><b>5. The first arena.</b> Your gold becomes your budget: buy from the shop, drag creatures onto the bottom hexes
+    and start the battle (<code>Space</code>). <b>All the gold you spend comes back</b> after the battle, win or lose.</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/fight.jpg" alt="Automatic battle"></td>
+    <td><b>6. Watch and learn.</b> Active synergies on the left, damage dealt on the right. A defeat costs a heart; a
+    victory pays the gold reward, then lets you pick a relic, a capture or an egg.</td>
   </tr>
 </table>
 
-## 🚀 Run the game
+> [!TIP]
+> Three habits that change everything: **Port + Auction house** side by side (+5 gold per turn), a **Barracks** before
+> the second arena (+1 creature on the board), and **three identical creatures** for a free evolution.
 
-**macOS app (recommended).** Download `Hexaria-0.2.0-macOS.zip` from the [latest release](https://github.com/M-U-C-K-A/hexaria/releases/latest)
-(universal binary, macOS 12+), unzip, and move `Hexaria.app` to `Applications`. The app is ad-hoc signed, not notarized: on first
-launch use **right-click › Open**, or run `xattr -dr com.apple.quarantine /Applications/Hexaria.app`.
+## 🔁 The game loop
 
-**From source.**
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/loop-dark-en.svg">
+  <img alt="Management turn, event, arena, reward, boss" src="docs/assets/loop-light-en.svg" width="100%">
+</picture>
+
+A run lasts **22 steps over 4 acts**. Each act ends with an arena, the last one with the boss:
+
+| Act | Steps | End of act |
+| --- | --- | --- |
+| I | turn · turn · `?` · turn · turn | ⚔ The Fangs of the Edge |
+| II | turn · `?` · turn · turn · `?` | ⚔ The Crystal Nest |
+| III | turn · `?` · turn · `?` · turn | ⚔ The Black Tides |
+| IV | turn · `?` · turn | ☠ Vermithrax, the marsh dragon |
+
+You have **3 hearts**. An arena defeat costs one, and so do some events; at zero, the run is over.
+
+## 🏰 Building a kingdom
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hairline-realm-dark.svg">
+  <img align="right" width="330" alt="Hairline figure: a kingdom on its hexagonal tile, whose buildings rise in turn" src="docs/assets/hairline-realm-light.svg">
+</picture>
+
+The island is generated from a seed: plains, forests, hills, mountains, glowing groves, beaches and shallows, with gold
+veins, amber crystals, fish shoals, ruins to explore and lairs of wild creatures. Unknown lands reveal themselves as the
+kingdom grows.
+
+**Four resources**: **gold** (the sinews of war, and your arena budget), **wood** and **stone** (to build), **food**
+(every villager eats, the surplus grows the population).
+
+**Villagers** are split between **builders** (they advance construction sites) and **workers** (a production building
+without a worker stands idle). The left panel sets the split with `−` / `+`.
+
+<br clear="right">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/adjacency-dark-en.svg">
+  <img alt="Adjacency: Port and Auction house (+5 gold), two farms (+1 food), sawmill and forest (+1 wood per forest)" src="docs/assets/adjacency-light-en.svg" width="100%">
+</picture>
+
+<details>
+<summary><b>The 16 buildings and their effects</b></summary>
+
+| Family | Building | Effect |
+| --- | --- | --- |
+| Core | **Town hall** (*Hôtel de ville*) | +3 gold, +2 food, +1 wood, +1 stone; housing +4 |
+| Core | **Colosseum** (*Colisée*) | hosts arena battles |
+| Economy | **House** (*Maison*) | housing +2; +1 food next to a farm |
+| Economy | **Farm** (*Ferme*) | +3 food; +1 per neighbouring farm (up to +2), +1 near water |
+| Economy | **Sawmill** (*Scierie*) | +2 wood; +1 per neighbouring forest (up to +3) |
+| Economy | **Quarry** (*Carrière*) | +2 stone; +1 per neighbouring hill or mountain (up to +3) |
+| Economy | **Mine** | +2 gold; +3 on a gold vein, +5 on crystals |
+| Economy | **Port** | +2 gold, +1 food; +2 food per neighbouring fish shoal |
+| Economy | **Market** (*Marché*) | +3 gold; +1 per neighbouring house (up to +3), +2 next to the town hall |
+| Economy | **Auction house** (*Hôtel des ventes*) | +4 gold; **+5 next to a port**, +2 next to a market |
+| Combat | **Tavern** (*Taverne*) | +2 free arena rerolls, +1 gold |
+| Combat | **Barracks** (*Caserne*) | +1 creature on the board (up to 3) |
+| Combat | **Forge** | +10% attack; +5% next to a mine |
+| Combat | **Shrine** (*Sanctuaire*) | +12% HP; +8% on or next to a glowing grove |
+| Combat | **Academy** (*Académie*) | better odds of rare creatures in the shop |
+| Combat | **Menagerie** (*Ménagerie*) | +1 companion slot |
+
+</details>
+
+## ⚔️ The arena
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hairline-plateau-dark.svg">
+  <img align="right" width="330" alt="Hairline figure: the hexagonal arena board, whose cells rise under the pointer" src="docs/assets/hairline-plateau-light.svg">
+</picture>
+
+The arena is a hexagonal board in two halves: the bottom cells are yours. The scenery changes from one arena to the next
+(purple marsh, crystal cave, seashore, dragon's lair) and the mouse wheel zooms on the board.
+
+- **Shop** of 5 cards, reroll for 2 gold (free with the Tavern), sell with right-click or `E`.
+- **Bench**: the board only holds 4 creatures, plus one per Barracks.
+- **Merging**: 3 identical copies become the next form, and the chain goes on up to ★★★.
+- **Companions**: captured in lairs or through events, they join your bench **for free** in every arena.
+- **Spells**: every creature has its ability (heal, area, shield, stun…), detailed in the Codex.
+
+<br clear="right">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/economy-dark-en.svg">
+  <img alt="Gold becomes the budget, 90 seconds of shopping, automatic battle, all the gold comes back with the reward" src="docs/assets/economy-light-en.svg" width="100%">
+</picture>
+
+| Arena | Encounter | Reward |
+| --- | --- | --- |
+| 1 | **The Fangs of the Edge**: a pack of shadow wolves and a poisonous mushroom | 15 gold |
+| 2 | **The Crystal Nest**: a colossal golem and crackling spiders | 25 gold |
+| 3 | **The Black Tides**: a tide hydra and two titan crabs | 35 gold |
+| 4 | **Vermithrax**: the marsh dragon and its brood, the final battle | victory |
+
+<details>
+<summary><b>Balance, measured rather than guessed</b></summary>
+
+Each encounter has a power coefficient (`power`, in `src/data/creatures.ts`) tuned with a **shopping bot**
+(`scripts/balance2.ts`) that plays the shop with three gold budgets. The goal is a steady difficulty curve instead of an
+easy arena followed by a wall.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/balance-dark-en.svg">
+  <img alt="Bot win rate by arena and gold budget" src="docs/assets/balance-light-en.svg" width="100%">
+</picture>
+
+</details>
+
+## 🐾 Creatures, types and evolutions
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/parade-dark.svg">
+  <img alt="The 15 creature lines in their final form" src="docs/assets/parade-light.svg" width="100%">
+</picture>
+
+**15 lines** of three forms (Tier 1 to 4 depending on shop rarity), **8 monsters** for the arenas and the boss. Six
+elements face off in a cycle of advantages: a **super effective** attack deals **×1.5**, a **not very effective** one
+**×0.7**.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/types-dark-en.svg">
+  <img alt="Cycle of elemental types" src="docs/assets/types-light-en.svg" width="100%">
+</picture>
+
+| Element | Beats | Team synergy (2 / 4 different creatures) |
+| --- | --- | --- |
+| 🔥 **Fire** (*Feu*) | Grass | **Brasier** (*Blaze*): +15% / +35% damage, attacks burn |
+| 💧 **Water** (*Eau*) | Fire, Rock | **Marée** (*Tide*): heals the team for 4% / 8% of max HP every 3 s |
+| 🌿 **Grass** (*Plante*) | Water, Rock | **Sylve** (*Grove*): +20% / +45% max HP |
+| ⚡ **Thunder** (*Foudre*) | Water | **Orage** (*Storm*): +20% / +45% attack speed |
+| 🪨 **Rock** (*Roche*) | Fire, Thunder | **Rempart** (*Bulwark*): 15% / 30% damage reduction |
+| 🌑 **Shadow** (*Ombre*) | Shadow | **Crépuscule** (*Twilight*): 15% / 30% lifesteal and crit |
+
+Three identical copies merge into an evolved form: stats **×1.8** at ★★, **×3.24** at ★★★.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/evolution-dark.svg">
+  <img alt="Flammèche, Pyrolis, Infernyx; Goutelle, Marélis, Léviathys; and their shiny variants" src="docs/assets/evolution-light.svg" width="100%">
+</picture>
+
+<details>
+<summary><b>The 15 lines</b></summary>
+
+| Tier | Line (★ → ★★ → ★★★) | Element |
+| --- | --- | --- |
+| 1 | Flammèche → Pyrolis → Infernyx | 🔥 Fire |
+| 1 | Bourgeon → Sylvanor → Ancestrel | 🌿 Grass |
+| 1 | Goutelle → Marélis → Léviathys | 💧 Water |
+| 1 | Galet → Rochard → Titanor | 🪨 Rock |
+| 1 | Étincelle → Voltigeur → Fulgurion | ⚡ Thunder |
+| 2 | Ombrelin → Spectreval → Nécrombre | 🌑 Shadow |
+| 2 | Mycelor → Sporifère → Myconide-roi | 🌿 Grass |
+| 2 | Carapix → Carapace → Bastiodon | 💧 Water |
+| 2 | Salamandre → Pyroscail → Drakéon | 🔥 Fire |
+| 3 | Cristallon → Golem de quartz → Colosse prismatique | 🪨 Rock |
+| 3 | Griffonerre → Tonnegriffe → Roi-tempête | ⚡ Thunder |
+| 3 | Faucheur → Sombrelame → Moissonneur | 🌑 Shadow |
+| 4 | Phénix → Phénix ardent → Phénix solaire | 🔥 Fire |
+| 4 | Hydrelle → Hydre → Hydre des abysses | 💧 Water |
+| 4 | Dryade → Dryade sylvestre → Reine des bois | 🌿 Grass |
+
+</details>
+
+## 🥚 The little surprise: eggs and shinies
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hairline-oeuf-dark.svg">
+  <img align="right" width="300" alt="Hairline figure: a mystery egg that hatches as the pointer comes closer" src="docs/assets/hairline-oeuf-light.svg">
+</picture>
+
+- **Mystery eggs** (victory reward or event) hatch after 2 or 3 turns. Hatching always happens: replace a companion, or
+  sell the newborn to the breeder (+12 gold).
+- **Shiny** creatures ✦ with alternate colours and **+20% HP and attack**: 1 in 8 when hatching, 6% in the arena shop,
+  10% when capturing in a lair.
+- A shiny stays shiny when it evolves: three Goutelle including one shiny give a shiny Marélis.
+
+<img src="docs/screenshots/hatch.jpg" alt="An egg hatching" width="54%">
+
+<br clear="right">
+
+## 📖 Codex and options
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hairline-codex-dark.svg">
+  <img align="right" width="320" alt="Hairline figure: the open Codex, whose pages stand up under the pointer" src="docs/assets/hairline-codex-light.svg">
+</picture>
+
+The main menu opens the **Codex**, also available in game with `C` or the 📖 button: **Bestiary**, **Monsters & arenas**,
+**Types** (23 × 23 matrix and comparator), **Buildings**, **Relics**, **Rules & glossary**. Every table comes with a
+"How to read this table" note.
+
+**Options** set the volumes, sound, default battle speed, ambient effects, damage numbers and tooltips, and let you
+erase the save.
+
+<br clear="right">
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/codex.jpg" alt="Bestiary"><br><sub><b>Bestiary</b>: stats per star, role, spell, strengths and weaknesses.</sub></td>
+    <td width="50%"><img src="docs/screenshots/codexmonsters.jpg" alt="Monsters and arenas"><br><sub><b>Monsters & arenas</b>: who beats them, which companions fare best, suggested gold.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/codextypes.jpg" alt="Types"><br><sub><b>Types</b>: type matrix, groups and synergies.</sub></td>
+    <td><img src="docs/screenshots/codexcross.jpg" alt="Full matrix"><br><sub><b>Full matrix</b>, 23 × 23: who has the edge over whom, creature by creature.</sub></td>
+  </tr>
+</table>
+
+## 📸 Gallery
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/boss.jpg" alt="Battle against Vermithrax"><br><sub><b>Vermithrax</b>, the marsh dragon, and its brood: the final battle.</sub></td>
+    <td width="50%"><img src="docs/screenshots/fight.jpg" alt="Automatic battle"><br><sub><b>Automatic battle</b>: synergies on the left, damage dealt on the right, a shiny ✦ in the shop.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/world.jpg" alt="The kingdom"><br><sub><b>The kingdom</b>: progress track, resources, tabbed build menu.</sub></td>
+    <td><img src="docs/screenshots/worldzoom.jpg" alt="The town up close"><br><sub><b>×3 zoom</b>: painted buildings, smoke, lanterns and crystal veins.</sub></td>
+  </tr>
+</table>
+
+## 🚀 Releases
+
+| Version | Date | Highlights | Downloads |
+| --- | --- | --- | --- |
+| [**v0.2.0**](https://github.com/M-U-C-K-A/hexaria/releases/tag/v0.2.0) · *current* | 2026-10-18 | Animated painted sprites, Codex, eggs and shinies, simulation-tuned balance, ×4.2 zoom, universal app | [macOS](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip) · [web](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip) |
+| v0.1.0 · *prototype* | — | Hex map, buildings and adjacency, villagers, events, arenas, evolutions, relics, native launcher | — |
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/roadmap-dark-en.svg">
+  <img alt="Roadmap: v0.1.0 prototype, v0.2.0 painted sprites (current), v0.3 adventure mode, v0.4 items and traits, v1.0 ages and technologies" src="docs/assets/roadmap-light-en.svg" width="100%">
+</picture>
+
+Every release is detailed in the [changelog](CHANGELOG.md) (in French). Next up: an **adventure mode** with longer
+encounters (the `ENCOUNTERS` format already accepts any number of enemies), **items** and **class traits**, then
+Civ-style **ages** that unlock buildings and creatures.
+
+## 📦 Install
+
+### macOS app (recommended)
+
+1. Download **[`Hexaria-0.2.0-macOS.zip`](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip)**
+   (universal binary: Apple silicon and Intel, macOS 12 or later, about 11 MB).
+2. Unzip it and drag `Hexaria.app` into `Applications`.
+3. The app is ad-hoc signed but **not notarized** by Apple. On first launch: **right-click › Open**, or:
+
+   ```bash
+   xattr -dr com.apple.quarantine /Applications/Hexaria.app
+   ```
+
+The save lives in the app's preferences (`UserDefaults`), safe from the browser cache.
+
+### Web version (Windows, Linux, any browser)
+
+[`Hexaria-0.2.0-web.zip`](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip) holds the
+static build. It must be served over HTTP (not opened with `file://`):
+
+```bash
+unzip Hexaria-0.2.0-web.zip -d hexaria-web && npx serve hexaria-web
+```
+
+### From source
 
 ```bash
 git clone https://github.com/M-U-C-K-A/hexaria.git
 cd hexaria
 npm install
 npm run dev          # http://localhost:5173
-npm run mac          # builds build/Hexaria.app (universal, ≈ 12 MB)
+npm run mac          # builds build/Hexaria.app (universal)
 ```
 
-A static web build (`Hexaria-0.2.0-web.zip`) is attached to each release too.
-
-## 🔁 Game loop
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/loop-dark.svg">
-  <img alt="Management turn, event, arena, reward, boss" src="docs/assets/loop-light.svg" width="100%">
-</picture>
-
-</div>
-
-A run is **22 turns over 4 acts**: management turns, events, three arenas and a final boss. You have **3 hearts**; losing an arena
-fight costs one.
-
-1. **Kingdom.** Place buildings according to terrain (farm on plains, sawmill in forests, mine on mountains, port by the water…).
-   Adjacency matters: an **Auction house next to a Port gives +5 gold**, neighbouring farms, markets next to houses…
-2. **Villagers** are split between **builders** (construction points) and **workers** (a productive building without a worker is idle).
-3. **Events**: a text, an illustration, three choices.
-4. **Arena (auto-battler).** Your gold is your budget: about **1 min 30** to buy creatures (5-card shop, reroll for 2 gold),
-   place them on your half of the board, then the fight plays out by itself. **All the gold you spent is refunded** afterwards,
-   plus the victory reward.
-5. **Combat buildings** (bought on the map beforehand): Barracks (+1 slot), Forge (+attack), Shrine (+HP), Academy (rarer
-   creatures), Tavern (free rerolls), Menagerie (+1 companion).
-
-## 🐾 Creatures, types and evolutions
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/types-dark.svg">
-  <img alt="Elemental type cycle" src="docs/assets/types-light.svg" width="100%">
-</picture>
-
-</div>
-
-Six elements; a super-effective hit deals **×1.5**, a resisted one **×0.7**. Having 2 or 4 distinct creatures of the same type on the
-board triggers a team synergy. There are **15 creature lines** (3 forms each), **8 monsters**, **16 relics** and **15 events**. Three identical
-copies merge into the next form (**×1.8** stats at ★2, **×3.24** at ★3).
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/evolution-dark.svg">
-  <img alt="Flammèche and Goutelle lines with their shiny variant" src="docs/assets/evolution-light.svg" width="100%">
-</picture>
-
-</div>
-
-**The little surprise:** mystery **eggs** hatch after 2-3 turns, and **shiny ✦** creatures (+20 % HP and attack) appear 1 in 8 on hatching,
-6 % in the arena shop and 10 % when captured in a lair.
-
-### Balance is measured
-
-Each encounter has a `power` coefficient calibrated by a shop-playing bot (`scripts/balance2.ts`) with three gold budgets, aiming for a
-regular difficulty curve:
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/balance-dark.svg">
-  <img alt="Bot win rate per arena and gold budget" src="docs/assets/balance-light.svg" width="100%">
-</picture>
-
-</div>
-
-## 🎨 Bring your own art
-
-Open [`art/prompts.html`](art/prompts.html) ([online preview](https://htmlpreview.github.io/?https://github.com/M-U-C-K-A/hexaria/blob/main/art/prompts.html)):
-72 cards with a ready-to-copy prompt, format and exact filename for every character, monster, building, prop sheet, terrain texture,
-arena backdrop, event illustration and the title screen. Save the image under `art/raw/`, run `npm run art` (white-background removal,
-ground-line removal, sheet splitting, WebP, manifest) and the game picks it up. The shipped illustrations are **AI-generated**.
-
-## ✒️ Hairline figure
-
-The Hexaria realm redrawn as a **Hairline figure** ([`@lucasmarkes/hairline`](https://hairline.lucasmarkes.com), MIT): a hexagonal tile with a
-clock tower, a colosseum and a crystal obelisk. In the interactive version the pointer picks a building, which rises while the others slide away.
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hairline-realm-dark.svg">
-  <img alt="Hairline figure of a Hexaria realm" src="docs/assets/hairline-realm-light.svg" width="620">
-</picture>
-
-**[▶ Try the interactive figure](https://htmlpreview.github.io/?https://github.com/M-U-C-K-A/hexaria/blob/main/docs/hairline/hairline-realm.html)**
-
-</div>
-
-## 🧱 Tooling
+<details>
+<summary><b>All commands</b></summary>
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` / `build` / `check` | Dev server, production build, type-check |
-| `npm run mac` | Universal `build/Hexaria.app` (Swift launcher + WKWebView) |
-| `npx tsx scripts/balance2.ts [n]` | Bot win rates per arena and budget (`--tune` adjusts power) |
-| `npm run art` | Process `art/raw/` images and regenerate the prompts page |
-| `npm run shots` | Regenerate README screenshots (headless Chrome) |
-| `node scripts/readme/svgs.mjs` | Regenerate the animated README SVGs |
+| `npm run dev` | Vite dev server |
+| `npm run check` | TypeScript check |
+| `npm run build` | Production web build in `dist/` |
+| `npm run mac` | Builds `build/Hexaria.app` (Swift + WKWebView launcher, universal) |
+| `npx tsx scripts/balance2.ts [n]` | Shopping bot: win rate per arena and budget (`--tune` adjusts encounter power) |
+| `npm run art` | Cuts out and imports the images in `art/raw/`, regenerates `art/prompts.html` |
+| `npm run shots` | Regenerates the screenshots (headless Chrome) |
+| `node scripts/readme/clips.mjs` | Records the animated clips `docs/media/*.webp` (and the release MP4s) |
+| `node scripts/readme/svgs.mjs` | Regenerates the README's animated SVGs (FR/EN, light/dark) |
+| `node scripts/readme/hairline-svg.mjs` | Converts the Hairline figures into animated SVGs |
 
-Content lives in `src/data/` (buildings, creatures, monsters, arenas, relics, events, types); `src/game/` holds the render-free game logic
-(state, map generation, economy, combat simulation), `src/render/` the drawing code and `mac/HexariaApp.swift` the native launcher.
+Dev pages (with `npm run dev`): `/?gallery` shows every creature, monster and building; `/?icon` regenerates the icon;
+`/?shot=<scene>` stages the game for screenshots and clips.
+
+</details>
+
+## 🎨 Illustrate the game with your own AI
+
+No image is set in stone: the game is designed to be illustrated with **any image AI**.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/pipeline-dark-en.svg">
+  <img alt="Ready-to-copy prompt, your image AI, npm run art, animated in-game sprite" src="docs/assets/pipeline-light-en.svg" width="100%">
+</picture>
+
+1. Open [`art/prompts.html`](art/prompts.html) (double-click): **72 cards** with a ready-to-copy prompt, the format, the
+   suggested size and the exact file name for every character, monster, building, scenery sheet, texture, arena
+   background, event illustration and title screen.
+2. Generate the image with your AI on a **white background** and drop it into `art/raw/` under the given name (or drop
+   it on the page while `npm run dev` runs).
+3. `npm run art` removes the white background, erases ground lines, slices the sheets and writes `src/assets/art/**` as WebP.
+4. The "puppet" engine (`src/render/sprites.ts`) slices each sprite into 18 bands to animate it: breathing, sway, hop,
+   wind-up then lunge, hit flash, spell, stun, death.
+
+<p align="center"><img src="docs/screenshots/prompts.jpg" alt="The prompts page" width="80%"></p>
+
+> The bundled illustrations were **AI-generated** and then cut out by this pipeline. The raw images (about 120 MB) are
+> not versioned: only the result lives in `src/assets/art/`.
+
+## 🧱 Architecture
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark-en.svg">
+  <img alt="Code architecture" src="docs/assets/architecture-light-en.svg" width="100%">
+</picture>
+
+Content is **data-driven**: adding a creature, an arena or an event in `src/data/` does not touch the engine. Battle
+logic (`src/game/combat.ts`) does not depend on rendering, so thousands of battles can be simulated in Node for balancing.
+
+<details>
+<summary><b>Adding a creature in a few lines</b></summary>
+
+```ts
+// src/data/creatures.ts
+{
+  id: 'flammeche', names: ['Flammèche', 'Pyrolis', 'Infernyx'], tier: 1, element: 'feu',
+  hp: 480, atk: 46, as: 0.75, range: 3, armor: 0.05, mana: 60,
+  ability: { kind: 'nuke', name: 'Boule de feu', desc: 'Projette une boule de feu infligeant {v} dégâts.', values: [190, 320, 560] },
+  look: { body: 'blob', c1: '#ff8a3d', c2: '#ffd08a', c3: '#ffef9a', parts: ['flame', 'tail'], eye: 'cute', evo: [['ears'], ['wings', 'horns']] },
+},
+```
+
+The shop, the Codex, the type matrix and the balancing bot pick it up right away. Without an illustration it is drawn by
+the procedural renderer from `look`; add its card to `scripts/art/promptData.ts` for the prompts page.
+
+</details>
+
+<details>
+<summary><b>Project layout</b></summary>
+
+```
+src/
+  app.ts               loop, scenes, input
+  audio.ts             effects and generative music (WebAudio, no audio files)
+  settings.ts          persisted options
+  core/                hex maths, isometric projection, deterministic RNG
+  data/                pure content: terrain, buildings, creatures, monsters, arenas, relics, events, types
+  game/                logic without rendering: state and save, map generation, economy, combat
+  render/              tiles, buildings, creatures, painted sprites, arena scenery, particles
+  scenes/              title, world map, arena
+  ui/                  Codex, event dialogs, icons, styles
+  dev/shots.ts         staging for screenshots and clips (development only)
+mac/HexariaApp.swift   native Cocoa + WKWebView launcher, hexaria:// scheme, UserDefaults save
+scripts/               macOS build, balancing, image pipeline, README generation
+art/prompts.html       image prompts page (generated)
+docs/                  screenshots, clips, animated SVGs, Hairline figures
+```
+
+</details>
+
+## ✒️ The Hairline figures
+
+The four line drawings on this page are **[Hairline](https://hairline.lucasmarkes.com) figures** (engine
+`@lucasmarkes/hairline`, MIT license): single-stroke isometric objects that answer the pointer. Here they are converted
+into animated SVGs that replay a visit of the pointer; the interactive versions live in [`docs/hairline/`](docs/hairline).
+
+| Figure | What the pointer does | Interactive |
+| --- | --- | --- |
+| **Realm** | picks a building, which rises while the others slide away | [open](https://htmlpreview.github.io/?https://github.com/M-U-C-K-A/hexaria/blob/main/docs/hairline/hairline-realm.html) |
+| **Board** (*plateau*) | lifts the arena cells, which fall off with distance | [open](https://htmlpreview.github.io/?https://github.com/M-U-C-K-A/hexaria/blob/main/docs/hairline/hairline-plateau.html) |
+| **Egg** (*œuf*) | hatches the egg as it comes closer; a creature comes out | [open](https://htmlpreview.github.io/?https://github.com/M-U-C-K-A/hexaria/blob/main/docs/hairline/hairline-oeuf.html) |
+| **Codex** | stands a page up; the others fan away in turn | [open](https://htmlpreview.github.io/?https://github.com/M-U-C-K-A/hexaria/blob/main/docs/hairline/hairline-codex.html) |
+
+The sources are `docs/hairline/<name>.js`; `scripts/readme/hairline-svg.mjs` plays each figure in Chrome on a simulated
+clock and turns it into an animated SVG (SMIL, transparent background, the bright stroke in gold).
+
+## 🎮 Controls
+
+| Map | Arena |
+| --- | --- |
+| Drag: move the camera | Click a card: buy |
+| Wheel: zoom (up to ×4.2) | Drag: place a creature · wheel: zoom |
+| `1`–`9`: pick a building · `Tab`: switch tab | Right-click / `E`: sell |
+| Right-click / `Esc`: cancel | `D`: reroll the shop |
+| `Space`: end the turn | `Space`: start the battle |
+| `M`: mute · `C`: Codex | ×1 ×2 ×3: battle speed |
+
+## ❓ FAQ
+
+<details>
+<summary><b>macOS says the app "can't be opened" or comes from an unidentified developer.</b></summary>
+
+The app is not notarized (that requires a paid Apple developer account). **Right-click › Open** it once, or remove the
+quarantine attribute with `xattr -dr com.apple.quarantine /Applications/Hexaria.app`.
+</details>
+
+<details>
+<summary><b>Can I play on Windows or Linux?</b></summary>
+
+Yes, with the web version: unzip `Hexaria-0.2.0-web.zip` and serve the folder with any HTTP server (`npx serve`,
+`python3 -m http.server`…). The save then lives in the browser's local storage.
+</details>
+
+<details>
+<summary><b>Is the game in English?</b></summary>
+
+Not yet: the interface and texts are in French. This page, the Codex tables and the tooltips should get you through a
+first run; translations are welcome.
+</details>
+
+<details>
+<summary><b>Where is my save? How do I start over?</b></summary>
+
+In the macOS app, in the app's preferences (`UserDefaults`); in the browser, in `localStorage`. **Options › Effacer la
+sauvegarde** resets everything.
+</details>
+
+<details>
+<summary><b>Are the images AI-generated?</b></summary>
+
+Yes, then cut out and animated by the repository's pipeline. The game stays playable without them (procedural
+rendering), and `art/prompts.html` lets you regenerate each image with the AI of your choice.
+</details>
+
+<details>
+<summary><b>How can I contribute?</b></summary>
+
+Open an issue or a pull request. `npm run check` and `npm run build` must pass (that is what the CI runs). New creatures,
+events and arenas all live in `src/data/`.
+</details>
 
 ## License
 
-Code under the [MIT license](LICENSE). Illustrations were AI-generated for this project. See the [changelog](CHANGELOG.md).
+Code under the [MIT](LICENSE) license. The illustrations were AI-generated for this project. The Hairline figures use the
+[`@lucasmarkes/hairline`](https://hairline.lucasmarkes.com) engine (MIT).
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/footer-dark-en.svg">
+  <img alt="Have fun, and may your eggs hatch shiny" src="docs/assets/footer-light-en.svg" width="100%">
+</picture>

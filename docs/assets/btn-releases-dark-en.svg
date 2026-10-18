@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 360 70" width="360" height="70" role="img" aria-label="All releases">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6a8"/><stop offset="1" stop-color="#e2a93e"/></linearGradient><linearGradient id="sh" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="cl"><rect x="2" y="2" width="356" height="66" rx="33"/></clipPath></defs>
+<style>
+text{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Book Antiqua',Palatino,Georgia,serif}
+.s{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.c{text-anchor:middle}.e{text-anchor:end}
+.sw{animation:sw 4.5s ease-in-out infinite}@keyframes sw{0%,55%{transform:translateX(-140px)}85%,100%{transform:translateX(400px)}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+<rect x="2" y="2" width="356" height="66" rx="33" fill="rgba(255,255,255,0.085)" stroke="#ffc95e" stroke-width="1.8"/>
+
+<g transform="translate(40 35)" fill="none" stroke="#ffc95e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M-12 -12h15l9 9-15 15-9-9z"/><circle cx="-5" cy="-5" r="2.2"/></g>
+<text x="72" y="33" font-size="19" font-weight="700" fill="#ece7d8">All releases</text>
+<text class="s" x="72" y="53" font-size="12.5" fill="#9fb0a8" opacity="1">release notes &amp; history</text>
+</svg>

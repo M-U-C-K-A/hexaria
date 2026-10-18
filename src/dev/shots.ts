@@ -133,6 +133,46 @@ export async function runShot(name: string) {
     return done();
   }
 
+  // Scènes « live » pour les clips animés du README (scripts/readme/clips.mjs) : rien n'est figé,
+  // la scène est exposée dans window.__scene et c'est l'enregistreur qui la pilote.
+  if (name === 'combatlive') {
+    const s = kingdom(seed);
+    const sc = new ArenaScene(s, 0, () => undefined);
+    app.setScene(sc);
+    const a = sc as Any;
+    await wait(80);
+    a.units.length = 0;
+    const add = (key: string, star: number, at: Any, shiny = false) => a.units.push({ uid: a.nextUid++, key, star, companion: false, shiny, at });
+    add('galet', 2, { kind: 'board', col: 3, row: 4 });
+    add('carapix', 1, { kind: 'board', col: 1, row: 5 });
+    add('bourgeon', 1, { kind: 'board', col: 5, row: 5 });
+    add('goutelle', 1, { kind: 'board', col: 2, row: 6 }, true);
+    // deux Flammèche ★1 et deux ★2 sur le banc : en acheter une déclenche une évolution en chaîne jusqu'à ★3
+    add('flammeche', 1, { kind: 'bench', i: 0 });
+    add('flammeche', 1, { kind: 'bench', i: 1 });
+    add('flammeche', 2, { kind: 'bench', i: 2 });
+    add('flammeche', 2, { kind: 'bench', i: 3 });
+    a.bonus.boardSlots = 5;
+    shopOf(a, ['flammeche', 'goutelle', 'galet', 'bourgeon', 'carapix']);
+    a.enc = { ...a.enc, power: 2.15 }; // un combat plus disputé, pour qu'il dure à l'écran
+    a.zoomK = 1.18;
+    a.layout();
+    a.buildBg();
+    (window as Any).__scene = a;
+    return done();
+  }
+
+  if (name === 'worldlive') {
+    const s = kingdom(seed);
+    const sc = new WorldScene(s);
+    app.setScene(sc);
+    await wait(300);
+    (window as Any).__scene = sc;
+    (window as Any).__townhall = (sc as Any).tilePos(townhall(s));
+    (window as Any).__colosseum = (sc as Any).tilePos(s.tiles.find((t) => t.building?.id === 'colosseum')!);
+    return done();
+  }
+
   if (name === 'event' || name === 'hatch') {
     const s = kingdom(seed);
     const sc = new WorldScene(s);

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 250" width="1200" height="250" role="img" aria-label="v0.1.0 Prototype, v0.2.0 Painted sprites, v0.3 Adventure mode, v0.4 Items &amp; traits, v1.0 Ages &amp; technologies">
+<defs></defs>
+<style>
+text{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Book Antiqua',Palatino,Georgia,serif}
+.s{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.c{text-anchor:middle}.e{text-anchor:end}
+.flow{stroke-dasharray:6 8;animation:flow 1.4s linear infinite}@keyframes flow{to{stroke-dashoffset:-14}}
+.done{stroke-dasharray:240;stroke-dashoffset:240;animation:done 1.8s cubic-bezier(.3,.7,.2,1) .2s forwards}@keyframes done{to{stroke-dashoffset:0}}
+.halo{animation:halo 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes halo{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.in{opacity:0;animation:in .8s ease-out forwards}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+<line x1="360" y1="96" x2="1080" y2="96" class="flow" stroke="rgba(40,70,60,0.28)" stroke-width="2.4"/>
+<line class="done" x1="120" y1="96" x2="360" y2="96" stroke="#b8790c" stroke-width="4" stroke-linecap="round"/><g class="in" style="animation-delay:0.30s">
+
+<path d="M137.3 106.0L120.0 116.0L102.7 106.0L102.7 86.0L120.0 76.0L137.3 86.0Z" fill="#b8790c" fill-opacity="0.9" stroke="#b8790c" stroke-width="2"/>
+<path d="M113 96l5 5 9-10" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="m c" x="120" y="60" font-size="14" font-weight="700" fill="#b8790c">v0.1.0</text>
+<text class="c" x="120" y="148" font-size="17" font-weight="700" fill="#1b2823">Prototype</text>
+<text class="s c" x="120" y="171" font-size="13" fill="#566761">map, arenas, evolutions</text>
+</g><g class="in" style="animation-delay:0.48s">
+<path class="halo" d="M379.1 107.0L360.0 118.0L340.9 107.0L340.9 85.0L360.0 74.0L379.1 85.0Z" fill="none" stroke="#b8790c" stroke-width="2"/>
+<path d="M377.3 106.0L360.0 116.0L342.7 106.0L342.7 86.0L360.0 76.0L377.3 86.0Z" fill="#b8790c" fill-opacity="1" stroke="#b8790c" stroke-width="2"/>
+
+<text class="m c" x="360" y="60" font-size="14" font-weight="700" fill="#b8790c">v0.2.0</text>
+<text class="c" x="360" y="148" font-size="17" font-weight="700" fill="#1b2823">Painted sprites</text>
+<text class="s c" x="360" y="171" font-size="13" fill="#566761">Codex, eggs, shinies</text>
+<text class="s c" x="360" y="198" font-size="12.5" font-style="italic" fill="#0b8a73">▲ you are here</text></g><g class="in" style="animation-delay:0.66s">
+
+<path d="M617.3 106.0L600.0 116.0L582.7 106.0L582.7 86.0L600.0 76.0L617.3 86.0Z" fill="none" fill-opacity="0" stroke="#566761" stroke-width="2"/>
+
+<text class="m c" x="600" y="60" font-size="14" font-weight="700" fill="#566761">v0.3</text>
+<text class="c" x="600" y="148" font-size="17" font-weight="700" fill="#566761">Adventure mode</text>
+<text class="s c" x="600" y="171" font-size="13" fill="#566761">more monsters per encounter</text>
+</g><g class="in" style="animation-delay:0.84s">
+
+<path d="M857.3 106.0L840.0 116.0L822.7 106.0L822.7 86.0L840.0 76.0L857.3 86.0Z" fill="none" fill-opacity="0" stroke="#566761" stroke-width="2"/>
+
+<text class="m c" x="840" y="60" font-size="14" font-weight="700" fill="#566761">v0.4</text>
+<text class="c" x="840" y="148" font-size="17" font-weight="700" fill="#566761">Items &amp; traits</text>
+<text class="s c" x="840" y="171" font-size="13" fill="#566761">equipment, classes</text>
+</g><g class="in" style="animation-delay:1.02s">
+
+<path d="M1097.3 106.0L1080.0 116.0L1062.7 106.0L1062.7 86.0L1080.0 76.0L1097.3 86.0Z" fill="none" fill-opacity="0" stroke="#566761" stroke-width="2"/>
+
+<text class="m c" x="1080" y="60" font-size="14" font-weight="700" fill="#566761">v1.0</text>
+<text class="c" x="1080" y="148" font-size="17" font-weight="700" fill="#566761">Ages &amp; technologies</text>
+<text class="s c" x="1080" y="171" font-size="13" fill="#566761">Civ-style progression</text>
+</g>
+</svg>

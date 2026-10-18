@@ -2,6 +2,14 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) ; versions [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Documentation
+- **README refondu** (français et anglais) : guide de première partie, boucle de jeu acte par acte, adjacences, économie de l'arène, 15 lignées, FAQ, tableau des versions et feuille de route.
+- **Clips de jeu animés** (`docs/media/*.webp`) enregistrés image par image avec une horloge simulée : évolution en chaîne et combat, survol du royaume (`scripts/readme/clips.mjs`, scènes `?shot=combatlive` et `?shot=worldlive`).
+- **Nouveaux SVG animés** clair/sombre à fond transparent, en français et en anglais : bannière, chiffres clés, adjacences, économie de l'arène, défilé du bestiaire, pipeline d'images, architecture, feuille de route, boutons de téléchargement.
+- **Trois nouvelles figures Hairline** (plateau d'arène, œuf mystérieux, Codex) en plus du royaume, converties en SVG animés par un convertisseur générique (`scripts/readme/hairline-svg.mjs`).
+
 ## [0.2.0] — 2026-10-18
 
 ### Ajouté

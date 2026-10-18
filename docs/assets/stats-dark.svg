@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 150" width="1200" height="150" role="img" aria-label="15 lignées de créatures, 45 formes à faire évoluer, 8 monstres, dont 1 boss, 16 bâtiments, 16 reliques, 15 événements, 6 éléments">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6a8"/><stop offset="1" stop-color="#e2a93e"/></linearGradient></defs>
+<style>
+text{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Book Antiqua',Palatino,Georgia,serif}
+.s{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.c{text-anchor:middle}.e{text-anchor:end}
+.drawh{stroke-dasharray:240;stroke-dashoffset:240;animation:drawh 1.6s cubic-bezier(.3,.7,.2,1) forwards}@keyframes drawh{to{stroke-dashoffset:0}}
+.num{opacity:0;animation:num .9s cubic-bezier(.2,.8,.2,1) forwards}@keyframes num{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.glowh{animation:glowh 4.2s ease-in-out infinite;opacity:0}@keyframes glowh{0%,100%{opacity:0}50%{opacity:.18}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+<path d="M120.4 78.0L85.7 98.0L51.1 78.0L51.1 38.0L85.7 18.0L120.4 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:0.0s"/>
+<path d="M120.4 78.0L85.7 98.0L51.1 78.0L51.1 38.0L85.7 18.0L120.4 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.00s"/>
+<text class="c num" x="85.71428571428571" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:0.30s">15</text>
+<text class="s c num" x="85.71428571428571" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:0.45s">lignées de créatures</text>
+<path d="M291.8 78.0L257.1 98.0L222.5 78.0L222.5 38.0L257.1 18.0L291.8 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:0.6s"/>
+<path d="M291.8 78.0L257.1 98.0L222.5 78.0L222.5 38.0L257.1 18.0L291.8 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.16s"/>
+<text class="c num" x="257.1428571428571" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:0.46s">45</text>
+<text class="s c num" x="257.1428571428571" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:0.61s">formes à faire évoluer</text>
+<path d="M463.2 78.0L428.6 98.0L393.9 78.0L393.9 38.0L428.6 18.0L463.2 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:1.2s"/>
+<path d="M463.2 78.0L428.6 98.0L393.9 78.0L393.9 38.0L428.6 18.0L463.2 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.32s"/>
+<text class="c num" x="428.57142857142856" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:0.62s">8</text>
+<text class="s c num" x="428.57142857142856" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:0.77s">monstres, dont 1 boss</text>
+<path d="M634.6 78.0L600.0 98.0L565.4 78.0L565.4 38.0L600.0 18.0L634.6 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:1.8s"/>
+<path d="M634.6 78.0L600.0 98.0L565.4 78.0L565.4 38.0L600.0 18.0L634.6 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.48s"/>
+<text class="c num" x="599.9999999999999" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:0.78s">16</text>
+<text class="s c num" x="599.9999999999999" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:0.93s">bâtiments</text>
+<path d="M806.1 78.0L771.4 98.0L736.8 78.0L736.8 38.0L771.4 18.0L806.1 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:2.4s"/>
+<path d="M806.1 78.0L771.4 98.0L736.8 78.0L736.8 38.0L771.4 18.0L806.1 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.64s"/>
+<text class="c num" x="771.4285714285713" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:0.94s">16</text>
+<text class="s c num" x="771.4285714285713" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:1.09s">reliques</text>
+<path d="M977.5 78.0L942.9 98.0L908.2 78.0L908.2 38.0L942.9 18.0L977.5 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:3.0s"/>
+<path d="M977.5 78.0L942.9 98.0L908.2 78.0L908.2 38.0L942.9 18.0L977.5 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.80s"/>
+<text class="c num" x="942.8571428571428" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:1.10s">15</text>
+<text class="s c num" x="942.8571428571428" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:1.25s">événements</text>
+<path d="M1148.9 78.0L1114.3 98.0L1079.6 78.0L1079.6 38.0L1114.3 18.0L1148.9 38.0Z" fill="#ffd98a" class="glowh" style="animation-delay:3.6s"/>
+<path d="M1148.9 78.0L1114.3 98.0L1079.6 78.0L1079.6 38.0L1114.3 18.0L1148.9 38.0Z" fill="none" stroke="#e2a93e" stroke-width="1.6" class="drawh" style="animation-delay:0.96s"/>
+<text class="c num" x="1114.2857142857142" y="72" font-size="38" font-weight="700" fill="url(#g)" style="animation-delay:1.26s">6</text>
+<text class="s c num" x="1114.2857142857142" y="128" font-size="13.5" fill="#9fb0a8" style="animation-delay:1.41s">éléments</text>
+</svg>
