@@ -75,6 +75,7 @@ export async function runShot(name: string) {
   const q = new URLSearchParams(location.search);
   const seed = Number(q.get('seed') ?? 20241018);
   document.body.classList.add('shot');
+  if (!name.endsWith('live')) document.body.classList.add('still');
   const done = () => {
     (window as Any).__shot = 'ready';
   };

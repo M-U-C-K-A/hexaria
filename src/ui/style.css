@@ -1759,3 +1759,12 @@ td.pics {
 body.shot .mute-btn {
   display: none;
 }
+
+/* captures fixes : pas de fondu en cours au moment de la photo (les clips « live » gardent leurs animations) */
+body.shot.still *,
+body.shot.still *::before,
+body.shot.still *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition: none !important;
+}
