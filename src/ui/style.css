@@ -1232,16 +1232,17 @@ body {
 
 .cx-tab {
   font-family: var(--title);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--muted);
   background: transparent;
   border: 1px solid var(--line-soft);
-  padding: 6px 12px;
+  padding: 6px 9px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  white-space: nowrap;
 }
 
 .cx-tab:hover {
@@ -1699,6 +1700,10 @@ td.pics {
   left: 58px;
 }
 
+.opts-btn {
+  left: 104px;
+}
+
 .menu-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1767,4 +1772,366 @@ body.shot.still *::after {
   animation-duration: 0s !important;
   animation-delay: 0s !important;
   transition: none !important;
+}
+
+/* ——— Tutoriel guidé ——— */
+.tut {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.tut-block {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+.tut.dim .tut-block {
+  background: rgba(3, 8, 7, 0.62);
+}
+
+.tut.open .tut-block {
+  display: none;
+}
+
+.tut-spot {
+  position: absolute;
+  border-radius: 12px;
+  border: 2px solid var(--gold-hi);
+  box-shadow: 0 0 0 200vmax rgba(3, 8, 7, 0.62), 0 0 26px 4px rgba(255, 217, 138, 0.55), inset 0 0 18px rgba(255, 217, 138, 0.25);
+  pointer-events: none;
+  transition: left 0.28s ease, top 0.28s ease, width 0.28s ease, height 0.28s ease;
+  animation: tutPulse 1.8s ease-in-out infinite;
+}
+
+.tut.open .tut-spot {
+  box-shadow: 0 0 0 200vmax rgba(3, 8, 7, 0.38), 0 0 26px 4px rgba(122, 255, 192, 0.6), inset 0 0 18px rgba(122, 255, 192, 0.25);
+  border-color: var(--green);
+}
+
+@keyframes tutPulse {
+  50% {
+    border-color: #fff3c8;
+  }
+}
+
+.tut-bubble {
+  pointer-events: auto;
+  width: 400px;
+  padding: 16px 18px 12px;
+  background: #0b1714;
+  border-color: var(--gold);
+  z-index: 2;
+}
+
+.tut-bubble.pop {
+  animation: tutPop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes tutPop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+.tut-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.tut-count {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tut-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tut-skip:hover {
+  color: var(--text);
+}
+
+.tut-bubble h3.title {
+  margin: 2px 0 8px;
+  font-size: 20px;
+  color: var(--gold-hi);
+}
+
+.tut-text {
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+.tut-text p {
+  margin: 0 0 8px;
+}
+
+.tut-text ul {
+  margin: 4px 0 8px;
+  padding-left: 20px;
+}
+
+.tut-text b {
+  color: var(--gold-hi);
+}
+
+.tut-task {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px dashed var(--green);
+  border-radius: 8px;
+  color: var(--green);
+  font-weight: 700;
+  background: rgba(122, 255, 192, 0.07);
+}
+
+.tut-task.ok {
+  border-style: solid;
+  background: rgba(122, 255, 192, 0.16);
+}
+
+.tut-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.tut-dots {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.tut-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.tut-dots i.done {
+  background: var(--gold);
+}
+
+.tut-dots i.on {
+  background: var(--gold-hi);
+  box-shadow: 0 0 8px var(--gold-hi);
+  transform: scale(1.4);
+}
+
+/* ——— Nouvelle partie ——— */
+.newgame {
+  width: min(760px, 94vw);
+  position: relative;
+  max-height: 92vh;
+  overflow: auto;
+}
+
+.ng-warn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--red);
+  font-weight: 700;
+  margin: 2px 0 10px;
+}
+
+.ng-label {
+  font-family: var(--title);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 14px 0 6px;
+}
+
+.ng-diff {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.ng-card {
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(27, 50, 44, 0.9), rgba(12, 24, 21, 0.95));
+  border: 1px solid var(--line-soft);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s, transform 0.08s;
+}
+
+.ng-card:hover {
+  border-color: var(--line);
+}
+
+.ng-card.on {
+  border-color: var(--gold-hi);
+  box-shadow: 0 0 18px rgba(255, 217, 138, 0.3), inset 0 0 20px rgba(255, 217, 138, 0.08);
+}
+
+.ng-name {
+  font-family: var(--title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold-hi);
+}
+
+.ng-tag {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.ng-hearts {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.ng-desc {
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.ng-seedrow {
+  display: flex;
+  gap: 8px;
+}
+
+.ng-seed {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line-soft);
+  padding: 8px 10px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.ng-seed:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.ng-tut {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 16px 0 4px;
+  cursor: pointer;
+  font-size: 14.5px;
+}
+
+.ng-tut input {
+  margin-top: 3px;
+  accent-color: #e0b55e;
+}
+
+.ng-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.adv-pitch {
+  font-size: 14.5px;
+  line-height: 1.45;
+  padding: 10px 12px;
+  border: 1px dashed var(--line);
+  background: rgba(224, 181, 94, 0.07);
+}
+
+@media (max-width: 720px) {
+  .ng-diff {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ——— Codex : annales et hauts faits ——— */
+.cx-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.cx-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cx-stat b {
+  font-family: var(--title);
+  font-size: 26px;
+  color: var(--gold-hi);
+}
+
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.ach {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.55;
+}
+
+.ach.on {
+  opacity: 1;
+  border-color: var(--line);
+  background: rgba(224, 181, 94, 0.08);
+  box-shadow: inset 0 0 22px rgba(224, 181, 94, 0.07);
+}
+
+.ach-ic {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line-soft);
+}
+
+.ach.on .ach-ic {
+  border-color: var(--gold-hi);
+  color: var(--gold-hi);
+  box-shadow: 0 0 14px rgba(255, 217, 138, 0.35);
+}
+
+.tut.light .tut-spot {
+  box-shadow: 0 0 0 200vmax rgba(3, 8, 7, 0.14), 0 0 26px 4px rgba(255, 217, 138, 0.55), inset 0 0 18px rgba(255, 217, 138, 0.25);
 }

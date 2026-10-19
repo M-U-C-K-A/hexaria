@@ -3,19 +3,23 @@ import { audio } from '../audio';
 import { saveSettings, settings } from '../settings';
 import { SQRT3, hexCorners, pointInPoly, tracePoly } from '../core/hex';
 import { RNG } from '../core/rng';
-import { CREATURES, CREATURE_BY_ID, type CreatureDef, ENCOUNTERS, MONSTERS, SHOP_ODDS, STAR_MULT, TIER_COST } from '../data/creatures';
+import { BASE_ARENAS, encounterAt, enemyPower, isAdventureArena, paliers } from '../data/adventure';
+import { CREATURES, CREATURE_BY_ID, type CreatureDef, MONSTERS, SHOP_ODDS, STAR_MULT, TIER_COST } from '../data/creatures';
 import { ELEMENTS, SYNERGIES, typeMultiplier, weakAgainst } from '../data/elements';
 import type { Element } from '../data/types';
 import { type CombatBonus, combatBonuses } from '../game/economy';
 import { COLS, Combat, type CUnit, ROWS, synergySummary } from '../game/combat';
-import type { GameState } from '../game/state';
+import { type GameState, shinyChance } from '../game/state';
 import { type Backdrop, buildBackdrop, drawBackdropFx, themeForArena } from '../render/arenaBackdrop';
 import { ensureSprite, type Sprite } from '../render/sprites';
 import { type UnitRef, creaturePortrait, drawUnit, unitHeight } from '../render/creatureArt';
 import { type Ctx, ellipse, glow, mix, poly, rgba, shade } from '../render/draw';
 import { FX } from '../render/fx';
 import { bindTip, mount, stars, toast, tooltip } from '../ui/common';
+import { meta } from '../meta';
 import { icon } from '../ui/icons';
+import { startTour, stopTutorial } from '../ui/tutorial';
+import { arenaChapter } from '../ui/tutorialChapters';
 
 type Place = { kind: 'board'; col: number; row: number } | { kind: 'bench'; i: number };
 
@@ -67,7 +71,7 @@ export class ArenaScene implements Scene {
   private timerEl: HTMLElement | null = null;
 
   constructor(private s: GameState, private idx: number, private onDone: (r: 'win' | 'lose') => void) {
-    this.enc = ENCOUNTERS[idx];
+    this.enc = encounterAt(s, idx);
     this.bonus = combatBonuses(s);
     this.gold = s.res.gold + this.bonus.bonusGold;
     this.freeRerolls = this.bonus.freeRerolls;
@@ -141,7 +145,7 @@ export class ArenaScene implements Scene {
       return this.rng.pick(CREATURES.filter((c) => c.tier === tier));
     });
     // Petite surprise : une créature de la boutique peut être chromatique (rare, plus puissante).
-    this.shopShiny = this.shop.map(() => this.rng.chance(0.06));
+    this.shopShiny = this.shop.map(() => this.rng.chance(shinyChance(this.s, 0.06)));
   }
 
   private boardUnits() {
@@ -185,6 +189,7 @@ export class ArenaScene implements Scene {
     const u: PlanUnit = { uid: this.nextUid++, key: c.id, star: 1, companion: false, shiny, at: { kind: 'bench', i: i < 0 ? -1 : i } };
     this.units.push(u);
     if (shiny) {
+      meta.shiny();
       const p = this.placePos(u.at.kind === 'bench' && u.at.i < 0 ? { kind: 'bench', i: 0 } : u.at);
       this.fx.spark(p.x, p.y - this.L.hs, '#fff6b0', 26, 150);
       this.fx.text(p.x, p.y - this.L.hs * 1.8, '✦ Chromatique !', '#fff0a0', 22);
@@ -221,6 +226,7 @@ export class ArenaScene implements Scene {
     this.fx.text(p.x, p.y - this.L.hs * 1.6, 'Évolution !', '#ffd25a', 22);
     audio.play('evolve');
     toast(`${def.names[star - 1]} évolue en ${def.names[star]} ${stars(star + 1)} !`, 'good');
+    meta.evolve(star + 1);
     this.tryCombine(key, star + 1);
   }
 
@@ -278,7 +284,8 @@ export class ArenaScene implements Scene {
       toast('Achetez au moins une créature !', 'bad');
       return;
     }
-    const enemies = this.enc.enemies.map((e) => ({ key: e.id, monster: true, star: 1, col: e.col, row: e.row, mul: this.enc.power }));
+    for (const x of synergySummary(players.map((p) => p.key))) meta.synergy(x.count);
+    const enemies = this.enc.enemies.map((e) => ({ key: e.id, monster: true, star: 1, col: e.col, row: e.row, mul: enemyPower(this.s, this.enc) }));
     this.combat = new Combat(players, enemies, { atkMul: this.bonus.atkMul, hpMul: this.bonus.hpMul, relics: this.s.relics });
     this.phase = 'fight';
     audio.play('horn');
@@ -308,10 +315,32 @@ export class ArenaScene implements Scene {
     this.buildUI();
     this.refreshUI();
     this.banner(this.enc.name.toUpperCase(), '#ffd98a', 1600);
+    if (!document.body.classList.contains('shot')) {
+      startTour('arena', arenaChapter({
+        playRect: () => this.playRect(),
+        unitsOwned: () => this.units.length,
+        boardCount: () => this.boardUnits().length,
+        inFight: () => this.phase !== 'plan',
+      }));
+    }
+  }
+
+  // Votre moitié du plateau et le banc : zone mise en avant par le tutoriel.
+  private playRect() {
+    const hs = this.L.hs;
+    const a = this.cell(0, PLAYER_ROW0);
+    const b = this.cell(COLS - 1, ROWS - 1);
+    const bench = this.benchPos(BENCH - 1);
+    const left = Math.min(a.x, b.x, this.benchPos(0).x) - hs;
+    const right = Math.max(a.x, b.x, bench.x) + hs;
+    const top = Math.min(a.y, b.y) - hs * 0.9;
+    const bottom = bench.y + hs * 0.9;
+    return { x: left, y: top, w: right - left, h: bottom - top };
   }
 
   exit() {
     tooltip.hide();
+    stopTutorial();
   }
 
   resize() {
@@ -893,7 +922,7 @@ export class ArenaScene implements Scene {
     this.ui.top.innerHTML = `
       <div class="goldbig">${icon('gold', 26)}<span>${this.gold}</span></div>
       <div><div class="timer">${fight ? '⚔' : this.fmtTime()}</div><div class="phase">${fight ? 'Combat' : 'Préparation'}</div></div>
-      <div style="text-align:left"><div class="title" style="font-size:15px">${this.enc.name}</div><div class="phase">Arène ${this.idx + 1} / ${ENCOUNTERS.length}</div></div>
+      <div style="text-align:left"><div class="title" style="font-size:15px">${this.enc.name}</div><div class="phase">${isAdventureArena(this.idx) ? `Aventure · palier ${paliers(this.idx)}` : `Arène ${this.idx + 1} / ${BASE_ARENAS}`}</div></div>
       ${fight ? `<div class="speed" style="position:static;display:flex;gap:4px">${[1, 2, 3].map((v) => `<button class="btn ${this.speed === v ? 'on' : ''}" data-v="${v}">×${v}</button>`).join('')}</div>` : ''}`;
     this.timerEl = fight ? null : (this.ui.top.querySelector('.timer') as HTMLElement);
     this.ui.top.querySelectorAll<HTMLButtonElement>('[data-v]').forEach((b) =>

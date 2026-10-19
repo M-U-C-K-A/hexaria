@@ -490,6 +490,39 @@ export function drawBuilding(ctx: Ctx, id: BuildingId, cx: number, cy: number, s
       windowGlow(ctx, cx - s * 0.36, cy + s * 0.02, s * 0.07, s * 0.1, 'L', '#8fd0ff');
       break;
     }
+    case 'warehouse': {
+      isoBox(ctx, cx - s * 0.1, cy + s * 0.1, s * 0.4, s * 0.26, '#8a6a46');
+      gableRoof(ctx, cx - s * 0.1, cy + s * 0.1, s * 0.4, s * 0.26, s * 0.2, '#5b4636');
+      windowGlow(ctx, cx - s * 0.32, cy - s * 0.02, s * 0.09, s * 0.1, 'L', WARM);
+      poly(ctx, [cx - s * 0.08, cy + s * 0.28, cx + s * 0.05, cy + s * 0.34, cx + s * 0.05, cy + s * 0.12, cx - s * 0.08, cy + s * 0.06], '#4a3426', 'rgba(0,0,0,0.7)');
+      isoBox(ctx, cx + s * 0.38, cy + s * 0.2, s * 0.1, s * 0.1, '#b08a52');
+      isoBox(ctx, cx + s * 0.5, cy + s * 0.08, s * 0.08, s * 0.1, '#c49a5a');
+      isoBox(ctx, cx + s * 0.44, cy + s * 0.04, s * 0.07, s * 0.08, '#d6b06a');
+      ellipse(ctx, cx - s * 0.5, cy + s * 0.3, s * 0.06, s * 0.08, '#7a4f2a');
+      ellipse(ctx, cx - s * 0.4, cy + s * 0.36, s * 0.06, s * 0.08, '#6a4222');
+      lantern(ctx, cx + s * 0.26, cy + s * 0.12, s);
+      break;
+    }
+    case 'observatory': {
+      isoBox(ctx, cx, cy + s * 0.14, s * 0.4, s * 0.14, '#6a6e84');
+      tower(ctx, cx, cy + s * 0.04, s * 0.2, s * 0.62, '#8d90a6', '#2c3566', 0);
+      const top = cy + s * 0.04 - s * 0.62;
+      // coupole et fente de visée
+      ellipse(ctx, cx, top, s * 0.24, s * 0.18, '#35458c');
+      ellipse(ctx, cx, top - s * 0.06, s * 0.2, s * 0.13, '#4a5cb0');
+      poly(ctx, [cx + s * 0.02, top - s * 0.18, cx + s * 0.08, top - s * 0.16, cx + s * 0.06, top + s * 0.02, cx + s * 0.0, top + s * 0.0], '#0d1330');
+      ctx.strokeStyle = '#d6e4ff';
+      ctx.lineWidth = Math.max(2, s * 0.045);
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(cx + s * 0.03, top - s * 0.08);
+      ctx.lineTo(cx + s * 0.22, top - s * 0.3);
+      ctx.stroke();
+      glow(ctx, cx + s * 0.2, top - s * 0.3, s * 0.5, '#7ab8ff', 0.55);
+      windowGlow(ctx, cx - s * 0.12, cy - s * 0.08, s * 0.06, s * 0.12, 'L', '#8fd0ff');
+      windowGlow(ctx, cx + s * 0.06, cy - s * 0.2, s * 0.05, s * 0.1, 'R', '#8fd0ff');
+      break;
+    }
     case 'menagerie': {
       const rx = s * 0.48;
       fence(ctx, cx, cy, rx, false);
@@ -555,7 +588,7 @@ function drawScaffold(ctx: Ctx, cx: number, cy: number, s: number, p: number) {
 
 // Icône de bâtiment pour l'interface (mise en cache en data URL).
 const iconCache = new Map<string, string>();
-const TALL = new Set<BuildingId>(['townhall', 'academy', 'shrine', 'port']);
+const TALL = new Set<BuildingId>(['townhall', 'academy', 'shrine', 'port', 'observatory']);
 
 export function buildingIcon(id: BuildingId, size = 96): string {
   const k = `${id}:${size}`;

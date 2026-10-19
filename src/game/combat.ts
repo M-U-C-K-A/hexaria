@@ -192,8 +192,13 @@ export class Combat {
       if (u.element === 'roche' && r.includes('coeurGolem')) u.dmgReduce += 0.1;
       if (u.element === 'ombre' && r.includes('lameSpectrale')) u.crit += 0.2;
       if (r.includes('potion')) u.mana = Math.max(u.mana, u.maxMana * 0.3);
+      if (r.includes('sceauVampire')) u.lifesteal += 0.08;
     }
     u.hp = u.maxHp;
+    if (side === 0 && r.includes('bouclierAube')) {
+      u.shield = u.maxHp * 0.12;
+      u.shieldT = 8;
+    }
     return u;
   }
 

@@ -82,6 +82,12 @@ export const LINES: Line[] = [
     desc: ['a small blue sea-serpent with ONE head, little fins and big cute eyes', 'a bigger serpent with TWO heads and flowing fins', 'a huge abyssal hydra with THREE heads, glowing teal eyes, crystal spikes along its back and armored scales'] },
   { id: 'dryade', file: 'dryade', element: 'plant dryad', stages: ['Dryade', 'Dryade sylvestre', 'Reine des bois'], note: 'Petite dryade qui devient reine des bois.',
     desc: ['a small green forest sprite girl with leaf hair and big cute eyes, bare feet', 'a taller dryad in a bark dress with flowers in her hair and vines wrapped around her arms', 'a queen of the woods with a crown of living branches and glowing blossoms, wings made of leaves, a staff, glowing eyes'] },
+  { id: 'roccotin', file: 'roccotin', element: 'rock boar', stages: ['Roccotin', 'Sanglocher', 'Mastodonte de granit'], note: 'Marcassin de pierre qui devient mastodonte de granit.',
+    desc: ['a small grey-brown stone piglet with a round body, tiny tusks, mossy back and big cute eyes, on four stubby legs', 'a sturdy rock boar with granite plates on its back, curved tusks and glowing amber cracks', 'a huge granite mastodon-boar with a mountain-like back of stacked rock and crystal spikes, massive tusks, glowing amber eyes'] },
+  { id: 'nimbulle', file: 'nimbulle', element: 'storm cloud spirit', stages: ['Nimbulle', 'Orageon', 'Tonnerrion'], note: 'Petit nuage d\'orage qui devient esprit-tempête couronné.',
+    desc: ['a small round fluffy grey storm-cloud spirit with a tiny lightning bolt, sparks and big cute eyes, no legs', 'a bigger dark storm-cloud spirit with crackling lightning arcs, small horns and glowing yellow eyes', 'a majestic thunder spirit made of a swirling storm-cloud with a halo of lightning, a mane of electric arcs, glowing white eyes'] },
+  { id: 'corbelune', file: 'corbelune', element: 'shadow raven', stages: ['Corbelune', 'Corbeau nocturne', 'Seigneur des corbeaux'], note: 'Corbeau-lune qui devient seigneur des corbeaux ailé de ténèbres.',
+    desc: ['a small round dark-purple raven chick with a crescent-moon mark on its forehead and big cute glowing eyes', 'a sleek night raven with long tail feathers, violet-edged wings and glowing white eyes', 'a lord of ravens with enormous spectral wings made of starry void, a moon-like halo, long tail feathers, glowing eyes'] },
 ];
 
 // ——— Monstres d'arène ———
@@ -102,6 +108,10 @@ export const MONSTERS: Mon[] = [
   { id: 'hydre', title: 'Hydre des marées', note: 'Arène 3 · type Eau', desc: 'a tidal hydra with three heads, dark midnight-blue scales, glowing turquoise eyes, fin crests, coiled body' },
   { id: 'crabe', title: 'Crabe-titan', note: 'Arène 3 · type Eau', desc: 'a massive armored crab with a red-brown spiked shell, huge claws, barnacles and glowing orange eyes' },
   { id: 'dragonnet', title: 'Dragonnet des cendres', note: 'Arène 4 · type Feu', desc: 'a small ember dragon with dark red scales, glowing ember wings, curved horns and smoke from its nostrils' },
+  { id: 'harpie', title: 'Harpie de tempête', note: 'Mode aventure · type Foudre', desc: 'a fierce storm harpy, half woman half bird with blue-grey feathered wings crackling with yellow lightning, sharp talons and glowing eyes' },
+  { id: 'treant', title: 'Tréant ancestral', note: 'Mode aventure · type Plante', desc: 'an ancient treant, a walking tree with a face in its bark, twisted branches with glowing green leaves, mossy roots as legs, glowing green eyes' },
+  { id: 'elementaire', title: 'Élémentaire de braise', note: 'Mode aventure · type Feu', desc: 'an ember elemental, a floating humanoid body of glowing orange magma and flames, cracks of white-hot light, no legs, glowing eyes' },
+  { id: 'liche', title: 'Liche des marais', note: 'Mode aventure · type Ombre', desc: 'a swamp lich, a skeletal sorcerer in a tattered dark-green hooded robe, glowing acid-green eyes, a gnarled staff topped with a skull, floating slime' },
   { id: 'dragon', title: 'Vermithrax, Dragon des marais', note: 'Boss final · type Ombre — format 16:9 conseillé', ratio: '16:9', maxH: 900,
     desc: 'a gigantic swamp dragon boss with mossy green-black scales, glowing acid-green eyes, huge tattered wings, long curved horns, a spiked tail and dripping slime, imposing and terrifying' },
 ];
@@ -131,6 +141,8 @@ export const BUILDINGS: Bld[] = [
   { id: 'shrine', title: 'Sanctuaire', desc: 'an ancient mossy stone shrine: a tall glowing green crystal obelisk surrounded by a circle of standing stones, a pillar of light rising from it' },
   { id: 'academy', title: 'Académie', desc: 'a wizard academy: a tall round tower with arched windows, a glowing blue orb on its spire, stacks of books and a banner' },
   { id: 'menagerie', title: 'Ménagerie', desc: 'a wooden creature pen: a fenced enclosure with hay, feeding troughs, a small tent and hanging lanterns' },
+  { id: 'warehouse', title: 'Entrepôt', desc: 'a big timber warehouse with a broad gabled roof, wide double doors, stacked crates and sacks, barrels at the side and a hanging lantern' },
+  { id: 'observatory', title: 'Observatoire', desc: 'a stone observatory tower on a rocky base with a rotating copper dome, an open slit and a long brass telescope pointing at the sky, glowing blue windows' },
 ];
 
 // ——— Décor : planches de plusieurs objets (détourés puis découpés automatiquement) ———

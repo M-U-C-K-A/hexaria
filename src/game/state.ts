@@ -1,3 +1,5 @@
+import type { Encounter } from '../data/creatures';
+import type { Difficulty } from '../data/difficulty';
 import type { BuildingId, Feature, ResKey, Terrain } from '../data/types';
 import { hkey } from '../core/hex';
 
@@ -61,6 +63,11 @@ export interface GameState {
   seen: string[];
   stats: { wins: number; losses: number; goldEarned: number; built: number; events: number };
   over: null | 'win' | 'lose';
+  // Niveau de difficulté choisi (absent des anciennes sauvegardes : « normal »).
+  difficulty?: Difficulty;
+  // Mode aventure : après Vermithrax, la partie continue avec des arènes générées, de plus en plus peuplées.
+  adventure?: { depth: number; cleared: number };
+  encounters?: Encounter[]; // rencontres générées (arène n° 5 et suivantes), sauvegardées avec la partie
 }
 
 const SAVE_KEY = 'hexaria.save.v1';
@@ -141,6 +148,13 @@ export function clearSave() {
   }
   nativeWin.webkit?.messageHandlers?.hexariaClear?.postMessage(null);
   if (nativeWin.__HEXARIA_SAVE__ !== undefined) nativeWin.__HEXARIA_SAVE__ = null;
+}
+
+// Probabilité de variante chromatique ✦ : doublée par la Graine d'Yggdrasil.
+export const shinyChance = (s: GameState, base: number) => (hasRelic(s, 'graine') ? base * 2 : base);
+
+export function difficultyOf(s: GameState): Difficulty {
+  return s.difficulty ?? 'normal';
 }
 
 export function hasRelic(s: GameState, id: string) {

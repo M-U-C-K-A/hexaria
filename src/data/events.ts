@@ -1,8 +1,10 @@
+import { meta } from '../meta';
 import type { RNG } from '../core/rng';
 import { combatBonuses, popCap } from '../game/economy';
-import type { GameState } from '../game/state';
-import { CREATURES, CREATURE_BY_ID, type CreatureDef } from './creatures';
-import { ELEMENTS } from './elements';
+import { type GameState, shinyChance } from '../game/state';
+import { BASE_ARENAS, encounterAt } from './adventure';
+import { CREATURES, CREATURE_BY_ID, MONSTERS, type CreatureDef } from './creatures';
+import { ELEMENTS, weakAgainst } from './elements';
 import { RELICS, RELIC_BY_ID } from './relics';
 import type { IconName } from './types';
 
@@ -54,6 +56,7 @@ export function companionFull(s: GameState): string | null {
 
 export function addCompanion(s: GameState, id: string, star = 1, shiny = false): string {
   s.companions.push({ id, star, shiny });
+  if (shiny) meta.shiny();
   const c = CREATURE_BY_ID[id];
   return `${shiny ? '✦ Chromatique ! ' : ''}${c.names[star - 1]} (${ELEMENTS[c.element].name}) rejoint vos compagnons ! Il vous accompagnera gratuitement dans chaque arène.`;
 }
@@ -66,7 +69,8 @@ export function addEgg(s: GameState, minTier: number, maxTier: number, turns = 3
 
 export function hatchEvent(s: GameState, rng: RNG, egg: { minTier: number; maxTier: number }): GameEvent {
   const c = randomCreature(rng, egg.maxTier, egg.minTier);
-  const shiny = rng.chance(0.125);
+  const shiny = rng.chance(shinyChance(s, 0.125));
+  meta.hatch();
   return {
     id: 'hatch', title: shiny ? '✦ L’œuf était chromatique !' : 'L’œuf éclot !', art: 'egg', source: 'any', creature: c.id, shiny,
     text: shiny
@@ -97,6 +101,34 @@ export function randomCreature(rng: RNG, maxTier: number, minTier = 1): Creature
 const needGold = (n: number) => (s: GameState) => (s.res.gold >= n ? null : `Il faut ${n} or`);
 const needWood = (n: number) => (s: GameState) => (s.res.wood >= n ? null : `Il faut ${n} bois`);
 const needFood = (n: number) => (s: GameState) => (s.res.food >= n ? null : `Il faut ${n} nourriture`);
+const needStone = (n: number) => (s: GameState) => (s.res.stone >= n ? null : `Il faut ${n} pierre`);
+const needCompanion = (s: GameState) => (s.companions.length ? null : 'Aucun compagnon');
+
+const ELEMENT_RELIC: Record<string, string> = { feu: 'cristalArdent', eau: 'ecaille', plante: 'totem', foudre: 'pierreTonnerre', roche: 'coeurGolem', ombre: 'lameSpectrale' };
+
+
+// Choix du Sanctuaire des éléments : trois éléments tirés parmi six, chacun donnant sa relique contre 10 or.
+function ELEMENT_LIST_FOR_SHRINE(): EventChoice[] {
+  const els = ['feu', 'eau', 'plante', 'foudre', 'roche', 'ombre'] as const;
+  return els.map((el) => ({
+    label: `Offrande ${ELEMENTS[el].name === 'Ombre' ? 'à l’Ombre' : `au ${ELEMENTS[el].name}`}`,
+    icon: el as IconName,
+    desc: `Payer 10 or pour la relique ${RELIC_BY_ID[ELEMENT_RELIC[el]].name} (${RELIC_BY_ID[ELEMENT_RELIC[el]].desc}).`,
+    check: (s: GameState) => needGold(10)(s) ?? (s.relics.includes(ELEMENT_RELIC[el]) ? 'Déjà possédée' : null),
+    apply: (s: GameState, rng: RNG) => { s.res.gold -= 10; return giveRelic(s, ELEMENT_RELIC[el], rng); },
+  }));
+}
+
+// Vision de l'Oracle : les monstres de la prochaine arène et ce qui les domine.
+function oracleText(s: GameState): string {
+  const ai = s.track.findIndex((n, i) => i >= s.step && (n.kind === 'arena' || n.kind === 'boss'));
+  const idx = ai >= 0 ? s.track[ai].arena ?? BASE_ARENAS - 1 : s.arenaIndex;
+  const enc = encounterAt(s, Math.min(idx, BASE_ARENAS - 1 + (s.encounters?.length ?? 0)));
+  const names = [...new Set(enc.enemies.map((e) => MONSTERS[e.id].name))];
+  const types = [...new Set(enc.enemies.map((e) => MONSTERS[e.id].element))];
+  const weak = [...new Set(types.flatMap((t) => weakAgainst(t)))].map((t) => ELEMENTS[t].name);
+  return `« ${enc.name} t’attend : ${names.join(', ')}. Ils craignent le ${weak.join(', ') || 'rien'}. »`;
+}
 
 export const EVENTS: GameEvent[] = [
   {
@@ -172,7 +204,7 @@ export const EVENTS: GameEvent[] = [
     id: 'trainer', title: 'Le Dresseur errant', art: 'camp', source: 'track',
     text: 'Une silhouette encapuchonnée, entourée de créatures dociles, vous salue. « Vos bêtes ont du potentiel. Je peux les faire évoluer… ou vous apprendre à lire le combat. »',
     choices: [
-      { label: 'Faire évoluer', icon: 'star', desc: 'Votre premier compagnon gagne une étoile (max ★3).', check: (s) => (s.companions.some((c) => c.star < 3) ? null : 'Aucun compagnon à faire évoluer'), apply: (s) => { const c = s.companions.find((x) => x.star < 3)!; c.star++; return `Votre compagnon évolue en ${CREATURE_BY_ID[c.id].names[c.star - 1]} !`; } },
+      { label: 'Faire évoluer', icon: 'star', desc: 'Votre premier compagnon gagne une étoile (max ★3).', check: (s) => (s.companions.some((c) => c.star < 3) ? null : 'Aucun compagnon à faire évoluer'), apply: (s) => { const c = s.companions.find((x) => x.star < 3)!; c.star++; meta.evolve(c.star); return `Votre compagnon évolue en ${CREATURE_BY_ID[c.id].names[c.star - 1]} !`; } },
       { label: 'Leçon de stratégie', icon: 'eye', desc: 'Obtenir l’Œil du stratège.', apply: (s, rng) => giveRelic(s, 'oeil', rng) },
       { label: 'Recevoir un élève', icon: 'paw', desc: 'Un compagnon de tier 1 au hasard.', check: companionFull, apply: (s, rng) => addCompanion(s, randomCreature(rng, 1).id) },
     ],
@@ -209,12 +241,89 @@ export const EVENTS: GameEvent[] = [
       { label: 'Suivre les traces', icon: 'boot', desc: 'Trouver des pièces : +12 or.', apply: (s) => { s.res.gold += 12; return 'Une bourse tombée dans la boue. +12 or.'; } },
     ],
   },
+  // ——— Extension 0.3 : nouvelles rencontres ———
+  {
+    id: 'blackMarket', title: 'Le Marché noir', art: 'caravan', source: 'track',
+    text: 'À la nuit tombée, un homme encapuchonné étale sur un drap des objets qui murmurent dans l’obscurité. « Rien n’est volé, murmure-t-il. Presque. » Il lorgne vos compagnons avec un intérêt un peu trop vif.',
+    choices: [
+      { label: 'Une relique rare', icon: 'gem', desc: 'Payer 32 or pour une relique de rareté 2 ou plus.', check: needGold(32), apply: (s, rng) => { s.res.gold -= 32; return grantRelic(s, rng, (id) => RELIC_BY_ID[id].rarity >= 2); } },
+      { label: 'Vendre un compagnon', icon: 'coins', desc: 'Obtenir 28 or, mais perdre votre premier compagnon.', check: needCompanion, apply: (s) => { const c = s.companions.shift()!; s.res.gold += 28; return `${CREATURE_BY_ID[c.id].names[c.star - 1]} change de mains contre 28 or. Il vous regarde partir sans comprendre.`; } },
+      { label: 'Jouer aux dés', icon: 'die', desc: 'Miser 10 or : 45 % de chances de gagner 25 or.', check: needGold(10), apply: (s, rng) => { s.res.gold -= 10; if (rng.chance(0.45)) { s.res.gold += 25; return 'Les dés roulent en votre faveur. +25 or !'; } return 'Les dés étaient pipés, évidemment. -10 or.'; } },
+    ],
+  },
+  {
+    id: 'thunderstorm', title: 'La Tempête de foudre', art: 'stars', source: 'track',
+    text: 'Le ciel s’embrase : des éclairs violets frappent la crête, à quelques portées de flèche de vos murs. Les villageois se terrent, mais l’air entier sent le métal chaud et l’énergie à saisir.',
+    choices: [
+      { label: 'Dresser un paratonnerre', icon: 'foudre', desc: 'Dépenser 8 pierre pour recevoir la Pierre-tonnerre (ou +12 or si vous l’avez déjà).', check: needStone(8), apply: (s, rng) => { s.res.stone -= 8; return s.relics.includes('pierreTonnerre') ? ((s.res.gold += 12), 'La foudre fond la pierre en une masse luisante : +12 or de métal précieux.') : giveRelic(s, 'pierreTonnerre', rng); } },
+      { label: 'Ramasser les éclats', icon: 'stone', desc: '+8 pierre et +6 or de fulgurites.', apply: (s) => { s.res.stone += 8; s.res.gold += 6; return 'Le sol est jonché de verre noir et de pierres fondues.'; } },
+      { label: 'Défier l’orage', icon: 'skull', desc: '50 % : +1 relique au hasard. 50 % : un villageois est foudroyé.', check: (s) => (s.villagers > 1 ? null : 'Pas assez de villageois'), apply: (s, rng) => { if (rng.chance(0.5)) return grantRelic(s, rng); s.villagers--; s.builders = Math.min(s.builders, s.villagers); return 'Un éclair frappe le groupe… Un villageois ne se relèvera pas.'; } },
+    ],
+  },
+  {
+    id: 'elementShrine', title: 'Le Sanctuaire des éléments', art: 'altar', source: 'any',
+    text: 'Six pierres levées forment un cercle, chacune gravée du signe d’un élément. Quand vous approchez, trois d’entre elles s’éclairent doucement : le sanctuaire est prêt à vous accorder sa faveur, contre une offrande.',
+    choices: ELEMENT_LIST_FOR_SHRINE(),
+  },
+  {
+    id: 'orphans', title: 'Les Enfants des bois', art: 'camp', source: 'track',
+    text: 'Deux enfants en haillons sortent d’un fourré, un panier d’œufs tachetés entre eux. Ils prétendent les avoir trouvés « à la lisière, là où ça brille ». Ils ont faim, et ils ont l’air de savoir se débrouiller.',
+    choices: [
+      { label: 'Les adopter', icon: 'house', desc: '+2 villageois si le logement le permet (sinon +1).', apply: (s) => { const free = popCap(s) - s.villagers; const n = Math.max(0, Math.min(2, free)); if (n) { s.villagers += n; return `${n} villageois rejoignent le royaume, et sourient pour la première fois depuis longtemps.`; } s.res.food += 6; return 'Plus de place : vous leur donnez des vivres (+6 nourriture) en promettant de revenir.'; } },
+      { label: 'Échanger contre un œuf', icon: 'egg', desc: 'Donner 8 nourriture : ils vous confient un œuf mystérieux.', check: needFood(8), apply: (s) => { s.res.food -= 8; return addEgg(s, 1, 3, 3); } },
+      { label: 'Les nourrir', icon: 'food', desc: 'Donner 5 nourriture. Ils vous laissent un petit trésor : +10 or.', check: needFood(5), apply: (s) => { s.res.food -= 5; s.res.gold += 10; return 'Ils dévorent tout, puis déposent dans votre main une poignée de pièces rouillées.'; } },
+    ],
+  },
+  {
+    id: 'champion', title: 'Le Défi du champion', art: 'camp', source: 'track',
+    text: 'Un guerrier en armure bosselée plante son épée devant votre porte : « On dit que vos bêtes sont les meilleures. J’en doute. Un combat, un seul. Si vous gagnez, je paie. »',
+    choices: [
+      { label: 'Relever le défi', icon: 'sword', desc: 'Votre premier compagnon combat : 60 % de victoire (+25 or, et ★ gagnée à 25 % si possible). Sinon, -10 or.', check: needCompanion, apply: (s, rng) => { const c = s.companions[0]; const d = CREATURE_BY_ID[c.id]; if (rng.chance(0.6)) { s.res.gold += 25; if (c.star < 3 && rng.chance(0.25)) { c.star++; meta.evolve(c.star); return `${d.names[c.star - 2]} écrase le champion et évolue en ${d.names[c.star - 1]} ! +25 or.`; } return `${d.names[c.star - 1]} l’emporte haut la main. +25 or.`; } s.res.gold = Math.max(0, s.res.gold - 10); return `${d.names[c.star - 1]} est vaincu de justesse. Vous payez le défi : -10 or.`; } },
+      { label: 'Négocier', icon: 'coins', desc: 'Lui offrir 6 or contre un conseil de combat : +1 relance gratuite à la prochaine arène (une relique de rareté 1 si vous avez de la chance).', check: needGold(6), apply: (s, rng) => { s.res.gold -= 6; if (rng.chance(0.3)) return grantRelic(s, rng, (id) => RELIC_BY_ID[id].rarity <= 1); s.res.gold += 3; return 'Il empoche vos pièces, hausse les épaules et vous rend 3 or avec un clin d’œil.'; } },
+      { label: 'Refuser poliment', icon: 'shield', desc: 'Aucun effet.', apply: () => 'Le guerrier crache par terre, reprend son épée et s’éloigne dans la poussière.' },
+    ],
+  },
+  {
+    id: 'oracle', title: 'L’Oracle des marais', art: 'stars', source: 'any',
+    text: 'Dans une mare couverte de brume flotte une femme sans âge, les yeux voilés de nacre. Elle sourit : « Je vois le prochain adversaire qui t’attend, voyageur. Pour quelques pièces, je te dirai ce qu’il redoute. »',
+    choices: [
+      { label: 'Consulter l’oracle', icon: 'eye', desc: 'Payer 6 or : découvrir les monstres de la prochaine arène et leurs faiblesses.', check: needGold(6), apply: (s) => { s.res.gold -= 6; return oracleText(s); } },
+      { label: 'Lui offrir des vivres', icon: 'food', desc: 'Donner 8 nourriture : la même vision, mais aussi +8 or de remerciement.', check: needFood(8), apply: (s) => { s.res.food -= 8; s.res.gold += 8; return `${oracleText(s)} Elle glisse 8 pièces dans votre main.`; } },
+      { label: 'Ne pas la déranger', icon: 'leaf', desc: 'Aucun effet.', apply: () => 'Vous laissez la mare à ses secrets. La brume se referme derrière vous.' },
+    ],
+  },
+  {
+    id: 'fossil', title: 'Le Fossile géant', art: 'ruins', source: 'ruins',
+    text: 'Sous une dalle fendue, vos éclaireurs ont mis au jour une côte longue comme un mât de navire, incrustée de cristaux. Un peu plus loin, quelque chose de rond et de très, très ancien repose dans la roche.',
+    choices: [
+      { label: 'Dégager l’œuf fossile', icon: 'egg', desc: 'Dépenser 12 pierre : un œuf de grande taille éclora dans 3 tours (palier 2 à 3).', check: needStone(12), apply: (s) => { s.res.stone -= 12; return addEgg(s, 2, 3, 3); } },
+      { label: 'Vendre les cristaux', icon: 'gem', desc: '+22 or.', apply: (s) => { s.res.gold += 22; return 'Un joaillier de passage vous paie 22 or pour les cristaux détachés.'; } },
+      { label: 'Étudier les os', icon: 'scroll', desc: 'Votre premier compagnon gagne une étoile s’il peut (max ★3), sinon +12 or.', check: needCompanion, apply: (s) => { const c = s.companions.find((x) => x.star < 3); if (c) { c.star++; meta.evolve(c.star); return `${CREATURE_BY_ID[c.id].names[c.star - 1]} renifle l’os et sent la puissance de ses ancêtres : il évolue !`; } s.res.gold += 12; return 'Vos compagnons sont déjà au sommet : les savants vous paient leurs notes (+12 or).'; } },
+    ],
+  },
+  {
+    id: 'seeds', title: 'Les Graines rares', art: 'village', source: 'track',
+    text: 'Un vieux jardinier vous tend une bourse en toile : des graines de toutes les couleurs, sans étiquette. « Plantées au bon endroit, elles donnent des merveilles. Plantées au mauvais… eh bien, ça donne des histoires. »',
+    choices: [
+      { label: 'Semer au potager', icon: 'food', desc: '+14 nourriture et +2 bois.', apply: (s) => { s.res.food += 14; s.res.wood += 2; return 'Une récolte démesurée sort de terre en trois jours.'; } },
+      { label: 'Semer près du sanctuaire', icon: 'leaf', desc: 'Obtenir le Totem de mousse (ou +10 or si vous l’avez déjà).', apply: (s, rng) => (s.relics.includes('totem') ? ((s.res.gold += 10), 'Des fleurs d’or poussent : +10 or une fois fanées.') : giveRelic(s, 'totem', rng)) },
+      { label: 'Les vendre', icon: 'coins', desc: '+14 or.', apply: (s) => { s.res.gold += 14; return 'Le marché les emporte comme des petits pains.'; } },
+    ],
+  },
 ];
 
 export function pickEvent(s: GameState, rng: RNG, source: 'track' | 'ruins', seen: string[]): GameEvent {
   const pool = EVENTS.filter((e) => (e.source === source || e.source === 'any') && !seen.includes(e.id));
   const list = pool.length ? pool : EVENTS.filter((e) => e.source === source || e.source === 'any');
-  return rng.pick(list);
+  const ev = rng.pick(list);
+  // le Sanctuaire n'éclaire que trois de ses six pierres
+  if (ev.id === 'elementShrine') {
+    const left = [...ev.choices];
+    const three: EventChoice[] = [];
+    while (three.length < 3) three.push(left.splice(Math.floor(rng.next() * left.length), 1)[0]);
+    return { ...ev, choices: three };
+  }
+  return ev;
 }
 
 export function lairEvent(s: GameState, rng: RNG): GameEvent {
@@ -226,7 +335,7 @@ export function lairEvent(s: GameState, rng: RNG): GameEvent {
     id: 'lair', title: `Un ${c.names[0]} sauvage !`, art: 'lair', source: 'any', creature: c.id,
     text: `Au fond d’une tanière, deux yeux brillent dans la pénombre. Un ${c.names[0]} sauvage (type ${el}) vous observe, méfiant. Les créatures capturées vous accompagnent gratuitement dans chaque arène.`,
     choices: [
-      { label: 'Capturer', icon: 'paw', desc: `Payer ${cost} or en appâts : ${c.names[0]} devient votre compagnon.`, check: (st) => needGold(cost)(st) ?? companionFull(st), apply: (st, rng) => { st.res.gold -= cost; return addCompanion(st, c.id, 1, rng.chance(0.1)); } },
+      { label: 'Capturer', icon: 'paw', desc: `Payer ${cost} or en appâts : ${c.names[0]} devient votre compagnon.`, check: (st) => needGold(cost)(st) ?? companionFull(st), apply: (st, rng) => { st.res.gold -= cost; return addCompanion(st, c.id, 1, rng.chance(shinyChance(st, 0.1))); } },
       { label: 'Apprivoiser', icon: 'food', desc: `Offrir 10 nourriture : même résultat, plus lentement.`, check: (st) => needFood(10)(st) ?? companionFull(st), apply: (st) => { st.res.food -= 10; return addCompanion(st, c.id); } },
       { label: 'Le chasser', icon: 'sword', desc: '+8 nourriture.', apply: (st) => { st.res.food += 8; return 'La créature s’enfuit dans les bois. Le repaire est vide.'; } },
     ],

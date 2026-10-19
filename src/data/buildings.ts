@@ -101,9 +101,19 @@ export const BUILDINGS: Record<BuildingId, BuildingDef> = {
     desc: 'Enclos pour vos compagnons capturés.', effect: '+1 emplacement de compagnon (gratuit à chaque arène).',
     cost: { gold: 10, wood: 14, stone: 4 }, work: 4, jobs: 0, terrains: ['plains', 'forest', 'grove'], max: 2,
   },
+  warehouse: {
+    id: 'warehouse', name: 'Entrepôt', category: 'eco', icon: 'stone',
+    desc: 'Stocke et revend les surplus du royaume.', effect: '+1 bois, +1 pierre. +1 de plus à côté d’une scierie / d’une carrière, et +2 or par Marché adjacent (max +4).',
+    cost: { wood: 10, stone: 4 }, work: 2, jobs: 1, terrains: ['plains', 'beach', 'hills'],
+  },
+  observatory: {
+    id: 'observatory', name: 'Observatoire', category: 'combat', icon: 'eye',
+    desc: 'Les astronomes étudient les adversaires avant le combat.', effect: '+15 s de préparation et +1 relance gratuite en arène. Sur une montagne : +1 niveau de boutique.',
+    cost: { gold: 16, wood: 8, stone: 12 }, work: 5, jobs: 1, terrains: ['hills', 'mountain'], max: 2,
+  },
 };
 
 export const BUILD_MENU: BuildingId[] = [
-  'house', 'farm', 'lumber', 'quarry', 'mine', 'port', 'market', 'auction',
-  'tavern', 'barracks', 'forge', 'shrine', 'academy', 'menagerie',
+  'house', 'farm', 'lumber', 'quarry', 'mine', 'port', 'market', 'auction', 'warehouse',
+  'tavern', 'barracks', 'forge', 'shrine', 'academy', 'menagerie', 'observatory',
 ];

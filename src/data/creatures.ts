@@ -144,6 +144,25 @@ export const CREATURES: CreatureDef[] = [
     ability: { kind: 'teamheal', name: 'Floraison', desc: 'Soigne toute l’équipe de {v} PV.', values: [210, 360, 720] },
     look: { body: 'biped', c1: '#3f9a5a', c2: '#d6f0b0', c3: '#f0ffb0', parts: ['leaves', 'halo', 'mane'], eye: 'cute', evo: [['sprout'], ['wings']] },
   },
+  // ——— Nouvelles lignées (extension 0.3) : une de plus pour Roche, Foudre et Ombre ———
+  {
+    id: 'roccotin', names: ['Roccotin', 'Sanglocher', 'Mastodonte de granit'], tier: 2, element: 'roche',
+    hp: 820, atk: 52, as: 0.65, range: 1, armor: 0.3, mana: 80,
+    ability: { kind: 'shield', name: 'Peau de granit', desc: 'Se couvre d’un bouclier de {v} PV.', values: [220, 380, 720] },
+    look: { body: 'quad', c1: '#7a6a5a', c2: '#b8a58a', c3: '#ffe0a0', parts: ['horns', 'spikes'], eye: 'fierce', evo: [['crystals'], ['mane']] },
+  },
+  {
+    id: 'nimbulle', names: ['Nimbulle', 'Orageon', 'Tonnerrion'], tier: 4, element: 'foudre',
+    hp: 880, atk: 80, as: 0.8, range: 3, armor: 0.1, mana: 70,
+    ability: { kind: 'stun', name: 'Coup de tonnerre', desc: 'Foudroie la cible : {v} dégâts et l’étourdit 2 s.', values: [240, 420, 820], duration: 2 },
+    look: { body: 'wisp', c1: '#5a6aa8', c2: '#c8d6ff', c3: '#fff6a0', parts: ['bolt', 'halo'], eye: 'glow', evo: [['horns'], ['mane']] },
+  },
+  {
+    id: 'corbelune', names: ['Corbelune', 'Corbeau nocturne', 'Seigneur des corbeaux'], tier: 4, element: 'ombre',
+    hp: 900, atk: 82, as: 0.8, range: 2, armor: 0.12, mana: 70,
+    ability: { kind: 'drain', name: 'Festin d’ombres', desc: 'Dévore la cible : {v} dégâts, et se soigne d’autant.', values: [260, 450, 880] },
+    look: { body: 'bird', c1: '#2a2048', c2: '#6a52b0', c3: '#e0c8ff', parts: ['wings', 'tail'], eye: 'glow', evo: [['horns'], ['halo']] },
+  },
 ];
 
 export const CREATURE_BY_ID: Record<string, CreatureDef> = Object.fromEntries(CREATURES.map((c) => [c.id, c]));
@@ -198,6 +217,30 @@ export const MONSTERS: Record<string, MonsterDef> = {
     ability: { kind: 'nuke', name: 'Crachat de braise', desc: 'Inflige {v} dégâts.', values: [240, 240, 240] },
     look: { body: 'dragon', c1: '#6a2418', c2: '#d8743a', c3: '#ffcf5a', parts: ['wings', 'horns', 'spikes'], eye: 'glow' },
   },
+  harpie: {
+    id: 'harpie', name: 'Harpie de tempête', element: 'foudre', scale: 1.4,
+    hp: 1300, atk: 58, as: 0.9, range: 3, armor: 0.1, mana: 60,
+    ability: { kind: 'multishot', name: 'Rafale d’éclairs', desc: 'Frappe 3 ennemis pour {v} dégâts.', values: [150, 150, 150], count: 3 },
+    look: { body: 'bird', c1: '#4a5a8a', c2: '#a8b8e8', c3: '#fff04a', parts: ['wings', 'bolt'], eye: 'fierce' },
+  },
+  treant: {
+    id: 'treant', name: 'Tréant ancestral', element: 'plante', scale: 1.75,
+    hp: 3200, atk: 55, as: 0.5, range: 1, armor: 0.3, mana: 90,
+    ability: { kind: 'teamheal', name: 'Sève vitale', desc: 'Soigne tous les monstres de {v} PV.', values: [380, 380, 380] },
+    look: { body: 'golem', c1: '#3a2a1a', c2: '#5a8a3a', c3: '#b4ff5a', parts: ['leaves', 'spikes'], eye: 'glow' },
+  },
+  elementaire: {
+    id: 'elementaire', name: 'Élémentaire de braise', element: 'feu', scale: 1.4,
+    hp: 1500, atk: 70, as: 0.75, range: 3, armor: 0.05, mana: 70,
+    ability: { kind: 'aoe', name: 'Nova ardente', desc: 'Inflige {v} dégâts autour de la cible.', values: [200, 200, 200], radius: 1 },
+    look: { body: 'wisp', c1: '#d83a10', c2: '#ff9a3a', c3: '#fff3b0', parts: ['flame'], eye: 'glow' },
+  },
+  liche: {
+    id: 'liche', name: 'Liche des marais', element: 'ombre', scale: 1.5,
+    hp: 2200, atk: 60, as: 0.65, range: 3, armor: 0.15, mana: 80,
+    ability: { kind: 'stun', name: 'Malédiction', desc: 'Frappe la cible pour {v} dégâts et l’étourdit 1,5 s.', values: [220, 220, 220], duration: 1.5 },
+    look: { body: 'biped', c1: '#1f2a2a', c2: '#4f6a5a', c3: '#b4ff5a', parts: ['hood', 'scythe'], eye: 'glow' },
+  },
   dragon: {
     id: 'dragon', name: 'Vermithrax, Dragon des marais', element: 'ombre', scale: 2.6, boss: true,
     hp: 24000, atk: 165, as: 0.6, range: 2, armor: 0.3, mana: 100, startMana: 50,
@@ -226,7 +269,7 @@ export const ENCOUNTERS: Encounter[] = [
     ],
   },
   {
-    name: 'Le Nid de Cristal', reward: 25, power: 0.86,
+    name: 'Le Nid de Cristal', reward: 25, power: 0.91,
     desc: 'Un golem colossal et ses araignées crépitantes.',
     enemies: [
       { id: 'golem', col: 3, row: 2 },
@@ -235,7 +278,7 @@ export const ENCOUNTERS: Encounter[] = [
     ],
   },
   {
-    name: 'Les Marées Noires', reward: 35, power: 0.8,
+    name: 'Les Marées Noires', reward: 35, power: 0.83,
     desc: 'L’hydre des marées, gardée par deux crabes-titans.',
     enemies: [
       { id: 'hydre', col: 3, row: 1 },
@@ -244,7 +287,7 @@ export const ENCOUNTERS: Encounter[] = [
     ],
   },
   {
-    name: 'Vermithrax', reward: 0, power: 0.66,
+    name: 'Vermithrax', reward: 0, power: 0.64,
     desc: 'Le dragon des marais et sa couvée. Le combat final.',
     enemies: [
       { id: 'dragon', col: 3, row: 1 },

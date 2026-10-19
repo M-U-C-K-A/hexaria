@@ -8,13 +8,17 @@ import { RELICS } from '../data/relics';
 import { TERRAINS } from '../data/terrain';
 import type { Element, IconName, Res } from '../data/types';
 import { clearSave } from '../game/state';
+import { ACHIEVEMENTS } from '../data/achievements';
+import { DIFFICULTIES } from '../data/difficulty';
+import { profile, resetProfile, unlockedCount } from '../meta';
 import { buildingIcon } from '../render/buildingArt';
 import { creaturePortrait } from '../render/creatureArt';
 import { resetSettings, saveSettings, settings } from '../settings';
 import { mount, stars } from './common';
+import { resetTutorial } from './tutorial';
 import { icon } from './icons';
 
-export type CodexTab = 'bestiary' | 'monsters' | 'types' | 'buildings' | 'relics' | 'rules';
+export type CodexTab = 'bestiary' | 'monsters' | 'types' | 'buildings' | 'relics' | 'rules' | 'achievements';
 
 const TABS: [CodexTab, string, IconName][] = [
   ['bestiary', 'Bestiaire', 'paw'],
@@ -23,6 +27,7 @@ const TABS: [CodexTab, string, IconName][] = [
   ['buildings', 'Bâtiments', 'house'],
   ['relics', 'Reliques', 'gem'],
   ['rules', 'Règles & glossaire', 'scroll'],
+  ['achievements', 'Hauts faits', 'crown'],
 ];
 
 // Or conseillé en arrivant dans chaque arène (issu des simulations d'équilibrage).
@@ -190,7 +195,7 @@ function monstersHtml() {
       <td><img class="cx-pic" src="${portrait(me, 56)}" alt=""></td>
       <td><b>${m.name}</b>${m.boss ? ' <span class="gold">· Boss</span>' : ''}<div class="muted small">Taille ×${fx(m.scale)}</div></td>
       <td>${tchip(m.element)}<div class="muted small">${SYNERGIES[m.element].title}</div></td>
-      <td>Arène ${where(m.id).join(', ')}</td>
+      <td>${where(m.id).length ? `Arène ${where(m.id).join(', ')}` : '<span class="gold">Aventure</span>'}</td>
       <td class="num">${m.hp}</td><td class="num">${m.atk}</td><td class="num">${fx(m.as)}</td><td class="num">${m.range}</td><td class="num">${Math.round(m.armor * 100)}%</td>
       <td class="wide"><b class="gold">${m.ability.name}</b><div class="small">${m.ability.desc.replace('{v}', String(m.ability.values[0]))}</div></td>
       <td>${weakAgainst(m.element).map(tchip).join(' ') || '—'}</td>
@@ -385,6 +390,12 @@ function rulesHtml() {
     <tr><td>${icon('food', 16)} <b>Nourriture</b></td><td>Chaque villageois en mange 1 par tour. Un surplus fait grandir la population (si un logement est libre) ; la famine en fait partir.</td></tr>
     <tr><td>${icon('hammer', 16)} <b>Bâtisseurs / ouvriers</b></td><td>Les villageois se répartissent : les bâtisseurs font avancer les chantiers, les ouvriers font tourner les bâtiments productifs.</td></tr>
   </tbody></table></div>
+  <h3 class="cx-h">Difficultés</h3>
+  <div class="cx-scroll"><table class="cx-table"><thead><tr><th>Niveau</th><th>Cœurs</th><th>Départ (or · bois · pierre · nourriture)</th><th>Villageois</th><th>Puissance des monstres</th><th>Récompenses d'arène</th></tr></thead><tbody>
+    ${DIFFICULTIES.map((d) => `<tr><td><b>${d.name}</b><div class="muted small">${d.tag}</div></td><td class="num">${d.hearts}</td><td class="num">${d.res.gold} · ${d.res.wood} · ${d.res.stone} · ${d.res.food}</td><td class="num">${d.villagers}</td><td class="num">×${fx(d.power)}</td><td class="num">×${fx(d.reward)}</td></tr>`).join('')}
+  </tbody></table></div>
+  <h3 class="cx-h">Mode aventure</h3>
+  <p class="muted">Après la victoire sur Vermithrax, vous pouvez <b>poursuivre l'aventure</b> : votre royaume, vos compagnons et vos reliques restent, vous regagnez 1 cœur, et la piste s'allonge d'un <b>palier</b> à la fois (quelques tours puis une arène générée). Le nombre de monstres passe de 4 à 8, la puissance monte de 13 % par palier, et un <b>Gardien</b> (champion du type dominant, récompense ×1,6) garde chaque quatrième palier. Il n'y a pas de fin : l'aventure s'arrête quand vos cœurs sont épuisés. Votre meilleur palier est conservé dans l'onglet Hauts faits.</p>
   <h3 class="cx-h">La piste des tours (en haut de l'écran)</h3>
   <div class="cx-scroll"><table class="cx-table"><thead><tr><th>Symbole</th><th>Signification</th></tr></thead><tbody>
     <tr><td>◆</td><td>Tour de gestion : construisez et développez le royaume.</td></tr>
@@ -394,8 +405,36 @@ function rulesHtml() {
   </tbody></table></div>`;
 }
 
+// ——— Onglet : Hauts faits & annales ———
+function achievementsHtml() {
+  const stats: [IconName, string, string | number][] = [
+    ['crown', 'Parties lancées', profile.runs],
+    ['skull', 'Vermithrax vaincu', profile.wins],
+    ['sword', 'Arènes gagnées', profile.arenaWins],
+    ['heart', 'Arènes perdues', profile.arenaLosses],
+    ['house', 'Bâtiments posés', profile.built],
+    ['question', 'Événements résolus', profile.events],
+    ['egg', 'Œufs éclos', profile.hatched],
+    ['star', 'Chromatiques obtenus', profile.shinies],
+    ['boot', 'Meilleur palier d’aventure', profile.bestPalier],
+  ];
+  const cards = ACHIEVEMENTS.map((a) => {
+    const at = profile.unlocked[a.id];
+    const hidden = a.secret && !at;
+    return `<div class="ach ${at ? 'on' : ''}"><div class="ach-ic">${icon(hidden ? 'lock' : a.icon, 26)}</div>
+      <div><b>${hidden ? 'Haut fait secret' : a.name}</b><div class="small muted">${hidden ? 'Continuez l’aventure pour le découvrir…' : a.desc}</div>
+      ${at ? `<div class="small gold">Débloqué le ${new Date(at).toLocaleDateString('fr-FR')}</div>` : ''}</div></div>`;
+  }).join('');
+  return `
+  ${explain('Comment lire cet onglet', `<p>Vos <b>statistiques</b> et vos <b>hauts faits</b> sont conservés d'une partie à l'autre, sur cet appareil. Chaque haut fait se débloque en jouant ; une notification 🏆 s'affiche à ce moment-là. Le bouton d'effacement se trouve dans les Options.</p>`, true)}
+  <h3 class="cx-h">Annales</h3>
+  <div class="cx-stats">${stats.map(([ic, l, v]) => `<div class="cx-stat">${icon(ic, 22)}<b>${v}</b><span class="muted small">${l}</span></div>`).join('')}</div>
+  <h3 class="cx-h">Hauts faits <span class="muted small">(${unlockedCount()} / ${ACHIEVEMENTS.length})</span></h3>
+  <div class="ach-grid">${cards}</div>`;
+}
+
 const BODY: Record<CodexTab, () => string> = {
-  bestiary: bestiaryHtml, monsters: monstersHtml, types: typesHtml, buildings: buildingsHtml, relics: relicsHtml, rules: rulesHtml,
+  bestiary: bestiaryHtml, monsters: monstersHtml, types: typesHtml, buildings: buildingsHtml, relics: relicsHtml, rules: rulesHtml, achievements: achievementsHtml,
 };
 const INIT: Partial<Record<CodexTab, (root: HTMLElement) => void>> = { bestiary: bestiaryInit, types: typesInit };
 
@@ -456,7 +495,13 @@ export function openCodex(tab: CodexTab = 'bestiary') {
 }
 
 // ——— Options ———
+let backToMenu: (() => void) | null = null;
+export function setMenuHandler(fn: () => void) {
+  backToMenu = fn;
+}
+
 export function openOptions() {
+  const inGame = !document.querySelector('.titlescreen') && !!backToMenu;
   const back = mount(`<div class="modal-back"></div>`);
   const keys: [string, string][] = [
     ['Glisser / molette', 'Carte : déplacer / zoomer (jusqu\'à ×4) · Arène : zoomer le plateau'],
@@ -479,12 +524,16 @@ export function openOptions() {
         <div class="opt-row"><span>Effets d'ambiance <small class="muted">(brume, lucioles, fumée, braises)</small></span><button class="btn tog" data-o="ambient"></button></div>
         <div class="opt-row"><span>Chiffres de dégâts et de soins en arène</span><button class="btn tog" data-o="floatText"></button></div>
         <div class="opt-row"><span>Info-bulles détaillées</span><button class="btn tog" data-o="tooltips"></button></div>
+        <div class="opt-row"><span>Conseils du tutoriel guidé</span><button class="btn tog" data-o="tutorial"></button></div>
+        <div class="opt-row"><span>Rejouer le tutoriel <small class="muted">(à la prochaine partie)</small></span><button class="btn" data-a="retuto">Rejouer</button></div>
       </div>
       <h3 class="cx-h">Raccourcis</h3>
       <table class="cx-table"><tbody>${keys.map(([k, d]) => `<tr><td><span class="kbd">${k}</span></td><td>${d}</td></tr>`).join('')}</tbody></table>
       <h3 class="cx-h">Données</h3>
       <div class="opt-row"><span>Effacer la partie sauvegardée <small class="muted">(irréversible)</small></span><button class="btn danger" data-a="wipe">Effacer</button></div>
+      <div class="opt-row"><span>Effacer statistiques et hauts faits <small class="muted">(irréversible)</small></span><button class="btn danger" data-a="wipeprofile">Effacer</button></div>
       <div class="opt-row"><span>Remettre les options par défaut</span><button class="btn" data-a="reset">Réinitialiser</button></div>
+      ${inGame ? `<div class="opt-row"><span>Quitter la partie vers le menu principal <small class="muted">(sauvegardée automatiquement à chaque étape)</small></span><button class="btn" data-a="menu">Menu principal</button></div>` : ''}
       <div style="text-align:right;margin-top:14px"><button class="btn primary" data-a="close">Fermer</button></div>
     </div>`,
     back,
@@ -495,7 +544,7 @@ export function openOptions() {
       if (o === 'music' || o === 'sfx') b.textContent = `${Math.round(settings[o] * 100)} %`;
     });
     panel.querySelectorAll<HTMLElement>('.tog').forEach((b) => {
-      const o = b.dataset.o as 'ambient' | 'floatText' | 'tooltips';
+      const o = b.dataset.o as 'ambient' | 'floatText' | 'tooltips' | 'tutorial';
       b.textContent = settings[o] ? 'Activé' : 'Désactivé';
       b.classList.toggle('on', settings[o]);
     });
@@ -513,7 +562,7 @@ export function openOptions() {
   );
   panel.querySelectorAll<HTMLElement>('.tog').forEach((b) =>
     b.addEventListener('click', () => {
-      const o = b.dataset.o as 'ambient' | 'floatText' | 'tooltips';
+      const o = b.dataset.o as 'ambient' | 'floatText' | 'tooltips' | 'tutorial';
       settings[o] = !settings[o];
       saveSettings();
       sync();
@@ -540,11 +589,36 @@ export function openOptions() {
   audio.onMuteChange(sync);
   panel.querySelector('[data-a="mute"]')!.addEventListener('click', () => audio.toggleMute());
   panel.querySelector('[data-a="close"]')!.addEventListener('click', close);
+  panel.querySelector('[data-a="menu"]')?.addEventListener('click', () => {
+    close();
+    backToMenu?.();
+  });
   panel.querySelector('[data-a="reset"]')!.addEventListener('click', () => {
     resetSettings();
     audio.applyVolumes();
     panel.querySelectorAll<HTMLInputElement>('input[type=range]').forEach((r) => (r.value = String(Math.round(settings[r.dataset.o as 'music' | 'sfx'] * 100))));
     sync();
+  });
+  panel.querySelector('[data-a="retuto"]')!.addEventListener('click', (e) => {
+    resetTutorial();
+    sync();
+    (e.currentTarget as HTMLElement).textContent = 'Programmé';
+  });
+  const wipeP = panel.querySelector('[data-a="wipeprofile"]') as HTMLElement;
+  let armedP = false;
+  wipeP.addEventListener('click', () => {
+    if (!armedP) {
+      armedP = true;
+      wipeP.textContent = 'Cliquez pour confirmer';
+      setTimeout(() => {
+        armedP = false;
+        wipeP.textContent = 'Effacer';
+      }, 3500);
+      return;
+    }
+    resetProfile();
+    wipeP.textContent = 'Profil effacé';
+    wipeP.setAttribute('disabled', '');
   });
   const wipe = panel.querySelector('[data-a="wipe"]') as HTMLElement;
   let armed = false;

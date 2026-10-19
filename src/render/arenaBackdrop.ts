@@ -664,5 +664,6 @@ export function drawBackdropFx(ctx: Ctx, bd: Backdrop, t: number) {
 }
 
 export function themeForArena(idx: number): ArenaTheme {
-  return ARENA_THEMES[Math.max(0, Math.min(ARENA_THEMES.length - 1, idx))];
+  // les arènes d'aventure (n° 5 et suivantes) font tourner les quatre ambiances
+  return ARENA_THEMES[Math.max(0, idx) % ARENA_THEMES.length];
 }

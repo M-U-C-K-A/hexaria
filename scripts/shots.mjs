@@ -35,6 +35,12 @@ const SHOTS = {
   codextypes: {},
   codexcross: {},
   codexmonsters: {},
+  newgame: {},
+  tuto: {},
+  tutoarena: {},
+  adventure: {},
+  adventurearena: {},
+  achievements: {},
 };
 const wanted = process.argv.slice(2).length ? process.argv.slice(2) : [...Object.keys(SHOTS), 'prompts'];
 

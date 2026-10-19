@@ -1,4 +1,5 @@
 import { clearUI, tooltip } from './ui/common';
+import { stopTutorial } from './ui/tutorial';
 
 export interface Scene {
   enter(): void;
@@ -55,7 +56,7 @@ class App {
     this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
     window.addEventListener('keydown', (e) => {
       // pas de raccourcis de jeu pendant qu'une fenêtre (événement, Codex, options) est ouverte
-      if (document.querySelector('.modal-back')) return;
+      if (document.querySelector('.modal-back') || document.querySelector('.tut:not(.open) .tut-block')) return;
       this.scene?.key?.(e, true);
     });
     window.addEventListener('keyup', (e) => this.scene?.key?.(e, false));
@@ -72,6 +73,7 @@ class App {
 
   setScene(s: Scene) {
     this.scene?.exit();
+    stopTutorial();
     clearUI();
     this.scene = s;
     s.enter();

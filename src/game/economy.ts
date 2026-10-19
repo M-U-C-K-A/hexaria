@@ -39,9 +39,10 @@ export function territory(s: GameState): Set<string> {
 export function updateExploration(s: GameState) {
   const terr = territory(s);
   const owned = s.tiles.filter((t) => terr.has(hkey(t.q, t.r)));
+  const reach = hasRelic(s, 'compas') ? 3 : 2;
   for (const t of s.tiles) {
     if (t.explored) continue;
-    if (owned.some((o) => hexDistance(o, t) <= 2)) t.explored = true;
+    if (owned.some((o) => hexDistance(o, t) <= reach)) t.explored = true;
   }
 }
 
@@ -117,6 +118,14 @@ export function buildingYield(s: GameState, t: Tile, id: BuildingId): Yield {
       if (f) L(`${f} ferme(s) adjacente(s)`, { food: f });
       if (adj.some((n) => isWater(n))) L('Près de l’eau', { food: 1 });
       if (hasRelic(s, 'corne')) L('Corne d’abondance', { food: 1 });
+      break;
+    }
+    case 'warehouse': {
+      L('Base', { wood: 1, stone: 1 });
+      if (adjB('lumber')) L('Scierie adjacente', { wood: 1 });
+      if (adjB('quarry')) L('Carrière adjacente', { stone: 1 });
+      const m = Math.min(2, adjB('market'));
+      if (m) L(`${m} marché(s) adjacent(s)`, { gold: 2 * m });
       break;
     }
     case 'lumber': {
@@ -301,6 +310,8 @@ export function combatBonuses(s: GameState): CombatBonus {
   let academies = 0;
   let taverns = 0;
   let menageries = 0;
+  let observatories = 0;
+  let summit = 0;
   for (const t of s.tiles) {
     const b = t.building;
     if (!b?.done) continue;
@@ -314,26 +325,31 @@ export function combatBonuses(s: GameState): CombatBonus {
       case 'academy': academies++; break;
       case 'tavern': taverns++; break;
       case 'menagerie': menageries++; break;
+      case 'observatory':
+        observatories++;
+        if (t.terrain === 'mountain') summit++;
+        break;
       default: break;
     }
   }
   const boardSlots = 4 + Math.min(3, barracks) + (hasRelic(s, 'banniere') ? 1 : 0);
-  const oddsLevel = Math.min(5, s.arenaIndex + academies + (hasRelic(s, 'parchemin') ? 1 : 0));
-  const freeRerolls = taverns * 2 + (hasRelic(s, 'de') ? 3 : 0);
+  const oddsLevel = Math.min(5, s.arenaIndex + academies + summit + (hasRelic(s, 'parchemin') ? 1 : 0));
+  const freeRerolls = taverns * 2 + observatories + (hasRelic(s, 'de') ? 3 : 0);
   if (barracks) lines.push(`Casernes : +${Math.min(3, barracks)} place(s)`);
   if (atk) lines.push(`Forges : +${Math.round(atk * 100)}% attaque`);
   if (hp) lines.push(`Sanctuaires : +${Math.round(hp * 100)}% PV`);
   if (academies) lines.push(`Académies : boutique niveau +${academies}`);
   if (taverns) lines.push(`Tavernes : +${taverns * 2} relances gratuites`);
   if (menageries) lines.push(`Ménageries : +${menageries} compagnon(s)`);
+  if (observatories) lines.push(`Observatoires : +${observatories * 15} s de préparation, +${observatories} relance(s)${summit ? `, boutique +${summit}` : ''}`);
   return {
     boardSlots,
     atkMul: 1 + atk,
     hpMul: 1 + hp,
     oddsLevel,
     freeRerolls,
-    companionSlots: 1 + menageries,
-    prepTime: 90 + (hasRelic(s, 'oeil') ? 30 : 0),
+    companionSlots: 1 + menageries + (hasRelic(s, 'epee') ? 1 : 0),
+    prepTime: 90 + observatories * 15 + (hasRelic(s, 'oeil') ? 30 : 0),
     bonusGold: hasRelic(s, 'oeil') ? 8 : 0,
     lines,
   };

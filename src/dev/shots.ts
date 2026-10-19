@@ -14,6 +14,12 @@ import { ArenaScene } from '../scenes/arenaScene';
 import { WorldScene } from '../scenes/worldScene';
 import { TitleScene } from '../scenes/titleScene';
 import { openCodex } from '../ui/codex';
+import { openNewGame } from '../ui/newgame';
+import { startTour } from '../ui/tutorial';
+import { arenaChapter, worldChapter } from '../ui/tutorialChapters';
+import { extendTrack, BASE_ARENAS } from '../data/adventure';
+import { ACHIEVEMENTS } from '../data/achievements';
+import { profile } from '../meta';
 import { showEvent } from '../ui/common';
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -188,6 +194,81 @@ export async function runShot(name: string) {
       showEvent(ev, s, () => undefined);
     }
     await wait(1200);
+    return done();
+  }
+
+  // ——— Nouveautés 0.3 ———
+  if (name === 'newgame') {
+    app.setScene(new TitleScene());
+    await wait(500);
+    openNewGame({ difficulty: 'normal', tutorial: true });
+    (document.querySelector('.ng-seed') as HTMLInputElement).value = 'Hexaria';
+    await wait(600);
+    return done();
+  }
+
+  if (name === 'tuto' || name === 'tutoarena') {
+    const s = kingdom(seed);
+    if (name === 'tuto') {
+      const sc = new WorldScene(s);
+      app.setScene(sc);
+      await wait(500);
+      const sa = sc as Any;
+      const th = sa.tilePos(townhall(s));
+      sa.cam.zoom = Math.max(1.0, app.w / 1500) * 1.25;
+      sa.cam.x = th.x + 20;
+      sa.cam.y = th.y + 10;
+      sa.refresh();
+      await wait(300);
+      startTour('world', worldChapter({ s, townRect: () => sa.townRect() }), { force: true, start: 4 });
+    } else {
+      const sc = new ArenaScene(s, 0, () => undefined);
+      app.setScene(sc);
+      const a = sc as Any;
+      await wait(1200);
+      paintedUnits(a);
+      a.units.length = 2;
+      shopOf(a, ['bourgeon', 'goutelle', 'galet', 'flammeche', 'carapix']);
+      startTour('arena', arenaChapter({ playRect: () => a.playRect(), unitsOwned: () => a.units.length, boardCount: () => a.boardUnits().length, inFight: () => a.phase !== 'plan' }), { force: true, start: 3 });
+    }
+    await wait(900);
+    return done();
+  }
+
+  if (name === 'adventure' || name === 'adventurearena') {
+    const s = kingdom(seed);
+    s.stats.wins = 4;
+    if (name === 'adventure') {
+      const sc = new WorldScene(s);
+      app.setScene(sc);
+      await wait(500);
+      s.step = s.track.length - 1;
+      (sc as Any).victoryChoice();
+      await wait(900);
+      return done();
+    }
+    s.adventure = { depth: 0, cleared: 4 };
+    for (let i = 0; i < 6; i++) extendTrack(s);
+    const idx = BASE_ARENAS + 5;
+    const sc = new ArenaScene(s, idx, () => undefined);
+    app.setScene(sc);
+    const a = sc as Any;
+    await wait(1200);
+    paintedUnits(a);
+    shopOf(a, ['bourgeon', 'goutelle', 'galet', 'flammeche', 'carapix']);
+    await wait(500);
+    return done();
+  }
+
+  if (name === 'achievements') {
+    for (const a of ACHIEVEMENTS.slice(0, 11)) profile.unlocked[a.id] = Date.now() - 86400000 * (a.id.length % 5);
+    Object.assign(profile, { runs: 7, wins: 2, arenaWins: 19, arenaLosses: 6, built: 143, events: 58, hatched: 9, shinies: 3, bestPalier: 5 });
+    app.setScene(new TitleScene());
+    await wait(500);
+    openCodex('achievements');
+    await wait(500);
+    document.querySelector('.cx-explain')?.removeAttribute('open');
+    await wait(400);
     return done();
   }
 

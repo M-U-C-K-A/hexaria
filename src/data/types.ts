@@ -24,7 +24,9 @@ export type BuildingId =
   | 'forge'
   | 'shrine'
   | 'academy'
-  | 'menagerie';
+  | 'menagerie'
+  | 'warehouse'
+  | 'observatory';
 
 export type IconName =
   | 'gold' | 'wood' | 'stone' | 'food' | 'pop' | 'hammer' | 'heart' | 'sword' | 'shield' | 'skull'

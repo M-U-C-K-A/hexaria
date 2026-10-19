@@ -25,6 +25,12 @@ export const RELICS: RelicDef[] = [
   { id: 'couronne', name: 'Couronne du conquérant', desc: '+15 or de récompense à chaque victoire d’arène.', icon: 'crown', rarity: 2 },
   { id: 'potion', name: 'Élixir de vigueur', desc: 'Vos créatures commencent le combat avec 30% de mana.', icon: 'potion', rarity: 2 },
   { id: 'oeil', name: 'Œil du stratège', desc: '+30 secondes de préparation en arène et +8 or d’arène.', icon: 'eye', rarity: 1 },
+  { id: 'sablier', name: 'Sablier de bronze', desc: 'Les œufs éclosent deux fois plus vite.', icon: 'clock', rarity: 2 },
+  { id: 'graine', name: 'Graine d’Yggdrasil', desc: 'Les chances de créature chromatique ✦ sont doublées (œufs, boutique, repaires).', icon: 'leaf', rarity: 3 },
+  { id: 'epee', name: 'Épée du dresseur', desc: '+1 emplacement de compagnon.', icon: 'sword', rarity: 3 },
+  { id: 'bouclierAube', name: 'Bouclier de l’aube', desc: 'Vos créatures commencent le combat avec un bouclier de 12 % de leurs PV max.', icon: 'shield', rarity: 2 },
+  { id: 'compas', name: 'Compas des cartographes', desc: 'Votre territoire révèle les terres jusqu’à 3 cases au lieu de 2.', icon: 'flag', rarity: 1 },
+  { id: 'sceauVampire', name: 'Sceau du vampire', desc: 'Vos créatures volent 8 % des dégâts infligés en PV.', icon: 'moon', rarity: 2 },
 ];
 
 export const RELIC_BY_ID: Record<string, RelicDef> = Object.fromEntries(RELICS.map((r) => [r.id, r]));

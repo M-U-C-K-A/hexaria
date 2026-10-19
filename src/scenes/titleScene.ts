@@ -8,6 +8,8 @@ import { type GameState, clearSave, loadGame } from '../game/state';
 import { drawCover, ensureSprite, type Sprite } from '../render/sprites';
 import { mount } from '../ui/common';
 import { openCodex, openOptions } from '../ui/codex';
+import { openNewGame } from '../ui/newgame';
+import pkg from '../../package.json';
 import { icon } from '../ui/icons';
 import { WorldScene } from './worldScene';
 
@@ -47,20 +49,21 @@ export class TitleScene implements Scene {
           <button class="btn" data-a="types">${icon('sword', 18)} Types &amp; ascendants</button>
           <button class="btn" data-a="buildings">${icon('house', 18)} Bâtiments &amp; reliques</button>
           <button class="btn" data-a="monsters">${icon('skull', 18)} Monstres &amp; arènes</button>
+          <button class="btn" data-a="tuto">${icon('eye', 18)} Tutoriel guidé</button>
           <button class="btn" data-a="howto">${icon('scroll', 18)} Comment jouer</button>
+          <button class="btn" data-a="achievements">${icon('crown', 18)} Hauts faits</button>
           <button class="btn" data-a="options">${icon('refresh', 18)} Options</button>
         </div>
       </div>
-      <div class="muted" style="position:absolute;bottom:16px;font-size:12px">Prototype v0.1 · Bâtissez · Capturez · Combattez</div>
+      <div class="muted" style="position:absolute;bottom:16px;font-size:12px">Version ${pkg.version} · Bâtissez · Capturez · Combattez</div>
     </div>`);
     root.querySelector('[data-a="continue"]')?.addEventListener('click', () => {
       const s = loadGame();
       if (s) app.setScene(new WorldScene(s));
     });
-    root.querySelector('[data-a="new"]')?.addEventListener('click', () => {
-      clearSave();
-      app.setScene(new WorldScene(newGame(Math.floor(Math.random() * 1e9))));
-    });
+    root.querySelector('[data-a="new"]')?.addEventListener('click', () => openNewGame());
+    root.querySelector('[data-a="tuto"]')?.addEventListener('click', () => openNewGame({ difficulty: 'apprenti', tutorial: true }));
+    root.querySelector('[data-a="achievements"]')?.addEventListener('click', () => openCodex('achievements'));
     root.querySelector('[data-a="howto"]')?.addEventListener('click', () => this.howto());
     root.querySelector('[data-a="bestiary"]')?.addEventListener('click', () => openCodex('bestiary'));
     root.querySelector('[data-a="types"]')?.addEventListener('click', () => openCodex('types'));
@@ -84,6 +87,8 @@ export class TitleScene implements Scene {
           <li><b>Bâtiments de combat</b> : Caserne (+1 place), Forge (+attaque), Sanctuaire (+PV), Académie (créatures rares), Taverne (relances), Ménagerie (compagnons).</li>
           <li><b>Compagnons</b> : capturez des créatures dans les repaires ou lors d’événements ; elles vous rejoignent gratuitement à chaque arène.</li>
           <li><b>Surprises</b> : les <b>œufs mystérieux</b> éclosent après quelques tours, et certaines créatures sont <b>chromatiques</b> ✦ (couleurs inversées, +20 % PV et attaque).</li>
+          <li><b>Difficulté et graine</b> : à chaque nouvelle partie, choisissez Apprenti, Chevalier ou Légendaire, et partagez une <b>graine</b> pour rejouer la même île.</li>
+          <li><b>Mode aventure</b> : une fois Vermithrax vaincu, poursuivez avec des arènes générées, de plus en plus peuplées, et un Gardien tous les 4 paliers.</li>
           <li><b>Codex</b> : toutes les créatures, les types (qui a l’ascendant sur qui), les monstres, les bâtiments et les règles sont dans le menu principal, et à tout moment en jeu avec la touche <b>C</b> ou le bouton 📖.</li>
         </ol>
         <div class="muted">Commandes : glisser pour déplacer la carte · molette pour zoomer · Espace pour finir le tour · en arène : D pour relancer, E pour vendre.</div>

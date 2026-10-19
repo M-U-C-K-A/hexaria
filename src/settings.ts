@@ -6,10 +6,12 @@ export interface Settings {
   ambient: boolean; // brume, lucioles, fumée, braises
   floatText: boolean; // chiffres de dégâts et de soins en arène
   tooltips: boolean; // info-bulles détaillées
+  tutorial: boolean; // conseils du tutoriel guidé actifs
+  tutoSeen: string[]; // chapitres du tutoriel déjà vus
 }
 
 const KEY = 'hexaria.settings.v1';
-const DEFAULTS: Settings = { music: 1, sfx: 1, speed: 1, ambient: true, floatText: true, tooltips: true };
+const DEFAULTS: Settings = { music: 1, sfx: 1, speed: 1, ambient: true, floatText: true, tooltips: true, tutorial: true, tutoSeen: [] };
 
 function load(): Partial<Settings> {
   try {
@@ -20,6 +22,7 @@ function load(): Partial<Settings> {
 }
 
 export const settings: Settings = { ...DEFAULTS, ...load() };
+if (!Array.isArray(settings.tutoSeen)) settings.tutoSeen = [];
 
 export function saveSettings() {
   try {
@@ -30,6 +33,6 @@ export function saveSettings() {
 }
 
 export function resetSettings() {
-  Object.assign(settings, DEFAULTS);
+  Object.assign(settings, DEFAULTS, { tutoSeen: [] });
   saveSettings();
 }

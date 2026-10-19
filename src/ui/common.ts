@@ -1,4 +1,5 @@
 import { audio } from '../audio';
+import { meta } from '../meta';
 import { settings } from '../settings';
 import { RNG } from '../core/rng';
 import type { GameEvent } from '../data/events';
@@ -8,6 +9,8 @@ import { paintEventArt } from '../render/eventArt';
 import { ensureSprite } from '../render/sprites';
 import { CREATURE_BY_ID } from '../data/creatures';
 import { icon } from './icons';
+import { startTour } from './tutorial';
+import { eventChapter } from './tutorialChapters';
 
 export const uiRoot = document.getElementById('ui')!;
 
@@ -142,6 +145,7 @@ export function showEvent(ev: GameEvent, s: GameState, onDone: () => void) {
       const result = ch.apply(s, rng);
       s.rng = rng.state;
       s.stats.events++;
+      meta.event(s);
       list.innerHTML = '';
       const res = mount(`<div class="result">${result}</div>`, list);
       res.insertAdjacentElement('afterend', el(`<button class="btn primary big" style="align-self:flex-end">Continuer</button>`));
@@ -153,6 +157,7 @@ export function showEvent(ev: GameEvent, s: GameState, onDone: () => void) {
       });
     });
   }
+  if (ev.id !== 'victory' && ev.id !== 'defeat' && !document.body.classList.contains('shot')) startTour('event', eventChapter());
 }
 
 export function stars(n: number) {

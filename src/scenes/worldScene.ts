@@ -4,7 +4,10 @@ import { settings } from '../settings';
 import { ISO, axialToWorld, hexCorners, hkey, pointInPoly, tracePoly } from '../core/hex';
 import { RNG } from '../core/rng';
 import { BUILDINGS, BUILD_MENU } from '../data/buildings';
-import { ENCOUNTERS, MONSTERS } from '../data/creatures';
+import { BASE_ARENAS, encounterAt, extendTrack, isAdventureArena, rewardOf } from '../data/adventure';
+import { DIFFICULTY_BY_ID } from '../data/difficulty';
+import { meta } from '../meta';
+import { MONSTERS } from '../data/creatures';
 import { ELEMENTS } from '../data/elements';
 import { companionFull, hatchEvent, lairEvent, pickEvent, victoryEvent, type GameEvent } from '../data/events';
 import { FEATURES, TERRAINS } from '../data/terrain';
@@ -15,7 +18,7 @@ import {
   RES_NAMES, buildPoints, buildingYield, canBuild, cancelBuilding, combatBonuses, endTurnEconomy, growthCost,
   isWater, jobBuildings, placeBuilding, popCap, staffedSet, territory, turnIncome, workers,
 } from '../game/economy';
-import { type GameState, type Tile, clearSave, getTile, hasRelic, saveGame } from '../game/state';
+import { type GameState, type Tile, clearSave, difficultyOf, getTile, hasRelic, saveGame } from '../game/state';
 import { CHIMNEYS, buildingIcon, drawBuilding } from '../render/buildingArt';
 import { creaturePortrait } from '../render/creatureArt';
 import { type Ctx, glow, rgba } from '../render/draw';
@@ -23,6 +26,8 @@ import { FX } from '../render/fx';
 import { BASE_DEPTH, drawBorder, drawTileBase, drawTileDecor, tileElev } from '../render/terrainArt';
 import { RES_ORDER, bindTip, costHtml, mount, resInline, showEvent, stars, toast, tooltip } from '../ui/common';
 import { icon } from '../ui/icons';
+import { startTour, stopTutorial, tutorialOn } from '../ui/tutorial';
+import { postArenaChapter, worldChapter } from '../ui/tutorialChapters';
 import { ArenaScene } from './arenaScene';
 import { TitleScene } from './titleScene';
 
@@ -144,11 +149,29 @@ export class WorldScene implements Scene {
       const o = this.outcome;
       this.outcome = undefined;
       setTimeout(() => this.resolveArena(o), 50);
-    }
+    } else this.guide();
+  }
+
+  // Zone d'écran autour de l'hôtel de ville (pour le tutoriel).
+  private townRect() {
+    const th = this.s.tiles.find((t) => t.building?.id === 'townhall');
+    if (!th) return null;
+    const p = this.toScreen(this.tilePos(th).x, this.tilePos(th).y);
+    const r = HEX * 2.6 * this.cam.zoom;
+    return { x: p.x - r, y: p.y - r * 0.8, w: r * 2, h: r * 1.5 };
+  }
+
+  // Tutoriel guidé : chapitre « carte » au tout premier tour, bilan après le premier combat.
+  private guide() {
+    if (document.body.classList.contains('shot')) return;
+    const s = this.s;
+    if (s.step === 0 && tutorialOn('world')) startTour('world', worldChapter({ s, townRect: () => this.townRect() }));
+    else if (s.stats.wins + s.stats.losses >= 1 && tutorialOn('postarena')) startTour('postarena', postArenaChapter());
   }
 
   exit() {
     tooltip.hide();
+    stopTutorial();
   }
 
   resize() {
@@ -504,6 +527,7 @@ export class WorldScene implements Scene {
       const r = canBuild(this.s, t, this.buildSel);
       if (r.ok) {
         placeBuilding(this.s, t, this.buildSel);
+        meta.built(this.s, this.buildSel);
         audio.play('build');
         toast(`Chantier lancé : ${BUILDINGS[this.buildSel].name}`, 'info');
         this.fx.ring(this.tilePos(t).x, this.tilePos(t).y, '#ffd98a', HEX);
@@ -656,8 +680,12 @@ export class WorldScene implements Scene {
 
   private refreshTrack() {
     const s = this.s;
+    // en aventure la piste s'allonge sans fin : on n'affiche que le palier en cours
+    const from = s.adventure ? Math.max(0, s.track.findIndex((n) => n.act === s.track[s.step].act)) : 0;
     const nodes = s.track
-      .map((n, i) => {
+      .slice(from)
+      .map((n, k) => {
+        const i = k + from;
         const cls = i < s.step ? 'done' : i === s.step ? 'cur' : i === s.step + 1 ? 'next' : '';
         const ic = n.kind === 'event' ? icon('question', 18) : n.kind === 'arena' ? icon('sword', 18) : n.kind === 'boss' ? icon('skull', 20) : `<svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 0l5 5-5 5-5-5z" fill="#9aa69f"/></svg>`;
         const sep = i > 0 && s.track[i - 1].act !== n.act ? '<div class="act-sep"></div>' : '';
@@ -665,14 +693,14 @@ export class WorldScene implements Scene {
       })
       .join('');
     const hearts = Array.from({ length: s.maxHearts }, (_, i) => icon('heart', 20, i < s.hearts ? '' : 'lost')).join('');
-    this.ui.track.innerHTML = `<div class="stat">${icon('turn', 20)}<span>Tour ${s.step + 1}</span></div><div class="nodes">${nodes}</div><div class="stat hearts">${hearts}</div>`;
+    this.ui.track.innerHTML = `<div class="stat">${icon('turn', 20)}<span>${s.adventure ? 'Aventure · ' : ''}Tour ${s.step + 1}</span></div><div class="nodes">${nodes}</div><div class="stat hearts">${hearts}</div>`;
     this.ui.track.querySelectorAll<HTMLElement>('.node').forEach((n) => {
       const node = s.track[+n.dataset.i!];
       bindTip(n, () => {
         const act = `<div class="muted">Acte ${node.act}</div>`;
         if (node.kind === 'event') return `<b class="t">Événement</b>${act}Une rencontre inattendue à la fin du tour.`;
         if (node.kind === 'arena' || node.kind === 'boss') {
-          const enc = ENCOUNTERS[node.arena!];
+          const enc = encounterAt(s, node.arena!);
           return `<b class="t">${node.kind === 'boss' ? 'Boss : ' : 'Arène : '}${enc.name}</b>${act}${enc.desc}${this.enemyChips(node.arena!)}`;
         }
         return `<b class="t">Tour de gestion</b>${act}Construisez et développez votre royaume.`;
@@ -683,7 +711,7 @@ export class WorldScene implements Scene {
   }
 
   private enemyChips(idx: number) {
-    const enc = ENCOUNTERS[idx];
+    const enc = encounterAt(this.s, idx);
     const seen = new Set<string>();
     const chips = enc.enemies
       .filter((e) => (seen.has(e.id) ? false : (seen.add(e.id), true)))
@@ -739,7 +767,7 @@ export class WorldScene implements Scene {
       const d = BUILDINGS[id];
       const afford = RES_ORDER.every((k) => (d.cost[k] ?? 0) <= s.res[k]);
       const card = mount(
-        `<div class="bcard ${this.buildSel === id ? 'sel' : ''} ${afford ? '' : 'poor'}">
+        `<div class="bcard ${this.buildSel === id ? 'sel' : ''} ${afford ? '' : 'poor'}" data-b="${id}">
           <img src="${buildingIcon(id)}" alt=""/>
           <div class="nm">${d.name}</div>
           <div class="cost">${costHtml(d.cost, s) || '<span class="muted">Gratuit</span>'}</div>
@@ -769,7 +797,7 @@ export class WorldScene implements Scene {
     const ai = s.track.findIndex((n, i) => i >= s.step && (n.kind === 'arena' || n.kind === 'boss'));
     let arena = '';
     if (ai >= 0) {
-      const enc = ENCOUNTERS[s.track[ai].arena!];
+      const enc = encounterAt(s, s.track[ai].arena!);
       const inTurns = ai - s.step;
       arena = `<div style="font-size:13px;border-top:1px solid var(--line-soft);padding-top:6px">
         <div>${icon('sword', 14)} <b>${enc.name}</b> <span class="muted">${inTurns === 0 ? '— ce tour !' : `dans ${inTurns} tour(s)`}</span></div>
@@ -818,7 +846,7 @@ export class WorldScene implements Scene {
         if (b.id === 'colosseum') {
           const ai = s.track.findIndex((n, i) => i >= s.step && (n.kind === 'arena' || n.kind === 'boss'));
           if (ai >= 0) {
-            const enc = ENCOUNTERS[s.track[ai].arena!];
+            const enc = encounterAt(s, s.track[ai].arena!);
             html += `<div class="section"><b>Prochain combat : ${enc.name}</b><div class="muted" style="font-size:13px">${enc.desc}</div>${this.enemyChips(s.track[ai].arena!)}
               <div style="margin-top:8px;font-size:13px">${combatBonuses(s).lines.join('<br>') || '<span class="muted">Aucun bonus de combat pour l’instant.</span>'}</div></div>`;
           }
@@ -865,6 +893,7 @@ export class WorldScene implements Scene {
         const id = btn.dataset.b as BuildingId;
         if (!canBuild(s, t, id).ok) return;
         placeBuilding(s, t, id);
+        meta.built(s, id);
         audio.play('build');
         toast(`Chantier lancé : ${BUILDINGS[id].name}`, 'info');
         this.dirty = true;
@@ -908,7 +937,7 @@ export class WorldScene implements Scene {
     const s = this.s;
     const node = s.track[s.step];
     this.popYields();
-    for (const egg of s.eggs) egg.turns--;
+    for (const egg of s.eggs) egg.turns -= hasRelic(s, 'sablier') ? 2 : 1;
     const notes = endTurnEconomy(s);
     audio.play('turn');
     notes.forEach((n) => toast(n.text, n.kind));
@@ -972,23 +1001,31 @@ export class WorldScene implements Scene {
     this.s.step = Math.min(this.s.track.length - 1, this.s.step + 1);
     saveGame(this.s);
     this.refresh();
+    if (this.s.stats.wins + this.s.stats.losses >= 1) this.guide();
   }
 
   private resolveArena(o: ArenaOutcome) {
     const s = this.s;
-    const enc = ENCOUNTERS[o.idx];
+    const enc = encounterAt(s, o.idx);
+    const adv = isAdventureArena(o.idx);
     const isBoss = s.track[s.step].kind === 'boss';
+    const final = isBoss && !adv; // Vermithrax : fin de la partie… ou début de l'aventure
+    meta.arena(s, o.result === 'win');
     if (o.result === 'win') {
       s.stats.wins++;
-      if (isBoss) {
-        s.over = 'win';
-        clearSave();
-        this.endScreen(true);
+      if (final) {
+        meta.boss(s);
+        this.victoryChoice();
         return;
       }
-      const reward = enc.reward + (hasRelic(s, 'couronne') ? 15 : 0);
+      const reward = rewardOf(s, enc) + (hasRelic(s, 'couronne') ? 15 : 0);
       s.res.gold += reward;
       s.arenaIndex = Math.max(s.arenaIndex, o.idx + 1);
+      if (adv) {
+        s.adventure!.cleared++;
+        meta.palier(s.adventure!.cleared);
+        extendTrack(s);
+      }
       toast(`Victoire ! +${reward} or`, 'good');
       const rng = this.rng();
       const ev = victoryEvent(s, rng, enc.name);
@@ -1005,36 +1042,84 @@ export class WorldScene implements Scene {
       }
       s.res.gold += 5;
       this.busy = true;
+      const retry = isBoss && !adv;
       const ev: GameEvent = {
         id: 'defeat', title: 'Défaite…', art: 'defeat', source: 'any',
-        text: `Vos créatures ont été balayées par « ${enc.name} ». Vous perdez un cœur, mais le royaume tient bon.${isBoss ? ' Le dragon vous attend toujours : préparez-vous et retentez l’assaut au prochain tour.' : ''}`,
+        text: `Vos créatures ont été balayées par « ${enc.name} ». Vous perdez un cœur, mais le royaume tient bon.${retry ? ' Le dragon vous attend toujours : préparez-vous et retentez l’assaut au prochain tour.' : ''}`,
         choices: [{ label: 'Panser ses plaies', icon: 'heart', desc: '+5 or de consolation. Reprendre la gestion du royaume.', apply: () => 'Vos dresseurs analysent la défaite. La prochaine fois sera la bonne.' }],
       };
       this.runEvent(ev, () => {
-        if (isBoss) {
+        if (retry) {
           saveGame(s);
           this.refresh();
         } else {
           s.arenaIndex = Math.max(s.arenaIndex, o.idx + 1);
+          if (adv) extendTrack(s);
           this.advance();
         }
       });
     }
   }
 
-  private endScreen(win: boolean) {
+  // Vermithrax est vaincu : on peut clore la partie sur cette victoire, ou poursuivre en mode aventure.
+  private victoryChoice() {
     this.busy = true;
     const s = this.s;
     const back = mount(`<div class="modal-back"></div>`);
+    const box = mount(
+      `<div class="panel howto" style="text-align:center;max-width:640px">
+        <h2 class="title" style="font-size:40px;margin-bottom:6px">Victoire !</h2>
+        <div class="muted" style="margin-bottom:16px">Vermithrax est vaincu. Votre royaume entre dans la légende… mais le monde est vaste.</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">
+          <div>${icon('sword', 22)}<br><b>${s.stats.wins}</b> victoire(s)</div>
+          <div>${icon('house', 22)}<br><b>${s.stats.built}</b> bâtiment(s)</div>
+          <div>${icon('heart', 22)}<br><b>${s.hearts}</b> / ${s.maxHearts} cœur(s)</div>
+        </div>
+        <div class="adv-pitch"><b class="goldtxt">Mode aventure</b> : poursuivez avec des arènes générées, de plus en plus peuplées (jusqu’à 8 monstres), un <b>Gardien</b> tous les 4 paliers et des récompenses croissantes. Votre royaume, vos créatures et vos reliques restent. Vous regagnez <b>1 cœur</b>.</div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+          <button class="btn big" data-a="end">Terminer ici</button>
+          <button class="btn primary big" data-a="go">Poursuivre l’aventure</button>
+        </div>
+      </div>`,
+      back,
+    );
+    box.querySelector('[data-a="end"]')!.addEventListener('click', () => {
+      back.remove();
+      s.over = 'win';
+      clearSave();
+      this.endScreen(true);
+    });
+    box.querySelector('[data-a="go"]')!.addEventListener('click', () => {
+      back.remove();
+      s.adventure = { depth: 0, cleared: 0 };
+      s.hearts = Math.min(s.maxHearts, s.hearts + 1);
+      extendTrack(s);
+      s.arenaIndex = Math.max(s.arenaIndex, BASE_ARENAS);
+      toast('L’aventure continue : palier 1 en vue !', 'good');
+      this.busy = false;
+      this.advance();
+    });
+  }
+
+  private endScreen(win: boolean) {
+    this.busy = true;
+    const s = this.s;
+    const adv = s.adventure;
+    const title = adv ? 'Fin de l’aventure' : win ? 'Victoire !' : 'Le royaume est tombé';
+    const sub = adv
+      ? `Vous avez franchi <b>${adv.cleared}</b> palier(s) après Vermithrax. Le monde se souviendra de votre royaume.`
+      : win ? 'Vermithrax est vaincu. Votre royaume entre dans la légende.' : 'Vos cœurs sont épuisés. Une nouvelle dynastie se lèvera.';
+    const back = mount(`<div class="modal-back"></div>`);
     mount(
       `<div class="panel howto" style="text-align:center">
-        <h2 class="title" style="font-size:40px;margin-bottom:6px">${win ? 'Victoire !' : 'Le royaume est tombé'}</h2>
-        <div class="muted" style="margin-bottom:16px">${win ? 'Vermithrax est vaincu. Votre royaume entre dans la légende.' : 'Vos cœurs sont épuisés. Une nouvelle dynastie se lèvera.'}</div>
+        <h2 class="title" style="font-size:40px;margin-bottom:6px">${title}</h2>
+        <div class="muted" style="margin-bottom:16px">${sub}</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">
           <div>${icon('sword', 22)}<br><b>${s.stats.wins}</b> victoire(s)</div>
           <div>${icon('house', 22)}<br><b>${s.stats.built}</b> bâtiment(s)</div>
           <div>${icon('gold', 22)}<br><b>${s.stats.goldEarned}</b> or produit</div>
         </div>
+        <div class="muted" style="font-size:13px;margin-bottom:14px">Graine du royaume : <b>${s.seed}</b> · ${DIFFICULTY_BY_ID[difficultyOf(s)].name}</div>
         <button class="btn primary big">Retour au menu</button>
       </div>`,
       back,

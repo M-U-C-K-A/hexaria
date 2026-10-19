@@ -1,11 +1,13 @@
 import { RNG, makeNoise } from '../core/rng';
 import { axialToWorld, hexDistance, neighbors } from '../core/hex';
+import { DIFFICULTY_BY_ID, type Difficulty } from '../data/difficulty';
 import type { Terrain } from '../data/types';
 import { TERRAINS } from '../data/terrain';
 import { type GameState, type Tile, buildTrack, getTile, tileIndex } from './state';
 import { updateExploration } from './economy';
 
-export function newGame(seed: number): GameState {
+export function newGame(seed: number, difficulty: Difficulty = 'normal'): GameState {
+  const diff = DIFFICULTY_BY_ID[difficulty];
   const rng = new RNG(seed);
   const radius = 10;
   const elevN = makeNoise(seed * 7 + 1);
@@ -42,11 +44,11 @@ export function newGame(seed: number): GameState {
     track: buildTrack(),
     radius,
     tiles,
-    res: { gold: 15, wood: 20, stone: 8, food: 10 },
-    villagers: 3,
+    res: { gold: diff.res.gold, wood: diff.res.wood, stone: diff.res.stone, food: diff.res.food },
+    villagers: diff.villagers,
     builders: 1,
-    hearts: 3,
-    maxHearts: 3,
+    hearts: diff.hearts,
+    maxHearts: diff.hearts,
     relics: [],
     companions: [],
     eggs: [],
@@ -55,6 +57,7 @@ export function newGame(seed: number): GameState {
     seen: [],
     stats: { wins: 0, losses: 0, goldEarned: 0, built: 0, events: 0 },
     over: null,
+    difficulty,
   };
   tileIndex(s);
 

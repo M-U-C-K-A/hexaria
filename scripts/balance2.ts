@@ -1,6 +1,7 @@
 // Équilibrage des arènes : un robot dépense un budget dans la boutique puis combat chaque arène.
 // Usage : npx tsx scripts/balance2.ts [essais]
 import { RNG } from '../src/core/rng';
+import { ADV, makeAdventureEncounter } from '../src/data/adventure';
 import { CREATURES, CREATURE_BY_ID, ENCOUNTERS, SHOP_ODDS, STAR_MULT, TIER_COST } from '../src/data/creatures';
 import { Combat, type UnitSpec } from '../src/game/combat';
 
@@ -139,6 +140,41 @@ function winRate(a: number, budget: number, power: number, n = trials) {
     }
   }
   return wins / total;
+}
+
+// Mode aventure : paliers générés, avec un royaume qui continue de se renforcer (boutique au maximum, huit places).
+if (process.argv.includes('--adventure')) {
+  if (process.env.ADV_BASE) ADV.base = Number(process.env.ADV_BASE);
+  if (process.env.ADV_GROWTH) ADV.growth = Number(process.env.ADV_GROWTH);
+  const rows: string[] = [];
+  for (let d = 0; d < 12; d++) {
+    const su: Setup = { slots: Math.min(8, 7 + (d >= 2 ? 1 : 0)), atk: Math.min(1.45, 1.2 + 0.02 * d), hp: Math.min(1.6, 1.28 + 0.03 * d), odds: 5 };
+    const cells: string[] = [];
+    for (const f of [0.7, 1, 1.4]) {
+      const budget = Math.round(140 * 1.09 ** d * f);
+      let wins = 0;
+      let n = 0;
+      for (let t = 0; t < trials; t++) {
+        const enc = makeAdventureEncounter(777 + t * 31, d);
+        const rng = new RNG(5000 + d * 97 + t * 13 + budget);
+        const squad = shopBot(budget, su.odds, su.slots, rng);
+        for (let k = 0; k < 2; k++) {
+          const c = new Combat(place(squad), enc.enemies.map((e) => ({ key: e.id, monster: true, star: 1, col: e.col, row: e.row, mul: enc.power })), { atkMul: su.atk, hpMul: su.hp, relics: [] });
+          while (!c.over) {
+            c.step(1 / 30);
+            c.events.length = 0;
+          }
+          n++;
+          if (c.over === 'win') wins++;
+        }
+      }
+      cells.push(`${String(budget).padStart(4)}or → ${String(Math.round((wins / n) * 100)).padStart(3)}%`);
+    }
+    rows.push(`Palier ${String(d + 1).padStart(2)} ${d % 4 === 3 ? '(Gardien)' : '         '} ${cells.join('   ')}`);
+  }
+  console.log('Mode aventure : taux de victoire du robot (budget faible / normal / confortable) :');
+  console.log(rows.join('\n'));
+  process.exit(0);
 }
 
 if (TUNE) {
