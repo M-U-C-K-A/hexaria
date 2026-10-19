@@ -25,16 +25,16 @@ const TX = {
     sub: 'ROYAUMES & ARÈNES',
     tag1: 'Un roguelike solo pour macOS : bâtissez un royaume hexagonal,',
     tag2: "capturez des créatures et lancez-les dans des arènes d'auto-battler.",
-    pills: ['macOS natif', 'Auto-battler', '15 lignées', 'Sprites peints'],
-    stats: [[15, 'lignées de créatures'], [45, 'formes à faire évoluer'], [8, 'monstres, dont 1 boss'], [16, 'bâtiments'], [16, 'reliques'], [15, 'événements'], [6, 'éléments']],
+    pills: ['macOS natif', 'Auto-battler', '18 lignées', 'Mode aventure'],
+    stats: [[18, 'lignées de créatures'], [54, 'formes à faire évoluer'], [12, 'monstres, dont 1 boss'], [18, 'bâtiments'], [22, 'reliques'], [21, 'événements'], [6, 'éléments']],
     feat: [
-      ['Bâtissez', ['Une île hexagonale, 16 bâtiments', "et des bonus d'adjacence : Port +", 'Hôtel des ventes = +5 or.']],
+      ['Bâtissez', ['Une île hexagonale, 18 bâtiments', "et des bonus d'adjacence : Port +", 'Hôtel des ventes = +5 or.']],
       ['Combattez', ['Auto-battler façon TFT : boutique,', 'relances, placement, évolutions', 'de ★ à ★★★.']],
       ['Capturez', ['Repaires, œufs mystérieux et', 'créatures chromatiques ✦ :', 'chaque partie a sa surprise.']],
       ['Dominez les types', ['6 éléments et un cycle', "d'ascendants : un type dominant", 'inflige ×1,5.']],
     ],
-    loop: [['Tour de gestion', 'bâtir · récolter · loger'], ['Événement ?', 'un choix, une surprise'], ['Arène', 'auto-battler hexagonal'], ['Récompense', 'relique · compagnon · œuf'], ['Boss final', 'Vermithrax, dragon des marais']],
-    loopFoot: '3 arènes, puis le boss : 22 tours en 4 actes. Une défaite coûte un cœur ♥ (3 au départ).',
+    loop: [['Tour de gestion', 'bâtir · récolter · loger'], ['Événement ?', 'un choix, une surprise'], ['Arène', 'auto-battler hexagonal'], ['Récompense', 'relique · compagnon · œuf'], ['Boss', 'Vermithrax, dragon des marais'], ['Aventure ∞', 'paliers générés, Gardiens']],
+    loopFoot: '3 arènes, puis le boss : 22 tours en 4 actes. Une défaite coûte un cœur ♥ (3 au départ). Après Vermithrax, l’aventure continue.',
     adjTitle: 'Bâtir, c’est placer',
     adjSub: 'Chaque bâtiment regarde ses six voisins.',
     adj: [['Port + Hôtel des ventes', '+5 or par tour', '+5 or'], ['Ferme à côté d’une ferme', '+1 nourriture (max +2)', '+1 🌾'], ['Scierie au bord de la forêt', '+1 bois par forêt (max +3)', '+2 bois']],
@@ -42,14 +42,14 @@ const TX = {
     adjFoot2: 'développer l’économie ou préparer l’arène, voilà le dilemme.',
     eco: [['Votre or', 'devient votre budget'], ['1 min 30 d’achat', 'boutique de 5, relance à 2 or'], ['Combat automatique', 'placement, sorts, synergies'], ['Tout est rendu', '+ la récompense de victoire']],
     ecoFoot: "Acheter n'est jamais un sacrifice : c'est un pari sur votre composition.",
-    pipe: [['Prompt prêt à copier', 'art/prompts.html · 72 fiches'], ["Votre IA d'images", 'fond blanc, nom de fichier imposé'], ['npm run art', 'détourage, découpe, WebP'], ['Sprite animé en jeu', 'respiration, élan, coup, flash']],
+    pipe: [['Prompt prêt à copier', 'art/prompts.html · 81 fiches'], ["Votre IA d'images", 'fond blanc, nom de fichier imposé'], ['npm run art', 'détourage, découpe, WebP'], ['Sprite animé en jeu', 'respiration, élan, coup, flash']],
     copy: 'Copier',
     arch: {
       data: ['src/data', 'contenu pur'], core: ['src/core', 'hexagones · RNG'], game: ['src/game', 'logique sans rendu'], render: ['src/render', 'Canvas 2D · sprites'], ui: ['src/ui', 'Codex · modales'],
       scenes: ['src/scenes', 'titre · carte · arène'], app: ['src/app.ts', 'boucle · entrées'], mac: ['mac/HexariaApp.swift', 'Cocoa + WKWebView'], scripts: ['scripts/', 'équilibrage · art · README'],
       sim: 'simulé en Node', web: 'build web (Vite)',
     },
-    road: [['v0.1.0', 'Prototype', 'carte, arènes, évolutions'], ['v0.2.0', 'Sprites peints', 'Codex, œufs, chromatiques'], ['v0.3', 'Mode aventure', 'plus de monstres par rencontre'], ['v0.4', 'Objets & traits', 'équipement, classes'], ['v1.0', 'Âges & technologies', 'une progression façon Civ']],
+    road: [['v0.1.0', 'Prototype', 'carte, arènes, évolutions'], ['v0.2.0', 'Sprites peints', 'Codex, œufs, chromatiques'], ['v0.3.0', 'Aventure & tutoriel', 'difficultés, hauts faits, contenu'], ['v0.4', 'Objets & traits', 'équipement, classes'], ['v1.0', 'Âges & technologies', 'une progression façon Civ']],
     here: 'vous êtes ici',
     btnMac: ['Télécharger pour macOS', `v${VERSION} · Apple silicon & Intel`],
     btnWeb: ['Version web', 'zip statique, tout navigateur'],
@@ -70,16 +70,16 @@ const TX = {
     sub: 'KINGDOMS & ARENAS',
     tag1: 'A single-player roguelike for macOS: build a hexagonal kingdom,',
     tag2: 'capture creatures and send them into auto-battler arenas.',
-    pills: ['Native macOS', 'Auto-battler', '15 creature lines', 'Painted sprites'],
-    stats: [[15, 'creature lines'], [45, 'forms to evolve'], [8, 'monsters, 1 boss'], [16, 'buildings'], [16, 'relics'], [15, 'events'], [6, 'elements']],
+    pills: ['Native macOS', 'Auto-battler', '18 creature lines', 'Adventure mode'],
+    stats: [[18, 'creature lines'], [54, 'forms to evolve'], [12, 'monsters, 1 boss'], [18, 'buildings'], [22, 'relics'], [21, 'events'], [6, 'elements']],
     feat: [
-      ['Build', ['A hexagonal island, 16 buildings', 'and adjacency bonuses: Port +', 'Auction house = +5 gold.']],
+      ['Build', ['A hexagonal island, 18 buildings', 'and adjacency bonuses: Port +', 'Auction house = +5 gold.']],
       ['Fight', ['A TFT-style auto-battler: shop,', 'rerolls, placement, evolutions', 'from ★ to ★★★.']],
       ['Capture', ['Lairs, mystery eggs and shiny', 'creatures ✦: every run', 'hides its own surprise.']],
       ['Master the types', ['6 elements and a cycle of', 'advantages: a dominant type', 'deals ×1.5 damage.']],
     ],
-    loop: [['Management turn', 'build · harvest · house'], ['Event ?', 'one choice, one surprise'], ['Arena', 'hexagonal auto-battler'], ['Reward', 'relic · companion · egg'], ['Final boss', 'Vermithrax, the marsh dragon']],
-    loopFoot: '3 arenas, then the boss: 22 turns in 4 acts. A defeat costs a heart ♥ (you start with 3).',
+    loop: [['Management turn', 'build · harvest · house'], ['Event ?', 'one choice, one surprise'], ['Arena', 'hexagonal auto-battler'], ['Reward', 'relic · companion · egg'], ['Boss', 'Vermithrax, the marsh dragon'], ['Adventure ∞', 'generated tiers, Guardians']],
+    loopFoot: '3 arenas, then the boss: 22 turns in 4 acts. A defeat costs a heart ♥ (you start with 3). After Vermithrax, the adventure goes on.',
     adjTitle: 'Building is placing',
     adjSub: 'Every building looks at its six neighbours.',
     adj: [['Port + Auction house', '+5 gold per turn', '+5 gold'], ['Farm next to a farm', '+1 food (up to +2)', '+1 🌾'], ['Sawmill by the forest', '+1 wood per forest (up to +3)', '+2 wood']],
@@ -87,14 +87,14 @@ const TX = {
     adjFoot2: 'grow the economy or prepare for the arena, that is the dilemma.',
     eco: [['Your gold', 'becomes your budget'], ['90 s of shopping', '5-card shop, reroll for 2 gold'], ['Automatic battle', 'placement, spells, synergies'], ['All of it comes back', '+ the victory reward']],
     ecoFoot: 'Buying is never a sacrifice: it is a bet on your team composition.',
-    pipe: [['Ready-to-copy prompt', 'art/prompts.html · 72 cards'], ['Your own image AI', 'white background, fixed file name'], ['npm run art', 'cut-out, slicing, WebP'], ['Animated in-game sprite', 'breathing, wind-up, hit, flash']],
+    pipe: [['Ready-to-copy prompt', 'art/prompts.html · 81 cards'], ['Your own image AI', 'white background, fixed file name'], ['npm run art', 'cut-out, slicing, WebP'], ['Animated in-game sprite', 'breathing, wind-up, hit, flash']],
     copy: 'Copy',
     arch: {
       data: ['src/data', 'pure content'], core: ['src/core', 'hex maths · RNG'], game: ['src/game', 'logic, no rendering'], render: ['src/render', 'Canvas 2D · sprites'], ui: ['src/ui', 'Codex · dialogs'],
       scenes: ['src/scenes', 'title · map · arena'], app: ['src/app.ts', 'loop · input'], mac: ['mac/HexariaApp.swift', 'Cocoa + WKWebView'], scripts: ['scripts/', 'balancing · art · README'],
       sim: 'simulated in Node', web: 'web build (Vite)',
     },
-    road: [['v0.1.0', 'Prototype', 'map, arenas, evolutions'], ['v0.2.0', 'Painted sprites', 'Codex, eggs, shinies'], ['v0.3', 'Adventure mode', 'more monsters per encounter'], ['v0.4', 'Items & traits', 'equipment, classes'], ['v1.0', 'Ages & technologies', 'Civ-style progression']],
+    road: [['v0.1.0', 'Prototype', 'map, arenas, evolutions'], ['v0.2.0', 'Painted sprites', 'Codex, eggs, shinies'], ['v0.3.0', 'Adventure & tutorial', 'difficulties, achievements, content'], ['v0.4', 'Items & traits', 'equipment, classes'], ['v1.0', 'Ages & technologies', 'Civ-style progression']],
     here: 'you are here',
     btnMac: ['Download for macOS', `v${VERSION} · Apple silicon & Intel`],
     btnWeb: ['Web version', 'static zip, any browser'],
@@ -274,19 +274,19 @@ ${lines.map((l, j) => `<text class="s c" x="${cx}" y="${270 + j * 22}" font-size
 // ══════════════════════ BOUCLE DE JEU ══════════════════════
 function loop(T, theme, lang) {
   const L = TX[lang];
-  const xs = [130, 365, 600, 835, 1070];
+  const xs = [100, 290, 480, 670, 860, 1070];
   const css = `${CSS.flow}${CSS.pulse}`;
   const defs = arrowMarker(T);
   let body = '';
   xs.forEach((x, i) => {
-    const c = i === 4 ? T.red : T.gold2;
-    body += `<g class="pulse" style="animation-delay:${i * 0.5}s"><path d="${hexPath(x, 100, 52)}" fill="${T.soft2}" stroke="${c}" stroke-width="2"/><text class="c" x="${x}" y="109" font-size="27" font-weight="700" fill="${c}">${i + 1}</text></g>
+    const c = i === 4 ? T.red : i === 5 ? T.teal : T.gold2;
+    body += `<g class="pulse" style="animation-delay:${i * 0.5}s"><path d="${hexPath(x, 100, 52)}" fill="${T.soft2}" stroke="${c}" stroke-width="2"/><text class="c" x="${x}" y="109" font-size="27" font-weight="700" fill="${c}">${i === 5 ? '∞' : i + 1}</text></g>
 <text class="c" x="${x}" y="188" font-size="17" font-weight="700" fill="${T.ink}">${esc(L.loop[i][0])}</text><text class="s c" x="${x}" y="210" font-size="12.5" fill="${T.muted}">${esc(L.loop[i][1])}</text>`;
-    if (i < 4) body += `<path class="flow" d="M${x + 62} 100H${xs[i + 1] - 62}" fill="none" stroke="${T.teal}" stroke-width="2" marker-end="url(#ar)"/>`;
+    if (i < 5) body += `<path class="flow" d="M${x + 62} 100H${xs[i + 1] - 62}" fill="none" stroke="${T.teal}" stroke-width="2" marker-end="url(#ar)"/>`;
   });
-  body += `<path class="flow" d="M${xs[3]} 232q-340 44 -${xs[3] - xs[0]} 0" fill="none" stroke="${T.edge}" stroke-width="1.6" marker-end="url(#ar)"/>
-<text class="s c" x="${(xs[0] + xs[3]) / 2}" y="268" font-size="13" fill="${T.muted}">${esc(L.loopFoot)}</text>
-<circle r="7" fill="${T.glow}"><animateMotion dur="10s" repeatCount="indefinite" path="M130 100H1070"/></circle>`;
+  body += `<path class="flow" d="M${xs[3]} 232q-290 44 -${xs[3] - xs[0]} 0" fill="none" stroke="${T.edge}" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="s c" x="600" y="268" font-size="13" fill="${T.muted}">${esc(L.loopFoot)}</text>
+<circle r="7" fill="${T.glow}"><animateMotion dur="11s" repeatCount="indefinite" path="M${xs[0]} 100H${xs[5]}"/></circle>`;
   write('loop', theme, lang, svg(1200, 292, L.loop.map((l) => l[0]).join(' → '), defs, body, css));
 }
 
@@ -528,7 +528,7 @@ function architecture(T, theme, lang) {
 // ══════════════════════ FEUILLE DE ROUTE ══════════════════════
 function roadmap(T, theme, lang) {
   const L = TX[lang];
-  const W = 1200, H = 250, xs = [120, 360, 600, 840, 1080], y = 96, cur = 1;
+  const W = 1200, H = 250, xs = [120, 360, 600, 840, 1080], y = 96, cur = 2;
   const css = `${CSS.flow}
 .done{stroke-dasharray:${xs[cur] - xs[0]};stroke-dashoffset:${xs[cur] - xs[0]};animation:done 1.8s cubic-bezier(.3,.7,.2,1) .2s forwards}@keyframes done{to{stroke-dashoffset:0}}
 .halo{animation:halo 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes halo{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.9);opacity:0}}
@@ -588,7 +588,7 @@ function footer(T, theme, lang, A) {
 // ══════════════════════ COURBE DE DIFFICULTÉ ══════════════════════
 function chart(T, theme, lang) {
   const L = TX[lang];
-  const data = [[[18, 91, 100], '18 · 30 · 45'], [[29, 74, 100], '35 · 55 · 80'], [[28, 68, 87], '55 · 85 · 120'], [[37, 64, 71], '80 · 120 · 170']];
+  const data = [[[10, 92, 98], '18 · 30 · 45'], [[30, 76, 98], '35 · 55 · 80'], [[18, 71, 78], '55 · 85 · 120'], [[38, 64, 66], '80 · 120 · 170']];
   const W = 1000, H = 440, x0 = 90, y0 = 360, ph = 270, gw = 205;
   const cols = [T.red, T.teal, T.gold2];
   const css = `.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.4s cubic-bezier(.2,.8,.2,1) both}@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}`;
@@ -609,6 +609,35 @@ function chart(T, theme, lang) {
     body += `<rect x="${W - 360 + i * 115}" y="46" width="14" height="14" rx="3" fill="${cols[i]}"/><text class="s" x="${W - 341 + i * 115}" y="58" font-size="13" fill="${T.ink}">${esc(t)}</text>`;
   });
   write('balance', theme, lang, svg(W, H, L.chartTitle, '', body, css));
+}
+
+
+// ══════════════════════ MODE AVENTURE ══════════════════════
+const ADV_TX = {
+  fr: { title: 'Mode aventure : monstres par palier et taux de victoire du robot (budget normal)', guard: 'Gardien', mon: 'monstres', win: 'victoire', note: 'Mesuré avec scripts/balance2.ts --adventure : la difficulté monte de 8,5 % par palier, le robot finit par tomber vers le palier 10.' },
+  en: { title: 'Adventure mode: monsters per tier and bot win rate (normal budget)', guard: 'Guardian', mon: 'monsters', win: 'win', note: 'Measured with scripts/balance2.ts --adventure: difficulty grows 8.5 % per tier; the bot eventually falls around tier 10.' },
+};
+function adventureChart(T, theme, lang) {
+  const L = ADV_TX[lang];
+  const wins = [82, 70, 89, 66, 76, 55, 48, 17, 30, 13, 4, 1];
+  const mons = [4, 4, 5, 6, 6, 6, 7, 8, 8, 8, 8, 8];
+  const W = 1000, H = 460, x0 = 70, y0 = 300, ph = 200, bw = 58, gap = 18;
+  const css = '.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.4s cubic-bezier(.2,.8,.2,1) both}@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}';
+  let body = `<text class="s" x="${W / 2}" y="26" text-anchor="middle" font-size="15" fill="${T.muted}">${esc(L.title)}</text>`;
+  for (const v of [0, 50, 100]) {
+    const y = y0 - (ph * v) / 100;
+    body += `<line x1="${x0 - 8}" x2="${W - 20}" y1="${y}" y2="${y}" stroke="${T.edge}" stroke-width="1" stroke-dasharray="3 5"/><text class="s" x="${x0 - 14}" y="${y + 4}" font-size="12" text-anchor="end" fill="${T.muted}">${v} %</text>`;
+  }
+  wins.forEach((v, i) => {
+    const x = x0 + i * (bw + gap), guard = i % 4 === 3, h = (ph * v) / 100;
+    body += `<rect class="grow" style="animation-delay:${(i * 0.08).toFixed(2)}s" x="${x}" y="${y0 - h}" width="${bw}" height="${Math.max(2, h)}" rx="6" fill="${guard ? T.red : T.teal}" fill-opacity=".85"/>
+<text class="s c" x="${x + bw / 2}" y="${y0 - h - 7}" font-size="13" font-weight="700" fill="${T.ink}">${v} %</text>
+<text class="c" x="${x + bw / 2}" y="${y0 + 24}" font-size="15" font-weight="700" fill="${guard ? T.red : T.ink}">${i + 1}</text>
+<g transform="translate(${x + bw / 2} ${y0 + 56})">${Array.from({ length: mons[i] }, (_, k) => `<circle cx="${(k % 4) * 11 - 16}" cy="${Math.floor(k / 4) * 11}" r="4" fill="${guard ? T.red : T.gold2}"/>`).join('')}</g>`;
+  });
+  body += `<text class="s" x="${x0}" y="${y0 + 118}" font-size="12.5" fill="${T.gold2}">● ${esc(L.mon)}</text><text class="s" x="${x0 + 120}" y="${y0 + 118}" font-size="12.5" fill="${T.red}">■ ${esc(L.guard)}</text>
+<text class="s" x="${W / 2}" y="${H - 8}" text-anchor="middle" font-size="12.5" fill="${T.muted}">${esc(L.note)}</text>`;
+  write('adventure', theme, lang, svg(W, H, L.title, '', body, css));
 }
 
 // ══════════════════════ IMAGES ══════════════════════
@@ -670,6 +699,7 @@ for (const [theme, T] of Object.entries(THEMES)) {
     buttons(T, theme, lang);
     footer(T, theme, lang, A);
     chart(T, theme, lang);
+    adventureChart(T, theme, lang);
   }
 }
 for (const [f, n] of files.filter(([f]) => f.includes('-dark') && !f.endsWith('-en.svg'))) console.log('✓', f.replace('-dark', '-{light,dark}'), (n / 1024).toFixed(0), 'Ko');

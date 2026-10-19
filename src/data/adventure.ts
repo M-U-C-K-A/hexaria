@@ -24,7 +24,7 @@ const BACK: [number, number][] = [[3, 1], [2, 1], [4, 1], [1, 1], [5, 1], [3, 0]
 const strength = (id: string) => Math.sqrt(MONSTERS[id].hp * MONSTERS[id].atk);
 
 // Force totale visée au palier d (somme de racine(PV × attaque) des monstres, avant difficulté) : croissance régulière.
-export const ADV = { base: 2000, growth: 1.1 }; // réglé avec scripts/balance2.ts --adventure
+export const ADV = { base: 2000, growth: 1.085 }; // réglé avec scripts/balance2.ts --adventure
 export const targetStrength = (depth: number) => ADV.base * ADV.growth ** depth;
 
 const NOUNS = ['La Horde', 'Le Cercle', 'La Meute', 'L’Assaut', 'La Marche', 'Le Conclave'];

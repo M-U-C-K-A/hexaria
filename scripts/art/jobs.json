@@ -615,6 +615,129 @@
   "rel": 1
  },
  {
+  "src": "line_roccotin.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "roccotin_1",
+   "roccotin_2",
+   "roccotin_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_roccotin_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "roccotin_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_roccotin_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "roccotin_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_roccotin_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "roccotin_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_nimbulle.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "nimbulle_1",
+   "nimbulle_2",
+   "nimbulle_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_nimbulle_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "nimbulle_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_nimbulle_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "nimbulle_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_nimbulle_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "nimbulle_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
+  "src": "line_corbelune.png",
+  "kind": "row",
+  "dir": "creatures",
+  "names": [
+   "corbelune_1",
+   "corbelune_2",
+   "corbelune_3"
+  ],
+  "maxH": 560
+ },
+ {
+  "src": "creature_corbelune_1.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "corbelune_1"
+  ],
+  "maxH": 560,
+  "rel": 0.45
+ },
+ {
+  "src": "creature_corbelune_2.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "corbelune_2"
+  ],
+  "maxH": 560,
+  "rel": 0.78
+ },
+ {
+  "src": "creature_corbelune_3.png",
+  "kind": "single",
+  "dir": "creatures",
+  "names": [
+   "corbelune_3"
+  ],
+  "maxH": 560,
+  "rel": 1
+ },
+ {
   "src": "monster_loup.png",
   "kind": "single",
   "dir": "monsters",
@@ -674,6 +797,42 @@
   "dir": "monsters",
   "names": [
    "dragonnet"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_harpie.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "harpie"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_treant.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "treant"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_elementaire.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "elementaire"
+  ],
+  "maxH": 640
+ },
+ {
+  "src": "monster_liche.png",
+  "kind": "single",
+  "dir": "monsters",
+  "names": [
+   "liche"
   ],
   "maxH": 640
  },
@@ -827,6 +986,24 @@
   "dir": "buildings",
   "names": [
    "menagerie"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_warehouse.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "warehouse"
+  ],
+  "maxH": 720
+ },
+ {
+  "src": "building_observatory.png",
+  "kind": "single",
+  "dir": "buildings",
+  "names": [
+   "observatory"
   ],
   "maxH": 720
  },

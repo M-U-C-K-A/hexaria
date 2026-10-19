@@ -2,13 +2,26 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) ; versions [SemVer](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.3.0] — 2026-10-19
+
+### Ajouté
+- **Tutoriel guidé** : bulles lumineuses et étapes « à vous de jouer » qui avancent quand l'action est faite. Chapitres carte (12 étapes), événement, arène (9 étapes) et bilan du premier combat ; se rejoue depuis le menu ou les Options.
+- **Nouvelle partie** : trois **difficultés** (Apprenti, Chevalier, Légendaire : cœurs, ressources de départ, puissance des monstres, récompenses), **graine** du royaume (nombre ou mot, « Graine du jour »).
+- **Mode aventure** : après Vermithrax, on peut poursuivre avec des paliers générés (de 4 à 8 monstres, un Gardien tous les 4 paliers, puissance +8,5 % par palier), sans fin.
+- **Hauts faits** (18, dont un secret) et annales persistantes, notification 🏆, nouvel onglet du Codex.
+- **Contenu** : 3 lignées de créatures (Roccotin, Nimbulle, Corbelune), 4 monstres (Harpie de tempête, Tréant ancestral, Élémentaire de braise, Liche des marais), 2 bâtiments (Entrepôt, Observatoire), 6 reliques (Sablier de bronze, Graine d'Yggdrasil, Épée du dresseur, Bouclier de l'aube, Compas des cartographes, Sceau du vampire) et 8 événements (Marché noir, Tempête de foudre, Sanctuaire des éléments, Enfants des bois, Défi du champion, Oracle des marais, Fossile géant, Graines rares).
+- Bouton ⚙ en jeu (options, tutoriel, retour au menu principal) ; règles « Difficultés » et « Mode aventure » dans le Codex.
+- `scripts/balance2.ts --adventure` mesure la courbe des paliers ; nouvelles fiches dans `art/prompts.html` (81 au total).
 
 ### Documentation
 - **README refondu** (français et anglais) : guide de première partie, boucle de jeu acte par acte, adjacences, économie de l'arène, 15 lignées, FAQ, tableau des versions et feuille de route.
 - **Clips de jeu animés** (`docs/media/*.webp`) enregistrés image par image avec une horloge simulée : évolution en chaîne et combat, survol du royaume (`scripts/readme/clips.mjs`, scènes `?shot=combatlive` et `?shot=worldlive`).
 - **Nouveaux SVG animés** clair/sombre à fond transparent, en français et en anglais : bannière, chiffres clés, adjacences, économie de l'arène, défilé du bestiaire, pipeline d'images, architecture, feuille de route, boutons de téléchargement.
 - **Trois nouvelles figures Hairline** (plateau d'arène, œuf mystérieux, Codex) en plus du royaume, converties en SVG animés par un convertisseur générique (`scripts/readme/hairline-svg.mjs`).
+
+### Modifié
+- Équilibrage des arènes 2, 3 et 4 recalibré avec les nouvelles créatures (taux de victoire du robot « normal » : 92 / 76 / 71 / 64 %).
+- La page des prompts et le README (FR/EN) décrivent les nouveautés ; l'écran titre affiche la version.
 
 ## [0.2.0] — 2026-10-18
 

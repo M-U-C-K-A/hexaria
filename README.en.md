@@ -12,22 +12,22 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Canvas%202D-3178c6?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-0b8a73?style=flat-square)](LICENSE)
 
-<a href="https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-macos-dark-en.svg"><img alt="Download for macOS" src="docs/assets/btn-macos-light-en.svg" height="58"></picture></a>
-<a href="https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-web-dark-en.svg"><img alt="Web version" src="docs/assets/btn-web-light-en.svg" height="58"></picture></a>
+<a href="https://github.com/M-U-C-K-A/hexaria/releases/download/v0.3.0/Hexaria-0.3.0-macOS.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-macos-dark-en.svg"><img alt="Download for macOS" src="docs/assets/btn-macos-light-en.svg" height="58"></picture></a>
+<a href="https://github.com/M-U-C-K-A/hexaria/releases/download/v0.3.0/Hexaria-0.3.0-web.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-web-dark-en.svg"><img alt="Web version" src="docs/assets/btn-web-light-en.svg" height="58"></picture></a>
 <a href="https://github.com/M-U-C-K-A/hexaria/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/btn-releases-dark-en.svg"><img alt="All releases" src="docs/assets/btn-releases-light-en.svg" height="58"></picture></a>
 
-**[In action](#️-in-action)** · **[First run](#️-your-first-run)** · **[Kingdom](#-building-a-kingdom)** · **[Arena](#️-the-arena)** · **[Creatures](#-creatures-types-and-evolutions)** · **[Releases](#-releases)** · **[Install](#-install)** · [Français](README.md)
+**[In action](#️-in-action)** · **[First run](#️-your-first-run)** · **[Adventure](#️-adventure-mode-difficulty-and-seeds)** · **[Kingdom](#-building-a-kingdom)** · **[Arena](#️-the-arena)** · **[Creatures](#-creatures-types-and-evolutions)** · **[Releases](#-releases)** · **[Install](#-install)** · [Français](README.md)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/stats-dark-en.svg">
-  <img alt="15 creature lines, 45 forms, 8 monsters, 16 buildings, 16 relics, 15 events, 6 elements" src="docs/assets/stats-light-en.svg" width="100%">
+  <img alt="18 creature lines, 54 forms, 12 monsters, 18 buildings, 22 relics, 21 events, 6 elements" src="docs/assets/stats-light-en.svg" width="100%">
 </picture>
 
 </div>
 
 > **Hexaria** is a single-player roguelike for macOS that sits between **Civilization**, **Pokémon** and **TFT**.
 > You build a hexagonal island, capture and evolve elemental creatures, then send them into auto-battler arenas.
-> One run: 22 steps, 3 arenas and a dragon.
+> One run: 22 steps, 3 arenas and a dragon… then, if you want more, **adventure mode** and its endless tiers.
 >
 > *The game itself is in French; this page explains everything you need to play it.*
 
@@ -54,10 +54,12 @@ fireflies of the glowing groves. Up to ×4.2 zoom in game.</sub>
 - [Hexaria at a glance](#-hexaria-at-a-glance)
 - [Your first run](#️-your-first-run)
 - [The game loop](#-the-game-loop)
+- [Adventure mode, difficulty and seeds](#️-adventure-mode-difficulty-and-seeds)
 - [Building a kingdom](#-building-a-kingdom)
 - [The arena](#️-the-arena)
 - [Creatures, types and evolutions](#-creatures-types-and-evolutions)
 - [The little surprise: eggs and shinies](#-the-little-surprise-eggs-and-shinies)
+- [Relics, events and achievements](#-relics-events-and-achievements)
 - [Codex and options](#-codex-and-options)
 - [Gallery](#-gallery)
 - [Releases](#-releases)
@@ -80,9 +82,9 @@ fireflies of the glowing groves. Up to ×4.2 zoom in game.</sub>
 | Borrowed from… | In Hexaria |
 | --- | --- |
 | **Civilization** | A hexagonal island generated for each run, terrain-dependent buildings, **adjacency bonuses**, villagers split between builders and workers. |
-| **Pokémon** | 15 creature lines with **elemental types**, 3 forms each, captures in lairs, **eggs** and **shiny** variants. |
+| **Pokémon** | 18 creature lines with **elemental types**, 3 forms each, captures in lairs, **eggs** and **shiny** variants. |
 | **TFT / Dota Auto Chess** | **Auto-battler arenas**: 5-card shop, rerolls, hex placement, merging 3 copies, automatic battles. |
-| **Roguelikes** | A 22-step track, 3-choice **events**, **relics**, 3 hearts, and a different run for every seed. |
+| **Roguelikes** | A 22-step track, 3-choice **events**, **relics**, **achievements**, 3 difficulty levels, an **adventure mode** and a different run for every seed. |
 
 Everything is drawn in isometric 2D with a dark, glowing mood (references: Bastion, Hades). Characters, monsters,
 buildings and scenery are **painted sprites** animated by the engine; the original procedural renderer is the safety net
@@ -94,9 +96,16 @@ A step-by-step guide to the first ten minutes.
 
 <table>
   <tr>
-    <td width="44%"><img src="docs/screenshots/title.jpg" alt="Title screen"></td>
-    <td><b>1. New game</b> (<i>Nouvelle partie</i>). The title screen also opens the <b>Bestiary</b>, <b>Types</b> and
-    <b>Options</b>. The run is saved at every step: <i>Continuer</i> resumes it.</td>
+    <td width="44%"><img src="docs/screenshots/newgame.jpg" alt="New game screen: difficulty, seed, tutorial"></td>
+    <td><b>0. Pick your run.</b> Three <b>difficulty levels</b> (Apprenti, Chevalier, Légendaire), an optional <b>seed</b>
+    (the same seed gives the same island, and "Graine du jour" shares it with friends) and the <b>guided tutorial</b>
+    checkbox, ticked for a first run.</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/title.jpg" alt="Title screen"></td>
+    <td><b>1. New game</b> (<i>Nouvelle partie</i>). The title screen also opens the <b>guided tutorial</b>, the
+    <b>Bestiary</b>, <b>Types</b>, <b>achievements</b> and <b>Options</b>. The run is saved at every step:
+    <i>Continuer</i> resumes it.</td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/world.jpg" alt="The kingdom early in the run"></td>
@@ -131,6 +140,21 @@ A step-by-step guide to the first ten minutes.
 > Three habits that change everything: **Port + Auction house** side by side (+5 gold per turn), a **Barracks** before
 > the second arena (+1 creature on the board), and **three identical creatures** for a free evolution.
 
+### 🎓 The guided tutorial
+
+No need to read rules: during your first run, glowing bubbles point at whatever is being explained, and some steps wait
+until you do the action to move on ("**Your turn: place a building**").
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/tuto.jpg" alt="Tutorial: the build menu highlighted"><br><sub><b>"Map" chapter</b> (12 steps): resources, villagers, build menu, <i>place a first building</i>, adjacency, track, relics, <i>end the turn</i>.</sub></td>
+    <td width="50%"><img src="docs/screenshots/tutoarena.jpg" alt="Tutorial: the arena shop"><br><sub><b>"Arena" chapter</b> (9 steps): budget and time, enemies and weaknesses, shop, <i>buy</i>, <i>place</i>, synergies, <i>start the battle</i>.</sub></td>
+  </tr>
+</table>
+
+Two shorter chapters complete the tour: the first **event window** and the **recap after your first battle**. `Enter` or
+`→` go on, `Esc` quits. Replay it from the menu ("Tutoriel guidé") or with **⚙ Options › Rejouer le tutoriel**.
+
 ## 🔁 The game loop
 
 <picture>
@@ -147,7 +171,41 @@ A run lasts **22 steps over 4 acts**. Each act ends with an arena, the last one 
 | III | turn · `?` · turn · `?` · turn | ⚔ The Black Tides |
 | IV | turn · `?` · turn | ☠ Vermithrax, the marsh dragon |
 
-You have **3 hearts**. An arena defeat costs one, and so do some events; at zero, the run is over.
+You have **3 hearts** (depending on difficulty). An arena defeat costs one, and so do some events; at zero, the run is over.
+
+## ♾️ Adventure mode, difficulty and seeds
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/adventure-dark-en.svg">
+  <img alt="Adventure mode: monsters per tier and bot win rate" src="docs/assets/adventure-light-en.svg" width="100%">
+</picture>
+
+Once **Vermithrax** is down, the run does not have to end: a window offers to **keep going**. Your kingdom, companions and
+relics stay, you regain **1 heart**, and the track grows by one **tier** at a time (a few turns, an event, then a
+generated arena).
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/adventure.jpg" alt="Victory over Vermithrax: end here or continue the adventure"><br><sub><b>After the boss</b>: end on this victory, or go on.</sub></td>
+    <td width="50%"><img src="docs/screenshots/adventurearena.jpg" alt="Adventure tier 6: six monsters"><br><sub><b>Tier 6</b>: "The Circle of Embers", six monsters instead of three.</sub></td>
+  </tr>
+</table>
+
+- **4 to 8 monsters** per arena, built around a dominant type, with **4 new monsters** (Storm Harpy, Ancient Treant,
+  Ember Elemental, Marsh Lich).
+- **A Guardian** (a champion of the dominant type, reward ×1.6) guards every fourth tier.
+- Power grows **8.5% per tier**, and so do gold rewards; arenas cycle through the four scenery themes.
+- No end: the adventure stops when your hearts run out. Your **best tier** is kept in the achievements.
+
+| Difficulty | Hearts | Start (gold · wood · stone · food) | Monsters | Arena rewards |
+| --- | --- | --- | --- | --- |
+| **Apprenti** | 4 | 25 · 28 · 12 · 14, 4 villagers | −15% | +25% |
+| **Chevalier** *(default)* | 3 | 15 · 20 · 8 · 10, 3 villagers | ×1 | ×1 |
+| **Légendaire** | 2 | 12 · 16 · 6 · 8, 3 villagers | +18% | −10% |
+
+The **seed** (a number or any word) fixes the island's geography, the lairs and the events drawn: replay it to compare
+strategies, or use the **daily seed** (today's date, `YYYYMMDD`) so everyone plays the same island. It is shown on the
+end-of-run screen.
 
 ## 🏰 Building a kingdom
 
@@ -174,7 +232,7 @@ without a worker stands idle). The left panel sets the split with `−` / `+`.
 </picture>
 
 <details>
-<summary><b>The 16 buildings and their effects</b></summary>
+<summary><b>The 18 buildings and their effects</b></summary>
 
 | Family | Building | Effect |
 | --- | --- | --- |
@@ -188,12 +246,14 @@ without a worker stands idle). The left panel sets the split with `−` / `+`.
 | Economy | **Port** | +2 gold, +1 food; +2 food per neighbouring fish shoal |
 | Economy | **Market** (*Marché*) | +3 gold; +1 per neighbouring house (up to +3), +2 next to the town hall |
 | Economy | **Auction house** (*Hôtel des ventes*) | +4 gold; **+5 next to a port**, +2 next to a market |
+| Economy | **Warehouse** (*Entrepôt*) *(new)* | +1 wood, +1 stone; +1 more next to a sawmill / a quarry, +2 gold per adjacent market (up to +4) |
 | Combat | **Tavern** (*Taverne*) | +2 free arena rerolls, +1 gold |
 | Combat | **Barracks** (*Caserne*) | +1 creature on the board (up to 3) |
 | Combat | **Forge** | +10% attack; +5% next to a mine |
 | Combat | **Shrine** (*Sanctuaire*) | +12% HP; +8% on or next to a glowing grove |
 | Combat | **Academy** (*Académie*) | better odds of rare creatures in the shop |
 | Combat | **Menagerie** (*Ménagerie*) | +1 companion slot |
+| Combat | **Observatory** (*Observatoire*) *(new)* | +15 s of preparation and +1 free reroll; on a mountain: +1 shop level (up to 2) |
 
 </details>
 
@@ -245,10 +305,11 @@ easy arena followed by a wall.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/parade-dark.svg">
-  <img alt="The 15 creature lines in their final form" src="docs/assets/parade-light.svg" width="100%">
+  <img alt="The 15 painted creature lines in their final form" src="docs/assets/parade-light.svg" width="100%">
 </picture>
 
-**15 lines** of three forms (Tier 1 to 4 depending on shop rarity), **8 monsters** for the arenas and the boss. Six
+**18 lines** of three forms (Tier 1 to 4 depending on shop rarity), **12 monsters** for the arenas, the boss and the adventure.
+The first 15 lines are painted; the last 3 (*) use the procedural renderer until they get their illustrations. Six
 elements face off in a cycle of advantages: a **super effective** attack deals **×1.5**, a **not very effective** one
 **×0.7**.
 
@@ -274,7 +335,7 @@ Three identical copies merge into an evolved form: stats **×1.8** at ★★, **
 </picture>
 
 <details>
-<summary><b>The 15 lines</b></summary>
+<summary><b>The 18 lines</b></summary>
 
 | Tier | Line (★ → ★★ → ★★★) | Element |
 | --- | --- | --- |
@@ -286,11 +347,14 @@ Three identical copies merge into an evolved form: stats **×1.8** at ★★, **
 | 2 | Ombrelin → Spectreval → Nécrombre | 🌑 Shadow |
 | 2 | Mycelor → Sporifère → Myconide-roi | 🌿 Grass |
 | 2 | Carapix → Carapace → Bastiodon | 💧 Water |
+| 2 | Roccotin* → Sanglocher → Mastodonte de granit | 🪨 Rock |
 | 2 | Salamandre → Pyroscail → Drakéon | 🔥 Fire |
 | 3 | Cristallon → Golem de quartz → Colosse prismatique | 🪨 Rock |
 | 3 | Griffonerre → Tonnegriffe → Roi-tempête | ⚡ Thunder |
 | 3 | Faucheur → Sombrelame → Moissonneur | 🌑 Shadow |
 | 4 | Phénix → Phénix ardent → Phénix solaire | 🔥 Fire |
+| 4 | Nimbulle* → Orageon → Tonnerrion | ⚡ Thunder |
+| 4 | Corbelune* → Corbeau nocturne → Seigneur des corbeaux | 🌑 Shadow |
 | 4 | Hydrelle → Hydre → Hydre des abysses | 💧 Water |
 | 4 | Dryade → Dryade sylvestre → Reine des bois | 🌿 Grass |
 
@@ -313,6 +377,57 @@ Three identical copies merge into an evolved form: stats **×1.8** at ★★, **
 
 <br clear="right">
 
+## 🎁 Relics, events and achievements
+
+The **22 relics** give permanent bonuses for the whole run; they come from events, arena victories and travelling shops.
+The **21 events** (3 choices each, with their cost and risk spelled out) range from the black market to the champion's
+challenge, from the thunderstorm to the marsh oracle who reveals the monsters of the next arena.
+
+<details>
+<summary><b>The 22 relics</b></summary>
+
+| Relic | Effect | Rarity |
+| --- | --- | --- |
+| **Bourse sans fond** | +20% gold produced by your buildings. | ★★ |
+| **Corne d’abondance** | Every farm produces +1 food. | ★ |
+| **Marteau du maître** | Every builder provides +1 construction point. | ★★ |
+| **Cristal ardent** | Fire creatures: +20% damage. | ★ |
+| **Écaille de léviathan** | Water creatures: +25% healing done. | ★ |
+| **Totem de mousse** | Grass creatures: +20% HP. | ★ |
+| **Pierre-tonnerre** | Thunder creatures: +20% attack speed. | ★ |
+| **Cœur de golem** | Rock creatures: +10% damage reduction. | ★ |
+| **Lame spectrale** | Shadow creatures: +20% crit. | ★ |
+| **Bannière de guerre** | +1 creature on the arena board. | ★★★ |
+| **Dé du destin** | +3 free rerolls per arena. | ★ |
+| **Amulette de givre** | Enemies are slowed by 30% for the first 6 seconds. | ★★ |
+| **Parchemin d’érudit** | Arena shop: better odds of rare creatures. | ★★ |
+| **Couronne du conquérant** | +15 gold reward for every arena victory. | ★★ |
+| **Élixir de vigueur** | Your creatures start the battle with 30% mana. | ★★ |
+| **Œil du stratège** | +30 seconds of arena preparation and +8 arena gold. | ★ |
+| **Sablier de bronze** | Eggs hatch twice as fast. | ★★ |
+| **Graine d’Yggdrasil** | Shiny ✦ odds are doubled (eggs, shop, lairs). | ★★★ |
+| **Épée du dresseur** | +1 companion slot. | ★★★ |
+| **Bouclier de l’aube** | Your creatures start the battle with a shield worth 12% of their max HP. | ★★ |
+| **Compas des cartographes** | Your territory reveals lands up to 3 tiles away instead of 2. | ★ |
+| **Sceau du vampire** | Your creatures steal 8% of the damage they deal as HP. | ★★ |
+
+</details>
+
+<details>
+<summary><b>The 21 events</b></summary>
+
+Fairy Ring · Sunset Caravan · Shipwreck on the shore · The Mystery Egg · Rain of stars · The Shadow Altar · Harvest Festival ·
+The Travelling Smith · The Wandering Trainer · The Fountain of Youth · The Sunken Library · The Sealed Tomb · The Abandoned
+Camp · **The Black Market** · **The Thunderstorm** · **The Elements Shrine** · **The Children of the Woods** · **The
+Champion's Challenge** · **The Marsh Oracle** · **The Giant Fossil** · **Rare Seeds** (bold: new in 0.3.0).
+
+</details>
+
+Your feats carry over from one run to the next: **18 achievements** (one of them secret), a record book (runs started, arenas
+won, shinies found, best adventure tier…) and a 🏆 notification at every unlock.
+
+<img src="docs/screenshots/achievements.jpg" alt="Achievements and record book" width="80%">
+
 ## 📖 Codex and options
 
 <picture>
@@ -321,11 +436,11 @@ Three identical copies merge into an evolved form: stats **×1.8** at ★★, **
 </picture>
 
 The main menu opens the **Codex**, also available in game with `C` or the 📖 button: **Bestiary**, **Monsters & arenas**,
-**Types** (23 × 23 matrix and comparator), **Buildings**, **Relics**, **Rules & glossary**. Every table comes with a
-"How to read this table" note.
+**Types** (30 × 30 matrix and comparator), **Buildings**, **Relics**, **Rules & glossary** and **Achievements**. Every
+table comes with a "How to read this table" note.
 
-**Options** set the volumes, sound, default battle speed, ambient effects, damage numbers and tooltips, and let you
-erase the save.
+**Options** (the ⚙ button in game, with "back to main menu") set the volumes, sound, default battle speed, ambient
+effects, damage numbers, tooltips and the tutorial, and let you erase the save or the statistics.
 
 <br clear="right">
 
@@ -336,7 +451,7 @@ erase the save.
   </tr>
   <tr>
     <td><img src="docs/screenshots/codextypes.jpg" alt="Types"><br><sub><b>Types</b>: type matrix, groups and synergies.</sub></td>
-    <td><img src="docs/screenshots/codexcross.jpg" alt="Full matrix"><br><sub><b>Full matrix</b>, 23 × 23: who has the edge over whom, creature by creature.</sub></td>
+    <td><img src="docs/screenshots/codexcross.jpg" alt="Full matrix"><br><sub><b>Full matrix</b>, 30 × 30: who has the edge over whom, creature by creature.</sub></td>
   </tr>
 </table>
 
@@ -357,23 +472,24 @@ erase the save.
 
 | Version | Date | Highlights | Downloads |
 | --- | --- | --- | --- |
-| [**v0.2.0**](https://github.com/M-U-C-K-A/hexaria/releases/tag/v0.2.0) · *current* | 2026-10-18 | Animated painted sprites, Codex, eggs and shinies, simulation-tuned balance, ×4.2 zoom, universal app | [macOS](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip) · [web](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip) |
+| [**v0.3.0**](https://github.com/M-U-C-K-A/hexaria/releases/tag/v0.3.0) · *current* | 2026-10-19 | **Guided tutorial**, endless **adventure mode**, 3 difficulty levels and seeds, **18 achievements**, 3 lines, 4 monsters, 2 buildings, 6 relics and 8 events | [macOS](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.3.0/Hexaria-0.3.0-macOS.zip) · [web](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.3.0/Hexaria-0.3.0-web.zip) |
+| [v0.2.0](https://github.com/M-U-C-K-A/hexaria/releases/tag/v0.2.0) | 2026-10-18 | Animated painted sprites, Codex, eggs and shinies, simulation-tuned balance, ×4.2 zoom, universal app | [macOS](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip) · [web](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip) |
 | v0.1.0 · *prototype* | — | Hex map, buildings and adjacency, villagers, events, arenas, evolutions, relics, native launcher | — |
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/roadmap-dark-en.svg">
-  <img alt="Roadmap: v0.1.0 prototype, v0.2.0 painted sprites (current), v0.3 adventure mode, v0.4 items and traits, v1.0 ages and technologies" src="docs/assets/roadmap-light-en.svg" width="100%">
+  <img alt="Roadmap: v0.1.0 prototype, v0.2.0 painted sprites, v0.3.0 adventure and tutorial (current), v0.4 items and traits, v1.0 ages and technologies" src="docs/assets/roadmap-light-en.svg" width="100%">
 </picture>
 
-Every release is detailed in the [changelog](CHANGELOG.md) (in French). Next up: an **adventure mode** with longer
-encounters (the `ENCOUNTERS` format already accepts any number of enemies), **items** and **class traits**, then
-Civ-style **ages** that unlock buildings and creatures.
+Every release is detailed in the [changelog](CHANGELOG.md) (in French). Next up: **items** to equip and **class traits**,
+then Civ-style **ages** that unlock buildings and creatures. Illustrations for the last 3 lines, the 4 new monsters and
+the 2 new buildings can be generated with the [prompt page](art/prompts.html).
 
 ## 📦 Install
 
 ### macOS app (recommended)
 
-1. Download **[`Hexaria-0.2.0-macOS.zip`](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-macOS.zip)**
+1. Download **[`Hexaria-0.3.0-macOS.zip`](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.3.0/Hexaria-0.3.0-macOS.zip)**
    (universal binary: Apple silicon and Intel, macOS 12 or later, about 11 MB).
 2. Unzip it and drag `Hexaria.app` into `Applications`.
 3. The app is ad-hoc signed but **not notarized** by Apple. On first launch: **right-click › Open**, or:
@@ -386,11 +502,11 @@ The save lives in the app's preferences (`UserDefaults`), safe from the browser 
 
 ### Web version (Windows, Linux, any browser)
 
-[`Hexaria-0.2.0-web.zip`](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.2.0/Hexaria-0.2.0-web.zip) holds the
+[`Hexaria-0.3.0-web.zip`](https://github.com/M-U-C-K-A/hexaria/releases/download/v0.3.0/Hexaria-0.3.0-web.zip) holds the
 static build. It must be served over HTTP (not opened with `file://`):
 
 ```bash
-unzip Hexaria-0.2.0-web.zip -d hexaria-web && npx serve hexaria-web
+unzip Hexaria-0.3.0-web.zip -d hexaria-web && npx serve hexaria-web
 ```
 
 ### From source
@@ -412,7 +528,7 @@ npm run mac          # builds build/Hexaria.app (universal)
 | `npm run check` | TypeScript check |
 | `npm run build` | Production web build in `dist/` |
 | `npm run mac` | Builds `build/Hexaria.app` (Swift + WKWebView launcher, universal) |
-| `npx tsx scripts/balance2.ts [n]` | Shopping bot: win rate per arena and budget (`--tune` adjusts encounter power) |
+| `npx tsx scripts/balance2.ts [n]` | Shopping bot: win rate per arena and budget (`--tune` adjusts encounter power, `--adventure` measures adventure tiers) |
 | `npm run art` | Cuts out and imports the images in `art/raw/`, regenerates `art/prompts.html` |
 | `npm run shots` | Regenerates the screenshots (headless Chrome) |
 | `node scripts/readme/clips.mjs` | Records the animated clips `docs/media/*.webp` (and the release MP4s) |
@@ -433,7 +549,7 @@ No image is set in stone: the game is designed to be illustrated with **any imag
   <img alt="Ready-to-copy prompt, your image AI, npm run art, animated in-game sprite" src="docs/assets/pipeline-light-en.svg" width="100%">
 </picture>
 
-1. Open [`art/prompts.html`](art/prompts.html) (double-click): **72 cards** with a ready-to-copy prompt, the format, the
+1. Open [`art/prompts.html`](art/prompts.html) (double-click): **81 cards** with a ready-to-copy prompt, the format, the
    suggested size and the exact file name for every character, monster, building, scenery sheet, texture, arena
    background, event illustration and title screen.
 2. Generate the image with your AI on a **white background** and drop it into `art/raw/` under the given name (or drop
@@ -523,7 +639,8 @@ clock and turns it into an animated SVG (SMIL, transparent background, the brigh
 | `1`–`9`: pick a building · `Tab`: switch tab | Right-click / `E`: sell |
 | Right-click / `Esc`: cancel | `D`: reroll the shop |
 | `Space`: end the turn | `Space`: start the battle |
-| `M`: mute · `C`: Codex | ×1 ×2 ×3: battle speed |
+| `M`: mute · `C`: Codex · ⚙: options | ×1 ×2 ×3: battle speed |
+| Tutorial: `Enter` / `→` next, `Esc` quit | `Esc`: close a window |
 
 ## ❓ FAQ
 
@@ -537,7 +654,7 @@ quarantine attribute with `xattr -dr com.apple.quarantine /Applications/Hexaria.
 <details>
 <summary><b>Can I play on Windows or Linux?</b></summary>
 
-Yes, with the web version: unzip `Hexaria-0.2.0-web.zip` and serve the folder with any HTTP server (`npx serve`,
+Yes, with the web version: unzip `Hexaria-0.3.0-web.zip` and serve the folder with any HTTP server (`npx serve`,
 `python3 -m http.server`…). The save then lives in the browser's local storage.
 </details>
 
@@ -553,6 +670,20 @@ first run; translations are welcome.
 
 In the macOS app, in the app's preferences (`UserDefaults`); in the browser, in `localStorage`. **Options › Effacer la
 sauvegarde** resets everything.
+</details>
+
+<details>
+<summary><b>How do I replay the tutorial?</b></summary>
+
+From the title screen (**Tutoriel guidé**, which starts an Apprenti run with the bubbles on) or in game with **⚙ Options ›
+Rejouer le tutoriel** (it restarts on your next run). The bubbles' "Passer le tutoriel" link turns it off.
+</details>
+
+<details>
+<summary><b>What happens after Vermithrax? And what does the seed do?</b></summary>
+
+A window offers to **end** the run or **keep going** (generated tiers, 4 to 8 monsters, a Guardian every 4 tiers). The
+**seed** fixes the island and the draws of the run: the same seed gives the same geography.
 </details>
 
 <details>

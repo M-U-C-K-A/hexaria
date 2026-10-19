@@ -13,5 +13,5 @@ text{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Book Antiqua',Palati
 <g clip-path="url(#cl)"><rect class="sw" x="0" y="0" width="90" height="70" fill="url(#sh)" transform="skewX(-20)"/></g>
 <g transform="translate(40 35)" fill="none" stroke="#231600" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M0 -14V8M-8 0l8 8 8-8M-12 14h24"/></g>
 <text x="72" y="33" font-size="19" font-weight="700" fill="#231600">Télécharger pour macOS</text>
-<text class="s" x="72" y="53" font-size="12.5" fill="#231600" opacity="0.8">v0.2.0 · Apple silicon &amp; Intel</text>
+<text class="s" x="72" y="53" font-size="12.5" fill="#231600" opacity="0.8">v0.3.0 · Apple silicon &amp; Intel</text>
 </svg>

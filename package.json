@@ -1,7 +1,7 @@
 {
   "name": "hexaria",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Hexaria — Royaumes & Arènes : roguelike solo pour macOS (royaume hexagonal, créatures à types, auto-battler).",
   "license": "MIT",
   "repository": {
